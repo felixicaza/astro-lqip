@@ -32,8 +32,17 @@ yarn add astro-lqip
 In your current Astro project, just replace the native Astro `<Picture>` component with the one provided by this integration.
 
 ```astro
-- import { Picture } from 'astro:assets';
-+ import { Picture } from 'astro-lqip/components';
+---
+// import { Picture } from 'astro:assets';
+import { Picture } from 'astro-lqip/components';
+
+import image from './path/to/image.jpg';
+---
+
+<Picture
+  src={image}
+  alt="Description of the image"
+/>
 ```
 
 ## 📝 ToDo
