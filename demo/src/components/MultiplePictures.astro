@@ -1,0 +1,24 @@
+---
+import type { ImageMetadata } from 'astro'
+
+import { Picture } from 'astro-lqip/components'
+
+interface Props {
+  image: string
+  alt: string
+}
+
+const { image, alt } = Astro.props as Props
+
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/images/multiple/*.{jpeg,jpg,png}')
+if (!images[image]) throw new Error(`"${image}" does not exist in glob: "src/assets/*.{jpeg,jpg,png,gif}"`);
+---
+
+<Picture
+  src={images[image]()}
+  alt={alt}
+  width={800}
+  height={450}
+  loading="lazy"
+  fetchpriority="low"
+/>

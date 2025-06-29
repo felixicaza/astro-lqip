@@ -1,0 +1,86 @@
+---
+import path from 'node:path'
+import fs from 'node:fs/promises'
+
+import lqipModern from 'lqip-modern'
+
+import { Picture as PictureComponent } from 'astro:assets'
+import type { Props as PictureProps } from 'astro/components/Picture.astro'
+
+type Props = PictureProps
+
+const { class: className, ...props } = Astro.props as Props
+
+let imageMetadata
+let lqip
+
+if (typeof props.src === 'string') {
+  imageMetadata = null
+} else if ('then' in props.src && typeof props.src.then === 'function') {
+  imageMetadata = (await props.src).default
+} else if ('src' in props.src) {
+  imageMetadata = props.src
+} else {
+  imageMetadata = null
+}
+
+if (import.meta.env.MODE === 'development') {
+  if (imageMetadata?.src?.startsWith('/@fs/')) {
+    const filePath = imageMetadata.src.replace(/^\/@fs/, '').split('?')[0]
+    const buffer = await fs.readFile(filePath)
+
+    const lqipModernBuffer = await lqipModern(buffer)
+    lqip = lqipModernBuffer.metadata?.dataURIBase64
+  }
+} else {
+  if (imageMetadata?.src?.startsWith('/_astro/')) {
+    const publicPath = path.join(process.cwd(), 'dist', imageMetadata.src)
+
+    try {
+      const buffer = await fs.readFile(publicPath)
+      const lqipModernBuffer = await lqipModern(buffer)
+      lqip = lqipModernBuffer.metadata?.dataURIBase64
+    } catch (e) {
+      lqip = undefined
+    }
+  }
+}
+---
+
+<style is:inline>
+  picture {
+    --opacity: 1;
+    --z-index: 0;
+
+    position: relative;
+    display: inline-block;
+  }
+
+  picture::after {
+    content: "";
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    pointer-events: none;
+    transition: opacity 1s;
+    opacity: var(--opacity);
+    z-index: var(--z-index);
+    background: var(--lqip-background);
+    background-size: cover;
+    background-position: 50% 50%;
+  }
+
+  picture img {
+    z-index: 1;
+    position: relative;
+    overflow: hidden;
+  }
+</style>
+
+<PictureComponent
+  {...props}
+  class={className}
+  pictureAttributes={{ style: { '--lqip-background': `url('${lqip}')` } }}
+  onload="parentElement.style.setProperty('--z-index', 1), parentElement.style.setProperty('--opacity', 0)"
+/>

@@ -1,0 +1,18 @@
+{
+  "name": "demo",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Demo project for Astro LQIP",
+  "type": "module",
+  "scripts": {
+    "astro": "astro",
+    "build": "astro build",
+    "dev": "astro dev",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "astro": "5.10.1",
+    "astro-lqip": "workspace:*",
+    "sharp": "0.34.2"
+  }
+}
