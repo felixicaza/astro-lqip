@@ -1,11 +1,15 @@
-<img src="./assets/cover.png" alt="Cover" width="896" height="280" style="object-fit: cover" />
+<a href="https://github.com/felixicaza/astro-lqip/">
+  <img src="./assets/cover.png" alt="Astro LQIP Cover" width="896" height="280" style="object-fit: cover" />
+</a>
 
 # 🖼️ astro-lqip
 
 [![GitHub Release](https://img.shields.io/github/v/release/felixicaza/astro-lqip?logo=npm)](https://www.npmjs.com/package/astro-lqip)
 [![GitHub License](https://img.shields.io/github/license/felixicaza/astro-lqip)](https://github.com/felixicaza/astro-lqip/blob/main/LICENSE)
 
-A integration built over the native Astro component that generates low-quality image placeholders (LQIP) for your images.
+A integration built over the native Astro component that generates low quality image placeholders (LQIP) for your images.
+
+[See Demo.](https://astro-lqip.web.app/)
 
 ## ⬇️ Installation
 
@@ -29,7 +33,7 @@ yarn add astro-lqip
 
 ## 🚀 Usage
 
-In your current Astro project, just replace the native Astro `<Picture>` component with the one provided by this integration.
+In your current Astro project, just replace the native Astro `<Picture>` component import with the one provided by this package.
 
 ```astro
 ---
@@ -49,6 +53,7 @@ import image from './path/to/image.jpg';
 
 - [ ] Add support for Image component.
 - [ ] Add support for more lqip techniques.
+- [ ] Test for remote images.
 - [ ] Optimize current CSS usage.
 - [ ] Improve demo page.
 
