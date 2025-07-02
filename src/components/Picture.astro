@@ -1,8 +1,8 @@
 ---
-import path from 'node:path'
-import fs from 'node:fs/promises'
+import { join } from 'node:path'
+import { readFile } from 'node:fs/promises'
 
-import lqipModern from 'lqip-modern'
+import { getPlaiceholder } from 'plaiceholder'
 
 import { Picture as PictureComponent } from 'astro:assets'
 import type { Props as PictureProps } from 'astro/components/Picture.astro'
@@ -11,38 +11,48 @@ type Props = PictureProps
 
 const { class: className, ...props } = Astro.props as Props
 
-let imageMetadata
-let lqip
+const PREFIX = '[astro-lqip]'
 
-if (typeof props.src === 'string') {
-  imageMetadata = null
-} else if ('then' in props.src && typeof props.src.then === 'function') {
-  imageMetadata = (await props.src).default
-} else if ('src' in props.src) {
-  imageMetadata = props.src
-} else {
-  imageMetadata = null
+const imageMetadata = await resolveImageMetadata(props.src)
+const lqip = await getLqip(imageMetadata)
+
+async function resolveImageMetadata(src: any) {
+  if (typeof src === 'string') return null
+  if ('then' in src && typeof src.then === 'function') return (await src).default
+  if ('src' in src) return src
+  return null
 }
 
-if (import.meta.env.MODE === 'development') {
-  if (imageMetadata?.src?.startsWith('/@fs/')) {
-    const filePath = imageMetadata.src.replace(/^\/@fs/, '').split('?')[0]
-    const buffer = await fs.readFile(filePath)
+async function tryGenerateLqip(filePath: string, errorPrefix: string, isDevelopment: boolean) {
+  try {
+    const buffer = await readFile(filePath)
+    const { base64 } = await getPlaiceholder(buffer)
 
-    const lqipModernBuffer = await lqipModern(buffer)
-    lqip = lqipModernBuffer.metadata?.dataURIBase64
-  }
-} else {
-  if (imageMetadata?.src?.startsWith('/_astro/')) {
-    const publicPath = path.join(process.cwd(), 'dist', imageMetadata.src)
-
-    try {
-      const buffer = await fs.readFile(publicPath)
-      const lqipModernBuffer = await lqipModern(buffer)
-      lqip = lqipModernBuffer.metadata?.dataURIBase64
-    } catch (e) {
-      lqip = undefined
+    if (isDevelopment) {
+      console.log(`${PREFIX} LQIP successfully generated!`)
+    } else {
+      console.log(`${PREFIX} LQIP successfully generated for:`, imageMetadata.src)
     }
+    return base64
+  } catch (err) {
+    console.error(`${errorPrefix} Error generating LQIP in:`, filePath, '\n', err)
+    return undefined
+  }
+}
+
+async function getLqip(imageMetadata: any) {
+  if (!imageMetadata?.src) return undefined
+
+  const isDevelopment = import.meta.env.MODE === 'development'
+
+  if (isDevelopment && imageMetadata.src.startsWith('/@fs/')) {
+    const filePath = imageMetadata.src.replace(/^\/@fs/, '').split('?')[0]
+    return await tryGenerateLqip(filePath, PREFIX, isDevelopment)
+  }
+
+  if (!isDevelopment && imageMetadata.src.startsWith('/_astro/')) {
+    const buildPath = join(process.cwd(), 'dist', imageMetadata.src)
+    return await tryGenerateLqip(buildPath, PREFIX, isDevelopment)
   }
 }
 ---
