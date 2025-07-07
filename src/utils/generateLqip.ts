@@ -6,10 +6,10 @@ import { PREFIX } from '../constants'
 
 import { getPlaiceholder } from 'plaiceholder'
 
-export async function generateLqip(filePath: string, isDevelopment: boolean, lqipType: LqipType) {
+export async function generateLqip(filePath: string, isDevelopment: boolean, lqipType: LqipType, lqipSize: number) {
   try {
     const buffer = await readFile(filePath)
-    const plaiceholderResult = await getPlaiceholder(buffer)
+    const plaiceholderResult = await getPlaiceholder(buffer, { size: lqipSize })
     let lqipValue: string | GetSVGReturn | undefined
 
     switch (lqipType) {

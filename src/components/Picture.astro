@@ -8,12 +8,12 @@ import { getLqip } from '../utils/getLqip'
 
 import { Picture as PictureComponent } from 'astro:assets'
 
-const { class: className, lqip = 'base64', ...props } = Astro.props as Props
+const { class: className, lqip = 'base64', lqipSize = 4, ...props } = Astro.props as Props
 
 const isDevelopment = import.meta.env.MODE === 'development'
 
 const imageMetadata = await resolveImageMetadata(props.src)
-const lqipImage = await getLqip(imageMetadata, isDevelopment, lqip)
+const lqipImage = await getLqip(imageMetadata, isDevelopment, lqip, lqipSize)
 
 let svgHTML = ''
 
