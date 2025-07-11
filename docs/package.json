@@ -1,8 +1,8 @@
 {
-  "name": "demo",
+  "name": "docs",
   "version": "0.0.1",
   "private": true,
-  "description": "Demo project for Astro LQIP",
+  "description": "Docs project for Astro LQIP",
   "type": "module",
   "scripts": {
     "astro": "astro",

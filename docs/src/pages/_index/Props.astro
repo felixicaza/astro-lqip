@@ -1,0 +1,126 @@
+---
+import { Code } from 'astro:components'
+
+import Warning from '@icons/warning.svg'
+
+const example = `---
+import { Picture } from 'astro-lqip/components'
+import image from './path/to/image.png'
+---
+
+<Picture src={image} alt="Cover Image" width={220} height={220} lqip="css" lqipSize={7} />
+`
+---
+
+<article>
+  <section>
+    <h2>Props</h2>
+    <p>
+      This
+      <code>&lt;Picture /&gt;</code>
+      component supports all the props of the
+      <a href="https://docs.astro.build/en/reference/modules/astro-assets/#picture-properties" target="_blank" rel="noopener noreferrer">
+        native Astro component
+      </a>
+      but adds a couple of props for LQIP management:
+    </p>
+    <ul>
+      <li>
+        <code>lqip</code>
+        : The LQIP type to use. It can be one of the following:
+        <ul>
+          <li>
+            <code>base64</code>
+            : Generates a Base64-encoded LQIP image. (default option)
+          </li>
+          <li>
+            <code>color</code>
+            : Generates a solid color placeholder. Not compatible with
+            <code>lqipSize</code>
+            .
+          </li>
+          <li>
+            <code>css</code>
+            : Generates a CSS-based LQIP image.
+          </li>
+          <li>
+            <code>svg</code>
+            : Generates an SVG-based LQIP image.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <code>lqipSize</code>
+        : The size of the LQIP image, which can be any number from
+        <code>4</code>
+        to
+        <code>64</code>
+        . (default is 4)
+      </li>
+    </ul>
+    <section class="alert">
+      <strong>
+        <Warning width={22} height={22} />
+        Caution
+      </strong>
+      <p>
+        A major size in the
+        <code>lqipSize</code>
+        prop can significantly impact the performance of your application.
+      </p>
+    </section>
+  </section>
+  <section>
+    <p>Example:</p>
+    <Code code={example} lang="astro" />
+  </section>
+</article>
+
+<style>
+  article {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    & ul {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      & li ul {
+        margin-top: 8px;
+      }
+    }
+
+    & .alert {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 16px;
+      border-radius: 4px;
+      background-color: #4e4022;
+      color: #f9e8c3;
+      border-left: 4px solid #eebd53;
+
+      & strong {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 18px;
+
+        & svg {
+          translate: 0 -1px;
+        }
+      }
+
+      & p {
+        margin: 0;
+
+        & code {
+          background: #41341a;
+          border-color: #f3b939;
+        }
+      }
+    }
+  }
+</style>

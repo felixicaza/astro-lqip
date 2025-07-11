@@ -1,0 +1,52 @@
+---
+import { Picture } from 'astro-lqip/components'
+
+import Tab from '@components/Tab.astro'
+
+import logo from '@images/logo.png'
+---
+
+<header>
+  <div>
+    <Picture src={logo} alt="Astro LQIP Logo" width={150} height={150} formats={['avif', 'webp']} fallbackFormat="webp" fetchpriority="high" />
+    <hgroup>
+      <h1>Astro LQIP</h1>
+      <p>Native extended Astro component for generating low quality image placeholders (LQIP).</p>
+    </hgroup>
+  </div>
+  <Tab />
+</header>
+
+<style>
+  header {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+
+    & div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+
+      & hgroup {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+
+        & h1 {
+          font-size: 3.5rem;
+          color: #bcb5f3;
+          margin-block: 0;
+        }
+
+        & p {
+          margin-block: 0;
+          max-width: 580px;
+          text-wrap: balance;
+        }
+      }
+    }
+  }
+</style>

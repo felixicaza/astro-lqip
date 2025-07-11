@@ -1,0 +1,67 @@
+---
+import ChevronLeft from '@icons/chevron-left.svg'
+import GitHub from '@icons/github.svg'
+---
+
+<nav class:list={['container', { demos: Astro.url.pathname !== '/' }]}>
+  {
+    Astro.url.pathname !== '/' && (
+      <a href="/">
+        <ChevronLeft width="24" height="24" />
+        Back
+      </a>
+    )
+  }
+  <div>
+    {
+      Astro.url.pathname === '/' && (
+        <a href="/demos">Demos</a>
+      )
+    }
+    <a href="https://github.com/felixicaza/astro-lqip" target="_blank" rel="noopener noreferrer">
+      <GitHub width="22" />
+      Star on GitHub
+    </a>
+  </div>
+</nav>
+
+<style>
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-block: 12px;
+
+    &.demos {
+      justify-content: space-between;
+
+      & div {
+        width: fit-content;
+      }
+    }
+
+    & div {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+
+      @media (width >= 768px) {
+        width: initial;
+        margin-left: auto;
+      }
+    }
+
+    & a {
+      width: fit-content;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+
+      & svg {
+        translate: 0 -1px;
+      }
+    }
+  }
+</style>

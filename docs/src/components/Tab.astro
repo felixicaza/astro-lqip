@@ -1,0 +1,164 @@
+---
+import { Code } from 'astro:components'
+
+import Npm from '@icons/npm.svg'
+import Pnpm from '@icons/pnpm.svg'
+import Yarn from '@icons/yarn.svg'
+import Copy from '@icons/copy.svg'
+---
+
+<section class="tab-container">
+  <div class="tabs">
+    <button class="tab active" type="button">
+      <Npm width="16" height="16" />
+      <span>npm</span>
+    </button>
+    <button class="tab" type="button">
+      <Pnpm width="16" height="16" />
+      <span>pnpm</span>
+    </button>
+    <button class="tab" type="button">
+      <Yarn width="16" height="16" />
+      <span>yarn</span>
+    </button>
+  </div>
+  <div class="tab-content active">
+    <Code code="npm install astro-lqip" lang="bash" />
+    <button class="copy" type="button" aria-label="Copy command">
+      <Copy width="16" height="16" />
+    </button>
+  </div>
+  <div class="tab-content">
+    <Code code="pnpm add astro-lqip" lang="bash" />
+    <button class="copy" type="button" aria-label="Copy command">
+      <Copy width="16" height="16" />
+    </button>
+  </div>
+  <div class="tab-content">
+    <Code code="yarn add astro-lqip" lang="bash" />
+    <button class="copy" type="button" aria-label="Copy command">
+      <Copy width="16" height="16" />
+    </button>
+  </div>
+</section>
+
+<script>
+  const tabs = document.querySelectorAll('.tab')
+  const contents = document.querySelectorAll('.tab-content')
+  const copyButtons = document.querySelectorAll('.copy')
+
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => {
+      tabs.forEach((tab) => tab.classList.remove('active'))
+      contents.forEach((content) => content.classList.remove('active'))
+
+      tab.classList.add('active')
+      contents[index].classList.add('active')
+    })
+  })
+
+  copyButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const code = button.previousElementSibling?.textContent ?? ''
+      const createSpan = document.createElement('span')
+      const svgElement = button.querySelector('svg')
+
+      navigator.clipboard.writeText(code)
+        .then(() => {
+          createSpan.textContent = code
+          createSpan.textContent = 'Copied!'
+          button.appendChild(createSpan)
+          svgElement?.classList.add('hide')
+
+          setTimeout(() => {
+            svgElement?.classList.remove('hide')
+            createSpan.remove()
+          }, 2000)
+
+          return true
+        })
+        .catch(() => {
+          createSpan.textContent = 'Failed!'
+          button.appendChild(createSpan)
+          svgElement?.classList.add('hide')
+
+          setTimeout(() => {
+            svgElement?.classList.remove('hide')
+            createSpan.remove()
+          }, 2000)
+        })
+    })
+  })
+</script>
+
+<style>
+  .tab-container {
+    border: 1px solid #302e3d;
+    border-radius: 12px;
+    overflow: hidden;
+
+    &:hover .tab-content .copy {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    & .tabs {
+      padding: 8px;
+      border-bottom: 1px solid #302e3d;
+
+      & .tab {
+        background: transparent;
+        border: none;
+        color: inherit;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 7px 9px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.85rem;
+
+        &.active {
+          background: #262435;
+        }
+      }
+    }
+
+    & .tab-content {
+      display: none;
+      position: relative;
+
+      &.active {
+        display: block;
+      }
+
+      & pre {
+        margin: 0;
+      }
+
+      & .copy {
+        position: absolute;
+        top: 50%;
+        right: 0px;
+        background: transparent;
+        border: none;
+        color: inherit;
+        cursor: pointer;
+        padding: 4px;
+        border-radius: 4px;
+        border: 1px solid #302e3d;
+        translate: -16px -50%;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease-in-out;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+
+        & svg.hide {
+          display: none;
+        }
+      }
+    }
+  }
+</style>

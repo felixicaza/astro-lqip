@@ -1,0 +1,31 @@
+---
+import { Code } from 'astro:components'
+
+const importing = `-import { Picture } from 'astro:components'
++import { Picture } from 'astro-lqip/components'
+`
+
+const example = `---
+import { Picture } from 'astro-lqip/components'
+import image from './path/to/image.png'
+---
+
+<Picture src={image} alt="Cover Image" width={220} height={220} />
+`
+---
+
+<article>
+  <section>
+    <h2>Usage</h2>
+    <p>
+      In your current Astro project, just replace the import of the native Astro
+      <code>&lt;Picture /&gt;</code>
+      component with the one provided by
+      <code>astro-lqip</code>
+      .
+    </p>
+    <Code code={importing} lang="diff" />
+    <p>Example:</p>
+    <Code code={example} lang="astro" />
+  </section>
+</article>

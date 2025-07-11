@@ -1,0 +1,170 @@
+---
+import { Picture } from 'astro-lqip/components'
+
+import Layout from '@layouts/Layout.astro'
+
+import Navbar from '@components/Navbar.astro'
+import Footer from '@components/Footer.astro'
+
+import firstImage from '@images/pexels-fabianwiktor-3470482.jpg'
+import secondImage from '@images/pexels-fabianwiktor-3470872.jpg'
+import thirdImage from '@images/pexels-fabianwiktor-3470478.jpg'
+import fourthImage from '@images/pexels-fabianwiktor-994605.jpg'
+---
+
+<Layout>
+  <Navbar />
+  <main class="container">
+    <div>
+      <section>
+        <div>
+          <h3>LQIP Base64 (Default)</h3>
+          <Picture
+            src={firstImage}
+            alt="A beautiful landscape with a lake and mountains 1"
+            loading="lazy"
+            fetchpriority="low"
+            width={234}
+            height={234}
+            formats={['avif', 'webp']}
+            fallbackFormat="webp"
+          />
+        </div>
+        <div>
+          <h3>LQIP Color</h3>
+          <Picture
+            src={secondImage}
+            alt="A beautiful landscape with a lake and mountains 2"
+            loading="lazy"
+            fetchpriority="low"
+            width={234}
+            height={234}
+            formats={['avif', 'webp']}
+            fallbackFormat="webp"
+            lqip="color"
+          />
+        </div>
+        <div>
+          <h3>LQIP CSS</h3>
+          <Picture
+            src={thirdImage}
+            alt="A beautiful landscape with a lake and mountains 3"
+            loading="lazy"
+            fetchpriority="low"
+            width={234}
+            height={234}
+            formats={['avif', 'webp']}
+            fallbackFormat="webp"
+            lqip="css"
+          />
+        </div>
+        <div>
+          <h3>LQIP SVG</h3>
+          <Picture
+            src={fourthImage}
+            alt="A beautiful landscape with a lake and mountains 4"
+            loading="lazy"
+            fetchpriority="low"
+            width={234}
+            height={234}
+            formats={['avif', 'webp']}
+            fallbackFormat="webp"
+            lqip="svg"
+          />
+        </div>
+      </section>
+      <section>
+        <div>
+          <h3>LQIP Base64 size 12</h3>
+          <Picture
+            src={firstImage}
+            alt="A beautiful landscape with a lake and mountains 5"
+            loading="lazy"
+            fetchpriority="low"
+            width={234}
+            height={234}
+            formats={['avif', 'webp']}
+            fallbackFormat="webp"
+          />
+        </div>
+        <div>
+          <h3>LQIP Color (not size)</h3>
+          <Picture
+            src={secondImage}
+            alt="A beautiful landscape with a lake and mountains 6"
+            loading="lazy"
+            fetchpriority="low"
+            width={234}
+            height={234}
+            formats={['avif', 'webp']}
+            fallbackFormat="webp"
+            lqip="color"
+          />
+        </div>
+        <div>
+          <h3>LQIP CSS size 12</h3>
+          <Picture
+            src={thirdImage}
+            alt="A beautiful landscape with a lake and mountains 7"
+            loading="lazy"
+            fetchpriority="low"
+            width={234}
+            height={234}
+            formats={['avif', 'webp']}
+            fallbackFormat="webp"
+            lqip="css"
+            lqipSize={8}
+          />
+        </div>
+        <div>
+          <h3>LQIP SVG size 12</h3>
+          <Picture
+            src={fourthImage}
+            alt="A beautiful landscape with a lake and mountains 8"
+            loading="lazy"
+            fetchpriority="low"
+            width={234}
+            height={234}
+            formats={['avif', 'webp']}
+            fallbackFormat="webp"
+            lqip="svg"
+            lqipSize={12}
+          />
+        </div>
+      </section>
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  main {
+    padding-block: 80px 40px;
+
+    & > div {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+
+      & section {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(234px, 1fr));
+        gap: 8px;
+        text-align: center;
+
+        @media (width >= 1200px) {
+          text-align: initial;
+        }
+
+        & h3 {
+          font-size: 18px;
+          font-weight: normal;
+        }
+
+        & img {
+          border-radius: 4px;
+        }
+      }
+    }
+  }
+</style>

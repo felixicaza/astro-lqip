@@ -1,5 +1,5 @@
 packages:
-   - "demo"
+   - "docs"
 
 onlyBuiltDependencies:
    - esbuild
