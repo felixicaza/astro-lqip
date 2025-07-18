@@ -16,6 +16,10 @@ import fourthImage from '@images/pexels-fabianwiktor-994605.jpg'
   <Navbar />
   <main class="container">
     <div>
+      <label class="toggle-lqip">
+        <input type="checkbox" />
+        Enable LQIP
+      </label>
       <section>
         <div>
           <h3>LQIP Base64 (Default)</h3>
@@ -137,6 +141,17 @@ import fourthImage from '@images/pexels-fabianwiktor-994605.jpg'
   <Footer />
 </Layout>
 
+<script>
+  const toggleLqipCheckbox = document.querySelector('.toggle-lqip input[type="checkbox"]')
+  const images = document.querySelectorAll('picture img')
+
+  toggleLqipCheckbox?.addEventListener('change', ({ target }) => {
+    const isChecked = (target as HTMLInputElement).checked
+
+    images.forEach(({ parentElement }) => parentElement?.style.setProperty('--opacity', isChecked ? '1' : '0'))
+  })
+</script>
+
 <style>
   main {
     padding-block: 80px 40px;
@@ -145,6 +160,15 @@ import fourthImage from '@images/pexels-fabianwiktor-994605.jpg'
       display: flex;
       flex-direction: column;
       gap: 32px;
+
+      & label {
+        cursor: pointer;
+        width: fit-content;
+
+        & input[type='checkbox'] {
+          accent-color: #eebd53;
+        }
+      }
 
       & section {
         display: grid;
@@ -161,8 +185,10 @@ import fourthImage from '@images/pexels-fabianwiktor-994605.jpg'
           font-weight: normal;
         }
 
+        & picture,
         & img {
           border-radius: 4px;
+          overflow: hidden;
         }
       }
     }
