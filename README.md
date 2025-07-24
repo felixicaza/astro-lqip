@@ -35,7 +35,7 @@ In your current Astro project, just replace the import of the native Astro `<Pic
 
 ```diff
 - import { Picture } from 'astro:assets';
-+import { Picture } from 'astro-lqip/components';
++ import { Picture } from 'astro-lqip/components';
 ```
 
 Example:
@@ -81,6 +81,7 @@ import image from './path/to/image.png'
 - [ ] Test for remote images.
 - [ ] Optimize current CSS usage.
 - [x] Improve docs page.
+- [ ] Test support for SSR mode.
 
 ## 💡 Knowledge
 
