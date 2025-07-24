@@ -1,6 +1,8 @@
 ---
 import type { Props } from '../types'
 
+import { PREFIX } from '../constants'
+
 import { resolveImageMetadata } from '../utils/resolveImageMetadata'
 import { renderSVGNode } from '../utils/renderSVGNode'
 import { getLqipStyle } from '../utils/getLqipStyle'
@@ -8,7 +10,7 @@ import { getLqip } from '../utils/getLqip'
 
 import { Picture as PictureComponent } from 'astro:assets'
 
-const { class: className, lqip = 'base64', lqipSize = 4, ...props } = Astro.props as Props
+const { class: className, lqip = 'base64', lqipSize = 4, pictureAttributes = {}, ...props } = Astro.props as Props
 
 const isDevelopment = import.meta.env.MODE === 'development'
 
@@ -22,6 +24,27 @@ if (lqip === 'svg' && Array.isArray(lqipImage)) {
 }
 
 const lqipStyle = getLqipStyle(lqip, lqipImage, svgHTML)
+
+const forbiddenVars = ['--lqip-background', '--z-index', '--opacity']
+const styleProps = pictureAttributes.style ?? {}
+
+for (const key of Object.keys(styleProps)) {
+  if (forbiddenVars.includes(key)) {
+    console.warn(
+      `${PREFIX} The CSS variable “${key}” should not be passed in \`pictureAttributes.style\` because it can override the functionality of LQIP.`
+    )
+  }
+}
+
+const combinedStyle = {
+  ...styleProps,
+  ...lqipStyle
+}
+
+const combinedPictureAttributes = {
+  ...pictureAttributes,
+  style: combinedStyle
+}
 ---
 
 <style is:inline>
@@ -58,6 +81,6 @@ const lqipStyle = getLqipStyle(lqip, lqipImage, svgHTML)
 <PictureComponent
   {...props}
   class={className}
-  pictureAttributes={{ style: lqipStyle }}
+  pictureAttributes={{ ...combinedPictureAttributes }}
   onload="parentElement.style.setProperty('--z-index', 1), parentElement.style.setProperty('--opacity', 0)"
 />
