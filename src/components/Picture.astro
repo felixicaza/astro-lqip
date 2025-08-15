@@ -51,7 +51,7 @@ const combinedPictureAttributes = {
 ---
 
 <style is:inline>
-  picture {
+  picture[data-astro-lqip] {
     --opacity: 1;
     --z-index: 0;
 
@@ -59,7 +59,7 @@ const combinedPictureAttributes = {
     display: inline-block;
   }
 
-  picture::after {
+  picture[data-astro-lqip]::after {
     content: "";
     inset: 0;
     width: 100%;
@@ -74,7 +74,7 @@ const combinedPictureAttributes = {
     background-position: 50% 50%;
   }
 
-  picture img {
+  picture[data-astro-lqip] img {
     z-index: 1;
     position: relative;
     overflow: hidden;
@@ -84,6 +84,6 @@ const combinedPictureAttributes = {
 <PictureComponent
   {...props}
   class={className}
-  pictureAttributes={{ ...combinedPictureAttributes }}
+  pictureAttributes={{ 'data-astro-lqip': '', ...combinedPictureAttributes }}
   onload="parentElement.style.setProperty('--z-index', 1), parentElement.style.setProperty('--opacity', 0)"
 />
