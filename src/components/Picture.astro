@@ -1,5 +1,6 @@
 ---
-import type { Props } from '../types'
+import type { Props as AstroPictureProps } from 'astro/components/Picture.astro'
+import type { Props as LqipProps } from '../types'
 
 import { PREFIX } from '../constants'
 
@@ -9,6 +10,8 @@ import { getLqipStyle } from '../utils/getLqipStyle'
 import { getLqip } from '../utils/getLqip'
 
 import { Picture as PictureComponent } from 'astro:assets'
+
+type Props = AstroPictureProps & LqipProps
 
 const { class: className, lqip = 'base64', lqipSize = 4, pictureAttributes = {}, ...props } = Astro.props as Props
 

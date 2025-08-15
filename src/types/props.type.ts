@@ -1,8 +1,6 @@
-import type { Props as PictureProps } from 'astro/components/Picture.astro'
-
 import type { LqipType } from './lqip.type'
 
-export type Props = PictureProps & {
+export type Props = {
   /**
    * LQIP type.
    * This can be 'color', 'css', 'svg' or 'base64'.
