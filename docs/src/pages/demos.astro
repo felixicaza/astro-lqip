@@ -1,5 +1,5 @@
 ---
-import { Picture } from 'astro-lqip/components'
+import { Picture, Image } from 'astro-lqip/components'
 
 import Layout from '@layouts/Layout.astro'
 
@@ -26,8 +26,6 @@ import fourthImage from '@images/pexels-fabianwiktor-994605.jpg'
           <Picture
             src={firstImage}
             alt="A beautiful landscape with a lake and mountains 1"
-            loading="lazy"
-            fetchpriority="low"
             width={234}
             height={234}
             formats={['avif', 'webp']}
@@ -36,15 +34,11 @@ import fourthImage from '@images/pexels-fabianwiktor-994605.jpg'
         </div>
         <div>
           <h3>LQIP Color</h3>
-          <Picture
+          <Image
             src={secondImage}
             alt="A beautiful landscape with a lake and mountains 2"
-            loading="lazy"
-            fetchpriority="low"
             width={234}
             height={234}
-            formats={['avif', 'webp']}
-            fallbackFormat="webp"
             lqip="color"
           />
         </div>
@@ -53,8 +47,6 @@ import fourthImage from '@images/pexels-fabianwiktor-994605.jpg'
           <Picture
             src={thirdImage}
             alt="A beautiful landscape with a lake and mountains 3"
-            loading="lazy"
-            fetchpriority="low"
             width={234}
             height={234}
             formats={['avif', 'webp']}
@@ -64,15 +56,11 @@ import fourthImage from '@images/pexels-fabianwiktor-994605.jpg'
         </div>
         <div>
           <h3>LQIP SVG</h3>
-          <Picture
+          <Image
             src={fourthImage}
             alt="A beautiful landscape with a lake and mountains 4"
-            loading="lazy"
-            fetchpriority="low"
             width={234}
             height={234}
-            formats={['avif', 'webp']}
-            fallbackFormat="webp"
             lqip="svg"
           />
         </div>
@@ -80,15 +68,11 @@ import fourthImage from '@images/pexels-fabianwiktor-994605.jpg'
       <section>
         <div>
           <h3>LQIP Base64 size 12</h3>
-          <Picture
+          <Image
             src={firstImage}
             alt="A beautiful landscape with a lake and mountains 5"
-            loading="lazy"
-            fetchpriority="low"
             width={234}
             height={234}
-            formats={['avif', 'webp']}
-            fallbackFormat="webp"
           />
         </div>
         <div>
@@ -96,8 +80,6 @@ import fourthImage from '@images/pexels-fabianwiktor-994605.jpg'
           <Picture
             src={secondImage}
             alt="A beautiful landscape with a lake and mountains 6"
-            loading="lazy"
-            fetchpriority="low"
             width={234}
             height={234}
             formats={['avif', 'webp']}
@@ -107,15 +89,11 @@ import fourthImage from '@images/pexels-fabianwiktor-994605.jpg'
         </div>
         <div>
           <h3>LQIP CSS size 12</h3>
-          <Picture
+          <Image
             src={thirdImage}
             alt="A beautiful landscape with a lake and mountains 7"
-            loading="lazy"
-            fetchpriority="low"
             width={234}
             height={234}
-            formats={['avif', 'webp']}
-            fallbackFormat="webp"
             lqip="css"
             lqipSize={8}
           />
@@ -125,8 +103,6 @@ import fourthImage from '@images/pexels-fabianwiktor-994605.jpg'
           <Picture
             src={fourthImage}
             alt="A beautiful landscape with a lake and mountains 8"
-            loading="lazy"
-            fetchpriority="low"
             width={234}
             height={234}
             formats={['avif', 'webp']}
@@ -143,7 +119,7 @@ import fourthImage from '@images/pexels-fabianwiktor-994605.jpg'
 
 <script>
   const toggleLqipCheckbox = document.querySelector('.toggle-lqip input[type="checkbox"]')
-  const images = document.querySelectorAll('picture img')
+  const images = document.querySelectorAll('[data-astro-lqip] img')
 
   toggleLqipCheckbox?.addEventListener('change', ({ target }) => {
     const isChecked = (target as HTMLInputElement).checked
@@ -183,12 +159,6 @@ import fourthImage from '@images/pexels-fabianwiktor-994605.jpg'
         & h3 {
           font-size: 18px;
           font-weight: normal;
-        }
-
-        & picture,
-        & img {
-          border-radius: 4px;
-          overflow: hidden;
         }
       }
     }
