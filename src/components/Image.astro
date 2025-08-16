@@ -1,6 +1,9 @@
 ---
 import type { LocalImageProps, RemoteImageProps } from 'astro:assets'
 import type { Props as LqipProps } from '../types'
+import type { HTMLAttributes } from 'astro/types'
+
+import { PREFIX } from '../constants'
 
 import { resolveImageMetadata } from '../utils/resolveImageMetadata'
 import { renderSVGNode } from '../utils/renderSVGNode'
@@ -9,9 +12,11 @@ import { getLqip } from '../utils/getLqip'
 
 import { Image as ImageComponent } from 'astro:assets'
 
-type Props = (LocalImageProps | RemoteImageProps) & LqipProps
+type Props = (LocalImageProps | RemoteImageProps) & LqipProps & {
+  parentAttributes?: HTMLAttributes<'div'>
+}
 
-const { class: className, lqip = 'base64', lqipSize = 4, ...props } = Astro.props as Props
+const { class: className, lqip = 'base64', lqipSize = 4, parentAttributes = {}, ...props } = Astro.props as Props
 
 const isDevelopment = import.meta.env.MODE === 'development'
 
@@ -25,6 +30,27 @@ if (lqip === 'svg' && Array.isArray(lqipImage)) {
 }
 
 const lqipStyle = getLqipStyle(lqip, lqipImage, svgHTML)
+
+const forbiddenVars = ['--lqip-background', '--z-index', '--opacity']
+const styleProps = parentAttributes.style ?? {}
+
+for (const key of Object.keys(styleProps)) {
+  if (forbiddenVars.includes(key)) {
+    console.warn(
+      `${PREFIX} The CSS variable “${key}” should not be passed in \`parentAttributes.style\` because it can override the functionality of LQIP.`
+    )
+  }
+}
+
+const combinedStyle = {
+  ...styleProps,
+  ...lqipStyle
+}
+
+const combinedParentAttributes = {
+  ...parentAttributes,
+  style: combinedStyle
+}
 ---
 
 <style is:inline>
@@ -60,7 +86,7 @@ const lqipStyle = getLqipStyle(lqip, lqipImage, svgHTML)
   }
 </style>
 
-<div class={className} style={lqipStyle} data-astro-lqip>
+<div class={className} data-astro-lqip {...combinedParentAttributes}>
   <ImageComponent
     {...props}
     class={className}
