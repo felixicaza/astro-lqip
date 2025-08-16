@@ -1,19 +1,19 @@
 ---
 import { Code } from 'astro:components'
 
-const importingImage = `-import { Image } from 'astro:components'
-+import { Image } from 'astro-lqip/components'
+const importingImage = `- import { Image } from 'astro:components';
++ import { Image } from 'astro-lqip/components';
 `
 
-const importingPicture = `-import { Picture } from 'astro:components'
-+import { Picture } from 'astro-lqip/components'
+const importingPicture = `- import { Picture } from 'astro:components';
++ import { Picture } from 'astro-lqip/components';
 `
 
 const example = `---
-import { Image, Picture } from 'astro-lqip/components'
+import { Image, Picture } from 'astro-lqip/components';
 
-import image from './path/to/image.png'
-import otherImage from './path/to/other-image.png'
+import image from './path/to/image.png';
+import otherImage from './path/to/other-image.png';
 ---
 
 <Image src={image} alt="Cover Image" width={220} height={220} />

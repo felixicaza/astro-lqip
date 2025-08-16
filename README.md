@@ -51,10 +51,10 @@ Example:
 
 ```astro
 ---
-import { Image, Picture } from 'astro-lqip/components'
+import { Image, Picture } from 'astro-lqip/components';
 
-import image from './path/to/image.png'
-import otherImage from './path/to/other-image.png'
+import image from './path/to/image.png';
+import otherImage from './path/to/other-image.png';
 ---
 
 <Image src={image} alt="Cover Image" width={220} height={220} />
@@ -73,16 +73,16 @@ Both `<Image>` and `<Picture>` components support all the props of the [native A
 - `lqipSize`: The size of the LQIP image, which can be any number from `4` to `64`. (default is 4)
 
 > [!WARNING]
-> A major size in the lqipSize prop can significantly impact the performance of your application.
+> A major size in the `lqipSize` prop can significantly impact the performance of your application.
 
 Example:
 
 ```astro
 ---
-import { Image, Picture } from 'astro-lqip/components'
+import { Image, Picture } from 'astro-lqip/components';
 
-import image from './path/to/image.png'
-import otherImage from './path/to/other-image.png'
+import image from './path/to/image.png';
+import otherImage from './path/to/other-image.png';
 ---
 
 <Image src={image} alt="Cover Image" width={220} height={220} lqip="svg" lqipSize={10} />
@@ -97,7 +97,7 @@ import otherImage from './path/to/other-image.png'
 - [x] Add support for Image component.
 - [x] Add support for more lqip techniques.
 - [ ] Test for remote images.
-- [ ] Optimize current CSS usage.
+- [x] Optimize current CSS usage.
 - [x] Improve docs page.
 - [ ] Test support for SSR mode.
 
