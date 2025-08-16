@@ -1,0 +1,30 @@
+[data-astro-lqip] {
+  --opacity: 1;
+  --z-index: 0;
+
+  position: relative;
+  display: inline-block;
+  width: fit-content;
+  height: fit-content;
+}
+
+[data-astro-lqip]::after {
+  content: "";
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  pointer-events: none;
+  transition: opacity 1s;
+  opacity: var(--opacity);
+  z-index: var(--z-index);
+  background: var(--lqip-background);
+  background-size: cover;
+  background-position: 50% 50%;
+}
+
+[data-astro-lqip] img {
+  z-index: 1;
+  position: relative;
+  overflow: hidden;
+}
