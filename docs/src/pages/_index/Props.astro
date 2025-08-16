@@ -2,13 +2,17 @@
 import { Code } from 'astro:components'
 
 import Warning from '@icons/warning.svg'
+import LightBulb from '@icons/lightbulb.svg'
 
 const example = `---
-import { Picture } from 'astro-lqip/components'
+import { Image, Picture } from 'astro-lqip/components'
+
 import image from './path/to/image.png'
+import otherImage from './path/to/other-image.png'
 ---
 
-<Picture src={image} alt="Cover Image" width={220} height={220} lqip="css" lqipSize={7} />
+<Image src={image} alt="Cover Image" width={220} height={220} lqip="svg" lqipSize={10} />
+<Picture src={otherImage} alt="Other cover Image" width={220} height={220} lqip="css" lqipSize={7} />
 `
 ---
 
@@ -16,11 +20,13 @@ import image from './path/to/image.png'
   <section>
     <h2>Props</h2>
     <p>
-      This
-      <code>&lt;Picture /&gt;</code>
-      component supports all the props of the
-      <a href="https://docs.astro.build/en/reference/modules/astro-assets/#picture-properties" target="_blank" rel="noopener noreferrer">
-        native Astro component
+      Both
+      <code>&lt;Image&gt;</code>
+      and
+      <code>&lt;Picture&gt;</code>
+      components support all the props of the
+      <a href="https://docs.astro.build/en/reference/modules/astro-assets/" target="_blank" rel="noopener noreferrer">
+        native Astro components
       </a>
       but adds a couple of props for LQIP management:
     </p>
@@ -58,10 +64,10 @@ import image from './path/to/image.png'
         . (default is 4)
       </li>
     </ul>
-    <section class="alert">
+    <section class="warning">
       <strong>
         <Warning width={22} height={22} />
-        Caution
+        Warning
       </strong>
       <p>
         A major size in the
@@ -73,6 +79,21 @@ import image from './path/to/image.png'
   <section>
     <p>Example:</p>
     <Code code={example} lang="astro" />
+  </section>
+  <section class="tip">
+    <strong>
+      <LightBulb width={22} height={22} />
+      Tip
+    </strong>
+    <p>
+      For the
+      <code>&lt;Image&gt;</code>
+      component, a
+      <code>parentAttributes</code>
+      prop similar to
+      <code>pictureAttributes</code>
+      has been added.
+    </p>
   </section>
 </article>
 
@@ -92,15 +113,13 @@ import image from './path/to/image.png'
       }
     }
 
-    & .alert {
+    & .warning,
+    & .tip {
       display: flex;
       flex-direction: column;
       gap: 12px;
       padding: 16px;
       border-radius: 4px;
-      background-color: #4e4022;
-      color: #f9e8c3;
-      border-left: 4px solid #eebd53;
 
       & strong {
         display: flex;
@@ -115,11 +134,28 @@ import image from './path/to/image.png'
 
       & p {
         margin: 0;
+      }
+    }
 
-        & code {
-          background: #41341a;
-          border-color: #f3b939;
-        }
+    & .warning {
+      background-color: #4e4022;
+      color: #f9e8c3;
+      border-left: 4px solid #eebd53;
+
+      & p code {
+        background: #41341a;
+        border-color: #f3b939;
+      }
+    }
+
+    & .tip {
+      background-color: #123125;
+      color: #c3f9d9;
+      border-left: 4px solid #40d07c;
+
+      & p code {
+        background: #0c271c;
+        border-color: #40d07c;
       }
     }
   }

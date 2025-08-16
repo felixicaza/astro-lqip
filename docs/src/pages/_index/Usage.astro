@@ -1,16 +1,23 @@
 ---
 import { Code } from 'astro:components'
 
-const importing = `-import { Picture } from 'astro:components'
+const importingImage = `-import { Image } from 'astro:components'
++import { Image } from 'astro-lqip/components'
+`
+
+const importingPicture = `-import { Picture } from 'astro:components'
 +import { Picture } from 'astro-lqip/components'
 `
 
 const example = `---
-import { Picture } from 'astro-lqip/components'
+import { Image, Picture } from 'astro-lqip/components'
+
 import image from './path/to/image.png'
+import otherImage from './path/to/other-image.png'
 ---
 
-<Picture src={image} alt="Cover Image" width={220} height={220} />
+<Image src={image} alt="Cover Image" width={220} height={220} />
+<Picture src={otherImage} alt="Other cover Image" width={220} height={220} />
 `
 ---
 
@@ -19,12 +26,17 @@ import image from './path/to/image.png'
     <h2>Usage</h2>
     <p>
       In your current Astro project, just replace the import of the native Astro
-      <code>&lt;Picture /&gt;</code>
+      <code>&lt;Image&gt;</code>
+      or
+      <code>&lt;Picture&gt;</code>
       component with the one provided by
-      <code>astro-lqip</code>
+      <a href="https://www.npmjs.com/package/astro-lqip" target="_blank" rel="noopener noreferrer">astro-lqip</a>
       .
     </p>
-    <Code code={importing} lang="diff" />
+    <h3>Image</h3>
+    <Code code={importingImage} lang="diff" />
+    <h3>Picture</h3>
+    <Code code={importingPicture} lang="diff" />
     <p>Example:</p>
     <Code code={example} lang="astro" />
   </section>
