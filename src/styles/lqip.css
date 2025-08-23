@@ -28,3 +28,10 @@
   position: relative;
   overflow: hidden;
 }
+
+@media (scripting: none) {
+  [data-astro-lqip] {
+    --opacity: 0;
+    --z-index: 1;
+  }
+}
