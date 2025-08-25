@@ -6,7 +6,7 @@ name: Deploy docs
 
 jobs:
    build_and_deploy:
-      if: ${{ !startsWith(github.event.head_commit.message, 'Merge pull request') }}
+      if: ${{ !startsWith(github.event.head_commit.message, 'Merge pull request') || !startsWith(github.event.head_commit.message, 'chore(deps)') }}
 
       runs-on: ubuntu-latest
 
