@@ -96,7 +96,7 @@ import otherImage from './path/to/other-image.png';
 
 - [x] Add support for Image component.
 - [x] Add support for more lqip techniques.
-- [ ] Test for remote images.
+- [x] Test for remote images.
 - [x] Optimize current CSS usage.
 - [x] Improve docs page.
 - [ ] Test support for SSR mode.
