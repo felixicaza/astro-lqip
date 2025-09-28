@@ -1,6 +1,6 @@
 {
   "name": "astro-lqip",
-  "version": "1.3.2",
+  "version": "1.4.0",
   "description": "Native extended Astro components for generating low quality image placeholders (LQIP).",
   "keywords": [
     "astro",
