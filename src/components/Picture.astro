@@ -1,13 +1,8 @@
 ---
 import type { Props as AstroPictureProps } from 'astro/components/Picture.astro'
-import type { Props as LqipProps, SVGNode } from '../types'
+import type { Props as LqipProps } from '../types'
 
-import { PREFIX } from '../constants'
-
-import { resolveImagePath } from '../utils/resolveImagePath'
-import { renderSVGNode } from '../utils/renderSVGNode'
-import { getLqipStyle } from '../utils/getLqipStyle'
-import { getLqip } from '../utils/getLqip'
+import { useLqipImage } from '../utils/useLqipImage'
 
 import { Picture as PictureComponent } from 'astro:assets'
 
@@ -19,45 +14,13 @@ const { class: className, lqip = 'base64', lqipSize = 4, pictureAttributes = {},
 
 const isDevelopment = import.meta.env.MODE === 'development'
 
-let getImagePath: string | { src: string } | null
-
-if (typeof props.src === 'string') {
-  getImagePath = props.src
-} else if (typeof props.src === 'object' && props.src !== null) {
-  getImagePath = await resolveImagePath(props.src as unknown as string)
-} else {
-  getImagePath = null
-}
-
-let lqipImage
-if (getImagePath) {
-  const lqipInput = typeof getImagePath === 'string' ? { src: getImagePath } : getImagePath
-  lqipImage = await getLqip(lqipInput, isDevelopment, lqip, lqipSize)
-}
-
-let svgHTML = ''
-
-if (lqip === 'svg' && Array.isArray(lqipImage)) {
-  svgHTML = renderSVGNode(lqipImage as unknown as SVGNode)
-}
-
-const lqipStyle = getLqipStyle(lqip, lqipImage, svgHTML)
-
-const forbiddenVars = ['--lqip-background', '--z-index', '--opacity']
-const styleProps = pictureAttributes.style ?? {}
-
-for (const key of Object.keys(styleProps)) {
-  if (forbiddenVars.includes(key)) {
-    console.warn(
-      `${PREFIX} The CSS variable “${key}” should not be passed in \`pictureAttributes.style\` because it can override the functionality of LQIP.`
-    )
-  }
-}
-
-const combinedStyle = {
-  ...styleProps,
-  ...lqipStyle
-}
+const { combinedStyle } = await useLqipImage({
+  src: props.src,
+  lqip,
+  lqipSize,
+  styleProps: pictureAttributes.style ?? {},
+  isDevelopment
+})
 
 const combinedPictureAttributes = {
   ...pictureAttributes,
