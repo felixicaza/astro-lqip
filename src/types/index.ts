@@ -1,4 +1,5 @@
 export * from './components-options.type'
+export * from './image-path.type'
 export * from './lqip.type'
 export * from './plaiceholder.type'
 export * from './props.type'
