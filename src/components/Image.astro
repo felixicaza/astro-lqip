@@ -22,8 +22,21 @@ const { class: className, lqip = 'base64', lqipSize = 4, parentAttributes = {}, 
 
 const isDevelopment = import.meta.env.MODE === 'development'
 
-const getImagePath = await resolveImagePath(props.src as string)
-const lqipImage = await getLqip(getImagePath, isDevelopment, lqip, lqipSize)
+let getImagePath: string | { src: string } | null
+
+if (typeof props.src === 'string') {
+  getImagePath = props.src
+} else if (typeof props.src === 'object' && props.src !== null) {
+  getImagePath = await resolveImagePath(props.src as unknown as string)
+} else {
+  getImagePath = null
+}
+
+let lqipImage
+if (getImagePath) {
+  const lqipInput = typeof getImagePath === 'string' ? { src: getImagePath } : getImagePath
+  lqipImage = await getLqip(lqipInput, isDevelopment, lqip, lqipSize)
+}
 
 let svgHTML = ''
 

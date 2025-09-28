@@ -1,11 +1,44 @@
 import { join } from 'node:path'
+import { mkdir, writeFile, unlink } from 'node:fs/promises'
+import { existsSync } from 'node:fs'
 
 import type { LqipType } from '../types'
 
 import { generateLqip } from './generateLqip'
 
-export async function getLqip(imagePath: { src: string } | null, isDevelopment: boolean, lqipType: LqipType, lqipSize: number) {
+function isRemoteUrl(url: string) {
+  return /^https?:\/\//.test(url)
+}
+
+const CACHE_DIR = join(process.cwd(), 'node_modules', '.cache', 'astro-lqip')
+
+async function ensureCacheDir() {
+  if (!existsSync(CACHE_DIR)) {
+    await mkdir(CACHE_DIR, { recursive: true })
+  }
+}
+
+export async function getLqip(imagePath: { src: string }, isDevelopment: boolean, lqipType: LqipType, lqipSize: number) {
   if (!imagePath?.src) return undefined
+
+  if (isRemoteUrl(imagePath.src)) {
+    await ensureCacheDir()
+
+    const response = await fetch(imagePath.src)
+    if (!response.ok) return undefined
+
+    const arrayBuffer = await response.arrayBuffer()
+    const buffer = Buffer.from(arrayBuffer)
+    const tempPath = join(CACHE_DIR, `astro-lqip-${Math.random().toString(36).slice(2)}.jpg`)
+    await writeFile(tempPath, buffer)
+
+    try {
+      const lqip = await generateLqip(tempPath, isDevelopment, lqipType, lqipSize)
+      return lqip
+    } finally {
+      await unlink(tempPath)
+    }
+  }
 
   if (isDevelopment && imagePath.src.startsWith('/@fs/')) {
     const filePath = imagePath.src.replace(/^\/@fs/, '').split('?')[0]
