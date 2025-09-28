@@ -1,11 +1,11 @@
 ---
 import type { LocalImageProps, RemoteImageProps } from 'astro:assets'
 import type { HTMLAttributes } from 'astro/types'
-import type { Props as LqipProps } from '../types'
+import type { Props as LqipProps, SVGNode } from '../types'
 
 import { PREFIX } from '../constants'
 
-import { resolveImageMetadata } from '../utils/resolveImageMetadata'
+import { resolveImagePath } from '../utils/resolveImagePath'
 import { renderSVGNode } from '../utils/renderSVGNode'
 import { getLqipStyle } from '../utils/getLqipStyle'
 import { getLqip } from '../utils/getLqip'
@@ -22,13 +22,13 @@ const { class: className, lqip = 'base64', lqipSize = 4, parentAttributes = {}, 
 
 const isDevelopment = import.meta.env.MODE === 'development'
 
-const imageMetadata = await resolveImageMetadata(props.src)
-const lqipImage = await getLqip(imageMetadata, isDevelopment, lqip, lqipSize)
+const getImagePath = await resolveImagePath(props.src as string)
+const lqipImage = await getLqip(getImagePath, isDevelopment, lqip, lqipSize)
 
 let svgHTML = ''
 
 if (lqip === 'svg' && Array.isArray(lqipImage)) {
-  svgHTML = renderSVGNode(lqipImage as [string, Record<string, any>, any[]])
+  svgHTML = renderSVGNode(lqipImage as unknown as SVGNode)
 }
 
 const lqipStyle = getLqipStyle(lqip, lqipImage, svgHTML)

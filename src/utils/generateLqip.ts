@@ -6,9 +6,9 @@ import { PREFIX } from '../constants'
 
 import { getPlaiceholder } from 'plaiceholder'
 
-export async function generateLqip(filePath: string, isDevelopment: boolean, lqipType: LqipType, lqipSize: number) {
+export async function generateLqip(imagePath: string, isDevelopment: boolean, lqipType: LqipType, lqipSize: number) {
   try {
-    const buffer = await readFile(filePath)
+    const buffer = await readFile(imagePath)
     const plaiceholderResult = await getPlaiceholder(buffer, { size: lqipSize })
     let lqipValue: string | GetSVGReturn | undefined
 
@@ -33,12 +33,12 @@ export async function generateLqip(filePath: string, isDevelopment: boolean, lqi
     if (isDevelopment) {
       console.log(`${PREFIX} LQIP (${lqipType}) successfully generated!`)
     } else {
-      console.log(`${PREFIX} LQIP (${lqipType}) successfully generated for:`, filePath)
+      console.log(`${PREFIX} LQIP (${lqipType}) successfully generated for:`, imagePath)
     }
 
     return lqipValue
   } catch (err) {
-    console.error(`${PREFIX} Error generating LQIP (${lqipType}) in:`, filePath, '\n', err)
+    console.error(`${PREFIX} Error generating LQIP (${lqipType}) in:`, imagePath, '\n', err)
     return undefined
   }
 }
