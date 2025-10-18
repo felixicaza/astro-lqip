@@ -18,7 +18,7 @@ async function ensureCacheDir() {
   }
 }
 
-export async function getLqip(imagePath: { src: string }, isDevelopment: boolean, lqipType: LqipType, lqipSize: number) {
+export async function getLqip(imagePath: { src: string }, isDevelopment: boolean, isPrerendered: boolean | undefined, lqipType: LqipType, lqipSize: number) {
   if (!imagePath?.src) return undefined
 
   if (isRemoteUrl(imagePath.src)) {
@@ -42,6 +42,11 @@ export async function getLqip(imagePath: { src: string }, isDevelopment: boolean
 
   if (isDevelopment && imagePath.src.startsWith('/@fs/')) {
     const filePath = imagePath.src.replace(/^\/@fs/, '').split('?')[0]
+    return await generateLqip(filePath, isDevelopment, lqipType, lqipSize)
+  }
+
+  if (!isPrerendered && !isDevelopment) {
+    const filePath = join(process.cwd(), 'dist', 'client', imagePath.src)
     return await generateLqip(filePath, isDevelopment, lqipType, lqipSize)
   }
 

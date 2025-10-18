@@ -7,4 +7,5 @@ export type ComponentsOptions = {
   styleProps?: Record<string, any>
   forbiddenVars?: string[]
   isDevelopment?: boolean
+  isPrerendered?: boolean | undefined
 }

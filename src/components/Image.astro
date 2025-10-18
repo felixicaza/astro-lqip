@@ -16,13 +16,15 @@ type Props = (LocalImageProps | RemoteImageProps) & LqipProps & {
 const { class: className, lqip = 'base64', lqipSize = 4, parentAttributes = {}, ...props } = Astro.props as Props
 
 const isDevelopment = import.meta.env.MODE === 'development'
+const isPrerendered = Astro.isPrerendered
 
 const { combinedStyle } = await useLqipImage({
   src: props.src,
   lqip,
   lqipSize,
   styleProps: parentAttributes.style ?? {},
-  isDevelopment
+  isDevelopment,
+  isPrerendered
 })
 
 const combinedParentAttributes = {
