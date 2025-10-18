@@ -18,7 +18,13 @@ async function ensureCacheDir() {
   }
 }
 
-export async function getLqip(imagePath: { src: string }, isDevelopment: boolean, isPrerendered: boolean | undefined, lqipType: LqipType, lqipSize: number) {
+export async function getLqip(
+  imagePath: { src: string },
+  lqipType: LqipType,
+  lqipSize: number,
+  isDevelopment: boolean | undefined,
+  isPrerendered: boolean | undefined
+) {
   if (!imagePath?.src) return undefined
 
   if (isRemoteUrl(imagePath.src)) {
@@ -33,7 +39,7 @@ export async function getLqip(imagePath: { src: string }, isDevelopment: boolean
     await writeFile(tempPath, buffer)
 
     try {
-      const lqip = await generateLqip(tempPath, isDevelopment, lqipType, lqipSize)
+      const lqip = await generateLqip(tempPath, lqipType, lqipSize, isDevelopment)
       return lqip
     } finally {
       await unlink(tempPath)
@@ -42,17 +48,17 @@ export async function getLqip(imagePath: { src: string }, isDevelopment: boolean
 
   if (isDevelopment && imagePath.src.startsWith('/@fs/')) {
     const filePath = imagePath.src.replace(/^\/@fs/, '').split('?')[0]
-    return await generateLqip(filePath, isDevelopment, lqipType, lqipSize)
+    return await generateLqip(filePath, lqipType, lqipSize, isDevelopment)
   }
 
   if (!isPrerendered && !isDevelopment) {
     const filePath = join(process.cwd(), 'dist', 'client', imagePath.src)
-    return await generateLqip(filePath, isDevelopment, lqipType, lqipSize)
+    return await generateLqip(filePath, lqipType, lqipSize, isDevelopment)
   }
 
   if (!isDevelopment && imagePath.src.startsWith('/_astro/')) {
     const buildPath = join(process.cwd(), 'dist', imagePath.src)
-    return await generateLqip(buildPath, isDevelopment, lqipType, lqipSize)
+    return await generateLqip(buildPath, lqipType, lqipSize, isDevelopment)
   }
 
   return undefined

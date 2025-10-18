@@ -13,7 +13,7 @@ export async function useLqipImage({
   lqipSize = 4,
   styleProps = {},
   forbiddenVars = ['--lqip-background', '--z-index', '--opacity'],
-  isDevelopment = false,
+  isDevelopment,
   isPrerendered
 }: ComponentsOptions) {
   let getImagePath: string | { src: string } | null
@@ -29,7 +29,7 @@ export async function useLqipImage({
   let lqipImage
   if (getImagePath) {
     const lqipInput = typeof getImagePath === 'string' ? { src: getImagePath } : getImagePath
-    lqipImage = await getLqip(lqipInput, isDevelopment, isPrerendered, lqip, lqipSize)
+    lqipImage = await getLqip(lqipInput, lqip, lqipSize, isDevelopment, isPrerendered)
   }
 
   let svgHTML = ''

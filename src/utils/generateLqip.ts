@@ -6,7 +6,12 @@ import { PREFIX } from '../constants'
 
 import { getPlaiceholder } from 'plaiceholder'
 
-export async function generateLqip(imagePath: string, isDevelopment: boolean, lqipType: LqipType, lqipSize: number) {
+export async function generateLqip(
+  imagePath: string,
+  lqipType: LqipType,
+  lqipSize: number,
+  isDevelopment: boolean | undefined
+) {
   try {
     const buffer = await readFile(imagePath)
     const plaiceholderResult = await getPlaiceholder(buffer, { size: lqipSize })
