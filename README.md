@@ -9,6 +9,14 @@
 
 Native extended Astro components for generating low quality image placeholders (LQIP).
 
+## ✨ Features
+- 🖼️ Supports both `<Image>` and `<Picture>` components.
+- 🎨 Multiple LQIP techniques: base64, solid color, CSS via gradients and SVG.
+- 🚀 Easy to use, just replace the native Astro components with the ones from [astro-lqip](https://astro-lqip.web.app/).
+- 🔧 Fully compatible with [Astro's image optimization features](https://docs.astro.build/en/guides/images/).
+- 🌍 Supports both local and remote images.
+- ⚙️ Supports SSR mode with [Node Adapter](https://docs.astro.build/en/guides/integrations-guide/node/).
+
 ## ⬇️ Installation
 
 NPM:
@@ -73,7 +81,7 @@ Both `<Image>` and `<Picture>` components support all the props of the [native A
 - `lqipSize`: The size of the LQIP image, which can be any number from `4` to `64`. (default is 4)
 
 > [!WARNING]
-> A major size in the `lqipSize` prop can significantly impact the performance of your application.
+> A high value for `lqipSize` can significantly increase the total size of your website.
 
 Example:
 
@@ -91,15 +99,6 @@ import otherImage from './path/to/other-image.png';
 
 > [!TIP]
 > For the `<Image>` component, a `parentAttributes` prop similar to `pictureAttributes` has been added.
-
-## 📝 ToDo
-
-- [x] Add support for Image component.
-- [x] Add support for more lqip techniques.
-- [x] Test for remote images.
-- [x] Optimize current CSS usage.
-- [x] Improve docs page.
-- [ ] Test support for SSR mode.
 
 ## 💡 Knowledge
 
