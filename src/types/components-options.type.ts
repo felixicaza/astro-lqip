@@ -4,7 +4,7 @@ export type ComponentsOptions = {
   src: string | object
   lqip: LqipType
   lqipSize: number
-  styleProps: Record<string, any>
+  styleProps: Record<string, string | number | undefined>
   forbiddenVars: string[]
   isDevelopment: boolean | undefined
   isPrerendered: boolean | undefined

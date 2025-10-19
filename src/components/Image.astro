@@ -22,7 +22,8 @@ const { combinedStyle } = await useLqipImage({
   src: props.src,
   lqip,
   lqipSize,
-  styleProps: parentAttributes.style ?? {},
+  styleProps: (parentAttributes.style ?? {}) as Record<string, string | number | undefined>,
+  forbiddenVars: [],
   isDevelopment,
   isPrerendered
 })
