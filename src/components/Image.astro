@@ -18,7 +18,7 @@ const { class: className, lqip = 'base64', lqipSize = 4, parentAttributes = {}, 
 const isDevelopment = import.meta.env.MODE === 'development'
 const isPrerendered = Astro.isPrerendered
 
-const { combinedStyle } = await useLqipImage({
+const { combinedStyle, resolvedSrc } = await useLqipImage({
   src: props.src,
   lqip,
   lqipSize,
@@ -28,6 +28,10 @@ const { combinedStyle } = await useLqipImage({
   isPrerendered
 })
 
+const componentProps = {
+  ...props,
+  src: resolvedSrc ?? props.src
+}
 const combinedParentAttributes = {
   ...parentAttributes,
   style: combinedStyle
@@ -36,7 +40,7 @@ const combinedParentAttributes = {
 
 <div class={className} data-astro-lqip {...combinedParentAttributes}>
   <ImageComponent
-    {...props}
+    {...componentProps as LocalImageProps | RemoteImageProps}
     class={className}
     onload="parentElement.style.setProperty('--z-index', 1), parentElement.style.setProperty('--opacity', 0)"
   />

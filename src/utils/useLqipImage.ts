@@ -1,4 +1,4 @@
-import type { ComponentsOptions, SVGNode } from '../types'
+import type { ComponentsOptions, ImagePath, SVGNode } from '../types'
 
 import { PREFIX } from '../constants'
 
@@ -16,19 +16,14 @@ export async function useLqipImage({
   isDevelopment,
   isPrerendered
 }: ComponentsOptions) {
-  let getImagePath: string | { src: string } | null
-
-  if (typeof src === 'string') {
-    getImagePath = src
-  } else if (typeof src === 'object' && src !== null) {
-    getImagePath = await resolveImagePath(src as unknown as string)
-  } else {
-    getImagePath = null
-  }
+  // resolve any kind of src (string, alias, import result, dynamic import)
+  const resolved = await resolveImagePath(src as unknown as ImagePath)
+  // resolved may be an object (module-like), { src: '...' } or null
+  const resolvedSrc = resolved ?? null
 
   let lqipImage
-  if (getImagePath) {
-    const lqipInput = typeof getImagePath === 'string' ? { src: getImagePath } : getImagePath
+  if (resolvedSrc) {
+    const lqipInput = typeof resolvedSrc === 'string' ? { src: resolvedSrc } : resolvedSrc
     lqipImage = await getLqip(lqipInput, lqip, lqipSize, isDevelopment, isPrerendered)
   }
 
@@ -52,5 +47,5 @@ export async function useLqipImage({
     ...lqipStyle
   }
 
-  return { lqipImage, svgHTML, lqipStyle, combinedStyle }
+  return { lqipImage, svgHTML, lqipStyle, combinedStyle, resolvedSrc }
 }
