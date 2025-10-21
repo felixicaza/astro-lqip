@@ -13,6 +13,7 @@ Native extended Astro components for generating low quality image placeholders (
 - 🖼️ Supports both `<Image>` and `<Picture>` components.
 - 🎨 Multiple LQIP techniques: base64, solid color, CSS via gradients and SVG.
 - 🚀 Easy to use, just replace the native Astro components with the ones from [astro-lqip](https://astro-lqip.web.app/).
+- ⚡️ Support images as static imports or using string paths.
 - 🔧 Fully compatible with [Astro's image optimization features](https://docs.astro.build/en/guides/images/).
 - 🌍 Supports both local and remote images.
 - ⚙️ Supports SSR mode with [Node Adapter](https://docs.astro.build/en/guides/integrations-guide/node/).
@@ -66,8 +67,46 @@ import otherImage from './path/to/other-image.png';
 ---
 
 <Image src={image} alt="Cover Image" width={220} height={220} />
-<Picture src={otherImage} alt="Other cover Image" width={220} height={220} />
+<Picture src={otherImage} alt="Other Image" width={220} height={220} />
 ```
+
+> [!TIP]
+> Since version `1.6.0`, you can also put the image path as string directly in the `src` prop. Support absolute paths in `src`, relative paths and alias.
+
+Example with absolute path:
+
+```astro
+---
+import { Image, Picture } from 'astro-lqip/components';
+---
+
+<Image src="/src/path/to/image.png" alt="Cover Image" width={220} height={220} />
+<Picture src="/src/path/to/other-image.png" alt="Other Image" width={220} height={220} />
+```
+
+Example with relative path:
+
+```astro
+---
+import { Image, Picture } from 'astro-lqip/components';
+---
+
+<Image src="../path/to/image.png" alt="Cover Image" width={220} height={220} />
+<Picture src="../path/to/other-image.png" alt="Other Image" width={220} height={220} />
+```
+
+Example with alias:
+
+```astro
+---
+import { Image, Picture } from 'astro-lqip/components';
+---
+
+<Image src="@/assets/image.png" alt="Cover Image" width={220} height={220} />
+<Picture src="@/assets/other-image.png" alt="Other Image" width={220} height={220} />
+```
+
+Learn how to configure path aliasing in the [Astro documentation](https://docs.astro.build/en/guides/typescript/#import-aliases).
 
 ## ⚙️ Props
 
@@ -94,7 +133,7 @@ import otherImage from './path/to/other-image.png';
 ---
 
 <Image src={image} alt="Cover Image" width={220} height={220} lqip="svg" lqipSize={10} />
-<Picture src={otherImage} alt="Other cover Image" width={220} height={220} lqip="css" lqipSize={7} />
+<Picture src={otherImage} alt="Other Image" width={220} height={220} lqip="css" lqipSize={7} />
 ```
 
 > [!TIP]
