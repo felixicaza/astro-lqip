@@ -4,6 +4,7 @@ import { Image, Picture } from 'astro-lqip/components'
 import Layout from '@layouts/Layout.astro'
 
 import Navbar from '@components/Navbar.astro'
+import NextButton from '@components/NextButton.astro'
 import Footer from '@components/Footer.astro'
 
 import firstImage from '@images/pexels-fabianwiktor-3470482.jpg'
@@ -112,6 +113,7 @@ import thirdImage from '@images/pexels-fabianwiktor-3470478.jpg'
         </div>
       </section>
     </div>
+    <NextButton href="/tips" label="Tips" />
   </main>
   <Footer />
 </Layout>
@@ -130,6 +132,9 @@ import thirdImage from '@images/pexels-fabianwiktor-3470478.jpg'
 <style>
   main {
     padding-block: 80px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
 
     & > div {
       display: flex;

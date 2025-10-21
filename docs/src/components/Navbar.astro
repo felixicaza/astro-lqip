@@ -1,5 +1,7 @@
 ---
 import ChevronLeft from '@icons/chevron-left.svg'
+import Stars from '@icons/stars.svg'
+import Deblur from '@icons/deblur.svg'
 import GitHub from '@icons/github.svg'
 ---
 
@@ -8,18 +10,31 @@ import GitHub from '@icons/github.svg'
     Astro.url.pathname !== '/' && (
       <a href="/">
         <ChevronLeft width="24" height="24" />
-        Back
+        Home
       </a>
     )
   }
-  <div>
-    {
-      Astro.url.pathname === '/' && (
-        <a href="/demos">Demos</a>
-      )
-    }
+  <div class:list={['nav-content', { demos: Astro.url.pathname !== '/' }]}>
+    <div class="links">
+      {
+        Astro.url.pathname !== '/demos' && (
+          <a href="/demos">
+            <Deblur width="20" />
+            Demos
+          </a>
+        )
+      }
+      {
+        Astro.url.pathname !== '/tips' && (
+          <a href="/tips">
+            <Stars width="20" />
+            Tips
+          </a>
+        )
+      }
+    </div>
     <a href="https://github.com/felixicaza/astro-lqip" target="_blank" rel="noopener noreferrer">
-      <GitHub width="22" />
+      <GitHub width="20" />
       Star on GitHub
     </a>
   </div>
@@ -40,12 +55,16 @@ import GitHub from '@icons/github.svg'
       }
     }
 
-    & div {
+    & .nav-content {
       width: 100%;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 32px;
+
+      &.demos {
+        gap: 16px;
+      }
 
       @media (width >= 768px) {
         width: initial;
@@ -53,11 +72,28 @@ import GitHub from '@icons/github.svg'
       }
     }
 
+    & .links {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
     & a {
       width: fit-content;
       display: inline-flex;
       align-items: center;
       gap: 4px;
+      transition: color 300ms;
+
+      @media (any-hover: hover) {
+        &:hover {
+          color: #bcb5f3;
+        }
+      }
+
+      &:active {
+        color: #bcb5f3;
+      }
 
       & svg {
         translate: 0 -1px;
