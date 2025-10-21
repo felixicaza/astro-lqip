@@ -62,8 +62,8 @@ Example:
 ---
 import { Image, Picture } from 'astro-lqip/components';
 
-import image from './path/to/image.png';
-import otherImage from './path/to/other-image.png';
+import image from '/src/assets/images/image.png';
+import otherImage from '/src/assets/images/other-image.png';
 ---
 
 <Image src={image} alt="Cover Image" width={220} height={220} />
@@ -80,8 +80,8 @@ Example with absolute path:
 import { Image, Picture } from 'astro-lqip/components';
 ---
 
-<Image src="/src/path/to/image.png" alt="Cover Image" width={220} height={220} />
-<Picture src="/src/path/to/other-image.png" alt="Other Image" width={220} height={220} />
+<Image src="/src/assets/images/image.png" alt="Cover Image" width={220} height={220} />
+<Picture src="/src/assets/images/other-image.png" alt="Other Image" width={220} height={220} />
 ```
 
 Example with relative path:
@@ -91,8 +91,9 @@ Example with relative path:
 import { Image, Picture } from 'astro-lqip/components';
 ---
 
-<Image src="../path/to/image.png" alt="Cover Image" width={220} height={220} />
-<Picture src="../path/to/other-image.png" alt="Other Image" width={220} height={220} />
+<!-- assuming you are on the path `/src/pages/index.astro` -->
+<Image src="../assets/images/image.png" alt="Cover Image" width={220} height={220} />
+<Picture src="../assets/images/other-image.png" alt="Other Image" width={220} height={220} />
 ```
 
 Example with alias:
@@ -102,8 +103,8 @@ Example with alias:
 import { Image, Picture } from 'astro-lqip/components';
 ---
 
-<Image src="@/assets/image.png" alt="Cover Image" width={220} height={220} />
-<Picture src="@/assets/other-image.png" alt="Other Image" width={220} height={220} />
+<Image src="@/assets/images/image.png" alt="Cover Image" width={220} height={220} />
+<Picture src="@/assets/images/other-image.png" alt="Other Image" width={220} height={220} />
 ```
 
 Learn how to configure path aliasing in the [Astro documentation](https://docs.astro.build/en/guides/typescript/#import-aliases).
@@ -128,8 +129,8 @@ Example:
 ---
 import { Image, Picture } from 'astro-lqip/components';
 
-import image from './path/to/image.png';
-import otherImage from './path/to/other-image.png';
+import image from '/src/assets/images/image.png';
+import otherImage from '/src/assets/images/other-image.png';
 ---
 
 <Image src={image} alt="Cover Image" width={220} height={220} lqip="svg" lqipSize={10} />
