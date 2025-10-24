@@ -1,8 +1,7 @@
 ---
 import { Code } from 'astro:components'
 
-import Warning from '@icons/warning.svg'
-import LightBulb from '@icons/lightbulb.svg'
+import AlertBlock from '@components/AlertBlock.astro'
 
 const example = `---
 import { Image, Picture } from 'astro-lqip/components';
@@ -64,27 +63,19 @@ import otherImage from './path/to/other-image.png';
         . (default is 4)
       </li>
     </ul>
-    <section class="warning">
-      <strong>
-        <Warning width={22} height={22} />
-        Warning
-      </strong>
+    <AlertBlock type="warning" label="Warning">
       <p>
         A high value for
         <code>lqipSize</code>
         can significantly increase the total size of your website.
       </p>
-    </section>
+    </AlertBlock>
   </section>
   <section>
     <p>Example:</p>
     <Code code={example} lang="astro" />
   </section>
-  <section class="tip">
-    <strong>
-      <LightBulb width={22} height={22} />
-      Tip
-    </strong>
+  <AlertBlock type="tip" label="Tip">
     <p>
       For the
       <code>&lt;Image&gt;</code>
@@ -94,7 +85,7 @@ import otherImage from './path/to/other-image.png';
       <code>pictureAttributes</code>
       has been added.
     </p>
-  </section>
+  </AlertBlock>
 </article>
 
 <style>
@@ -110,52 +101,6 @@ import otherImage from './path/to/other-image.png';
 
       & li ul {
         margin-top: 8px;
-      }
-    }
-
-    & .warning,
-    & .tip {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      padding: 16px;
-      border-radius: 4px;
-
-      & strong {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 18px;
-
-        & svg {
-          translate: 0 -1px;
-        }
-      }
-
-      & p {
-        margin: 0;
-      }
-    }
-
-    & .warning {
-      background-color: #4e4022;
-      color: #f9e8c3;
-      border-left: 4px solid #eebd53;
-
-      & p code {
-        background: #41341a;
-        border-color: #f3b939;
-      }
-    }
-
-    & .tip {
-      background-color: #123125;
-      color: #c3f9d9;
-      border-left: 4px solid #40d07c;
-
-      & p code {
-        background: #0c271c;
-        border-color: #40d07c;
       }
     }
   }

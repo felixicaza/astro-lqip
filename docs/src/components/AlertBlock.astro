@@ -1,0 +1,75 @@
+---
+import Warning from '@icons/warning.svg'
+import LightBulb from '@icons/lightbulb.svg'
+
+interface Props {
+  type: 'tip' | 'warning'
+  label: string
+}
+
+const { type, label } = Astro.props as Props
+
+const IconMap = { tip: LightBulb, warning: Warning } as const
+const resolvedType = (type ?? 'tip') as keyof typeof IconMap
+const Icon = IconMap[resolvedType];
+---
+
+<section class:list={{ [resolvedType]: true }}>
+  <strong>
+    <Icon width={22} height={22} />
+    {label}
+  </strong>
+  <slot />
+</section>
+
+<style>
+  .warning,
+  .tip {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    border-radius: 4px;
+    border-left: 4px solid;
+
+    & strong {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 18px;
+
+      & svg {
+        translate: 0 -1px;
+      }
+    }
+
+    /* Necessary `:global()` function for styling child blocks. Reference: https://docs.astro.build/en/guides/styling/#global-styles */
+    & :global(p) {
+      margin: 0;
+    }
+  }
+
+  .warning {
+    background-color: #4e4022;
+    color: #f9e8c3;
+    border-color: #eebd53;
+
+    /* Necessary `:global()` function for styling child blocks. Reference: https://docs.astro.build/en/guides/styling/#global-styles */
+    & :global(p code) {
+      background: #41341a;
+      border-color: #f3b939;
+    }
+  }
+
+  .tip {
+    background-color: #123125;
+    color: #c3f9d9;
+    border-color: #40d07c;
+
+    /* Necessary `:global()` function for styling child blocks. Reference: https://docs.astro.build/en/guides/styling/#global-styles */
+    & :global(p code) {
+      background: #0c271c;
+      border-color: #40d07c;
+    }
+  }
+</style>
