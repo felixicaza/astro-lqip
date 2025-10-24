@@ -2,6 +2,7 @@
 import Layout from '@layouts/Layout.astro'
 
 import Navbar from '@components/Navbar.astro'
+import TipsCard from '@components/TipsCard.astro'
 import Footer from '@components/Footer.astro'
 ---
 
@@ -9,6 +10,38 @@ import Footer from '@components/Footer.astro'
   <Navbar />
   <main class="container">
     <h1>Usage tips</h1>
+    <section>
+      <TipsCard title="Regular import of images" slug="regular-import" />
+      <TipsCard title="Regular dynamic import of images" slug="regular-dynamic-import" />
+      <TipsCard title="How to use absolute import of images with string paths" slug="absolute-import" />
+      <TipsCard title="Using relative import of images with string paths" slug="relative-import" />
+      <TipsCard title="Use alias to import of images" slug="import-with-alias" />
+      <TipsCard title="How to use images in Markdown files" slug="import-in-markdown" />
+      <TipsCard title="Using images in MDX files" slug="import-in-mdx" />
+      <TipsCard title="Another way to import images dynamically" slug="another-dynamic-import" />
+    </section>
   </main>
   <Footer />
 </Layout>
+
+<style>
+  @media (width >= 1200px) {
+    main {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  section {
+    display: grid;
+    gap: 24px 32px;
+    margin-block: 48px;
+    width: 100%;
+    max-width: 860px;
+    margin-inline: auto;
+
+    @media (width >= 768px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

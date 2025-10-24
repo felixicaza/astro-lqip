@@ -3,7 +3,7 @@ import '@styles/global.css'
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class:list={{ 'is-tip-page': Astro.url.pathname.includes('/tips') }}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -21,8 +21,6 @@ import '@styles/global.css'
     <meta property="og:image" content={new URL('/og/og.png', Astro.url)} />
     <meta property="og:url" content={Astro.url.href} />
     <meta property="og:type" content="website" />
-
-    <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Astro LQIP" />
     <meta name="twitter:description" content="Native extended Astro component for generating low quality image placeholders (LQIP)." />
@@ -33,3 +31,18 @@ import '@styles/global.css'
     <slot />
   </body>
 </html>
+
+<style>
+  @media (width >= 1200px) {
+    .is-tip-page,
+    .is-tip-page body {
+      height: 100%;
+    }
+
+    .is-tip-page body {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+  }
+</style>

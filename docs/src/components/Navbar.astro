@@ -5,7 +5,7 @@ import Deblur from '@icons/deblur.svg'
 import GitHub from '@icons/github.svg'
 ---
 
-<nav class:list={['container', { demos: Astro.url.pathname !== '/' }]}>
+<nav class:list={['container', { demos: Astro.url.pathname !== '/', 'is-tip-page': Astro.url.pathname.includes('/tips') }]}>
   {
     Astro.url.pathname !== '/' && (
       <a href="/">
@@ -47,6 +47,12 @@ import GitHub from '@icons/github.svg'
     justify-content: center;
     padding-block: 12px;
 
+    @media (width >= 768px) {
+      &.is-tip-page {
+        width: 100%;
+      }
+    }
+
     &.demos {
       justify-content: space-between;
 
@@ -83,7 +89,7 @@ import GitHub from '@icons/github.svg'
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      transition: color 300ms;
+      transition: color 0.3s ease-in-out;
 
       @media (any-hover: hover) {
         &:hover {
