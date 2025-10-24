@@ -1,4 +1,5 @@
 ---
+import AlertBlock from '@components/AlertBlock.astro'
 import { Code } from 'astro:components'
 
 const importingImage = `- import { Image } from 'astro:components';
@@ -19,6 +20,31 @@ import otherImage from './path/to/other-image.png';
 <Image src={image} alt="Cover Image" width={220} height={220} />
 <Picture src={otherImage} alt="Other cover Image" width={220} height={220} />
 `
+
+const exampleWithAbsolutePath = `---
+import { Image, Picture } from 'astro-lqip/components';
+---
+
+<Image src="/src/assets/images/image.png" alt="Cover Image" width={220} height={220} />
+<Picture src="/src/assets/images/other-image.png" alt="Other Image" width={220} height={220} />
+`
+
+const exampleWithRelativePath = `---
+import { Image, Picture } from 'astro-lqip/components';
+---
+
+<!-- assuming you are on the path \`/src/pages/index.astro\` -->
+<Image src="../assets/images/image.png" alt="Cover Image" width={220} height={220} />
+<Picture src="../assets/images/other-image.png" alt="Other Image" width={220} height={220} />
+`
+
+const exampleWithAlias = `---
+import { Image, Picture } from 'astro-lqip/components';
+---
+
+<Image src="@/assets/images/image.png" alt="Cover Image" width={220} height={220} />
+<Picture src="@/assets/images/other-image.png" alt="Other Image" width={220} height={220} />
+`
 ---
 
 <article>
@@ -31,13 +57,35 @@ import otherImage from './path/to/other-image.png';
       <code>&lt;Picture&gt;</code>
       component with the one provided by
       <a href="https://www.npmjs.com/package/astro-lqip" target="_blank" rel="noopener noreferrer">astro-lqip</a>
-      .
     </p>
     <h3>Image</h3>
     <Code code={importingImage} lang="diff" />
     <h3>Picture</h3>
     <Code code={importingPicture} lang="diff" />
     <p>Example:</p>
-    <Code code={example} lang="astro" />
+    <Code class="example" code={example} lang="astro" />
+    <AlertBlock type="tip" label="Tip">
+      <p>
+        Since version
+        <code>1.6.0</code>
+        , you can also put the image path as string directly in the
+        <code>src</code>
+        prop. Support absolute paths in
+        <code>src</code>
+        folder, relative paths and alias.
+      </p>
+    </AlertBlock>
+    <p>Example with absolute path:</p>
+    <Code code={exampleWithAbsolutePath} lang="astro" />
+    <p>Example with relative path:</p>
+    <Code code={exampleWithRelativePath} lang="astro" />
+    <p>Example with alias:</p>
+    <Code code={exampleWithAlias} lang="astro" />
   </section>
 </article>
+
+<style>
+  .example {
+    margin-bottom: 24px;
+  }
+</style>
