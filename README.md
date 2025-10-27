@@ -107,7 +107,7 @@ import { Image, Picture } from 'astro-lqip/components';
 <Picture src="@/assets/images/other-image.png" alt="Other Image" width={220} height={220} />
 ```
 
-Learn how to configure path aliasing in the [Astro documentation](https://docs.astro.build/en/guides/typescript/#import-aliases).
+Learn how to configure path aliasing in the [Astro documentation](https://docs.astro.build/en/guides/typescript/#import-aliases). If you want more examples of uses you can see the [Usage Tips](https://astro-lqip.web.app/usage-tips/) page.
 
 ## ⚙️ Props
 
@@ -143,6 +143,8 @@ import otherImage from '/src/assets/images/other-image.png';
 ## 💡 Knowledge
 
 Since this integration is built on top of Astro native `<Image>` and `<Picture>` components, you can refer to the [Astro documentation](https://docs.astro.build/en/guides/images/) for more information on how to use it.
+
+For some simple tips, visit the [Usage Tips](https://astro-lqip.web.app/usage-tips/) page.
 
 ## 🤝 Contributing
 If you wish to contribute to this project, you can do so by reading the [contribution guide](https://github.com/felixicaza/astro-lqip/blob/main/CONTRIBUTING.md).
