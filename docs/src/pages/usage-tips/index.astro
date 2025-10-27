@@ -4,21 +4,28 @@ import Layout from '@layouts/Layout.astro'
 import Navbar from '@components/Navbar.astro'
 import TipsCard from '@components/TipsCard.astro'
 import Footer from '@components/Footer.astro'
+
+import { getCollection } from 'astro:content'
+
+const posts = (await getCollection('usageTips')).sort((a, b) => {
+  return (a.data?.id ?? a.id) - (b.data?.id ?? b.id)
+})
 ---
 
 <Layout title="Usage Tips | Astro LQIP">
   <Navbar />
   <main class="container">
     <h1>Usage tips</h1>
+    <p>Learn how to easily use images in your Astro projects with these tips.</p>
     <section>
-      <TipsCard title="Regular import of images" slug="regular-import" />
-      <TipsCard title="Regular dynamic import of images" slug="regular-dynamic-import" />
-      <TipsCard title="How to use absolute import of images with string paths" slug="absolute-import" />
-      <TipsCard title="Using relative import of images with string paths" slug="relative-import" />
-      <TipsCard title="Use alias to import of images" slug="import-with-alias" />
-      <TipsCard title="How to use images in Markdown files" slug="import-in-markdown" />
-      <TipsCard title="Using images in MDX files" slug="import-in-mdx" />
-      <TipsCard title="Another way to import images dynamically" slug="another-dynamic-import" />
+      {
+        posts.map(({ data, slug }) => {
+          const { title } = data
+          return (
+            <TipsCard title={title} slug={slug} />
+          )
+        })
+      }
     </section>
   </main>
   <Footer />
