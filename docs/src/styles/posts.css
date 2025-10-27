@@ -24,6 +24,12 @@
     }
   }
 
+  h3 {
+    font-size: 1.38rem;
+    color: inherit;
+    margin-block: 36px 0px;
+  }
+
   p {
     line-height: 1.55;
   }
