@@ -1,0 +1,38 @@
+---
+import Layout from '@layouts/Layout.astro'
+
+import Footer from '@components/Footer.astro'
+import Navbar from '@components/Navbar.astro'
+
+import '@styles/posts.css'
+
+import { getCollection, render } from 'astro:content'
+
+export async function getStaticPaths() {
+  const usageTips = await getCollection('usageTips')
+  return usageTips.map((tip) => ({
+    params: { slug: tip.slug },
+    props: { tip }
+  }))
+}
+
+const { tip } = Astro.props
+const { Content } = await render(tip)
+
+const title = tip.data.title
+const isFullHeight = tip.data.isFullHeight ?? false
+---
+
+<Layout title={`${title} | Astro LQIP`} isFullHeight={isFullHeight}>
+  <Navbar />
+  <article class="container">
+    <Content />
+  </article>
+  <Footer />
+</Layout>
+
+<style>
+  article {
+    margin-block: 64px;
+  }
+</style>

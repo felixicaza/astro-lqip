@@ -1,0 +1,30 @@
+@layer posts, pages;
+
+@layer posts {
+  .is-full-height nav,
+  .is-full-height article {
+    width: 100%;
+  }
+
+  .is-full-height article {
+    height: 100%;
+  }
+
+  h2 {
+    font-size: 1.62rem;
+    color: inherit;
+    margin-top: 44px;
+
+    & code {
+      background: #262435;
+      padding: 3px 5px;
+      font-size: 1.42rem;
+      border-radius: 2px;
+      border-bottom: 1px solid #bcb5f3;
+    }
+  }
+
+  p {
+    line-height: 1.55;
+  }
+}
