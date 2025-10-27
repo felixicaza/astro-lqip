@@ -1,23 +1,48 @@
 ---
 import ChevronLeft from '@icons/chevron-left.svg'
-import Stars from '@icons/stars.svg'
+import Home from '@icons/home.svg'
 import Deblur from '@icons/deblur.svg'
+import Stars from '@icons/stars.svg'
 import GitHub from '@icons/github.svg'
+
+const isHomePage = Astro.url.pathname === '/'
+const isDemoPage = Astro.url.pathname === '/demos'
+const isNotDemoPage = Astro.url.pathname !== '/demos'
+const isTipPage = Astro.url.pathname === '/usage-tips'
+const isNotTipPageAndArticle = Astro.url.pathname !== '/usage-tips' && !Astro.url.pathname.includes('/how-to-')
+const isTipsArticle = Astro.url.pathname.includes('/how-to-')
+const isNotHomeAndTipsArticle = Astro.url.pathname !== '/' && !Astro.url.pathname.includes('/how-to-');
 ---
 
-<nav class:list={['container', { demos: Astro.url.pathname !== '/', 'is-tip-page': Astro.url.pathname.includes('/usage-tips') }]}>
+<nav class:list={['container', { 'is-home-page': isHomePage, 'is-demo-page': isDemoPage, 'is-tip-page': isTipPage, 'is-tips-article': isTipsArticle }]}>
   {
-    Astro.url.pathname !== '/' && (
+    isNotHomeAndTipsArticle && (
       <a href="/">
-        <ChevronLeft width="24" height="24" />
+        <ChevronLeft width="24" />
         Home
       </a>
     )
   }
-  <div class:list={['nav-content', { demos: Astro.url.pathname !== '/' }]}>
+  {
+    isTipsArticle && (
+      <a href="/usage-tips">
+        <ChevronLeft width="24" />
+        Tips
+      </a>
+    )
+  }
+  <div class:list={['nav-content', { demos: isDemoPage }]}>
     <div class="links">
       {
-        Astro.url.pathname !== '/demos' && (
+        isTipsArticle && (
+          <a href="/">
+            <Home width="20" />
+            Home
+          </a>
+        )
+      }
+      {
+        isNotDemoPage && (
           <a href="/demos">
             <Deblur width="20" />
             Demos
@@ -25,7 +50,7 @@ import GitHub from '@icons/github.svg'
         )
       }
       {
-        Astro.url.pathname !== '/usage-tips' && (
+        isNotTipPageAndArticle && (
           <a href="/usage-tips">
             <Stars width="20" />
             Tips
@@ -35,7 +60,7 @@ import GitHub from '@icons/github.svg'
     </div>
     <a href="https://github.com/felixicaza/astro-lqip" target="_blank" rel="noopener noreferrer">
       <GitHub width="20" />
-      Star on GitHub
+      <span>Star on GitHub</span>
     </a>
   </div>
 </nav>
@@ -44,16 +69,22 @@ import GitHub from '@icons/github.svg'
   nav {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     padding-block: 12px;
 
     @media (width >= 768px) {
+      justify-content: center;
+
       &.is-tip-page {
         width: 100%;
       }
     }
 
-    &.demos {
+    &.is-home-page .nav-content {
+      width: 100%;
+    }
+
+    &.is-demo-page {
       justify-content: space-between;
 
       & div {
@@ -61,14 +92,25 @@ import GitHub from '@icons/github.svg'
       }
     }
 
+    @media (width <= 768px) {
+      &.is-tips-article a span {
+        display: none;
+        content-visibility: hidden;
+      }
+    }
+
     & .nav-content {
-      width: 100%;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 32px;
+      gap: 16px;
 
-      &.demos {
+      @media (width >= 768px) {
+        width: 100%;
+        gap: 32px;
+      }
+
+      &.is-demo-page {
         gap: 16px;
       }
 
