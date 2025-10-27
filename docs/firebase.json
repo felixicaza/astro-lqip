@@ -2,6 +2,7 @@
   "hosting": {
     "source": ".",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "trailingSlash": false,
     "frameworksBackend": {
       "region": "us-central1"
     }
