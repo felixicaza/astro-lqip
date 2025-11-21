@@ -6,6 +6,13 @@ import { PREFIX } from '../constants'
 
 import { getPlaiceholder } from 'plaiceholder'
 
+function normalizeFsPath(path: string) {
+  if (process.platform === 'win32' && /^\/[A-Za-z]:\//.test(path)) {
+    return path.slice(1)
+  }
+  return path
+}
+
 export async function generateLqip(
   imagePath: string,
   lqipType: LqipType,
@@ -13,7 +20,8 @@ export async function generateLqip(
   isDevelopment: boolean | undefined
 ) {
   try {
-    const buffer = await readFile(imagePath)
+    const normalizedPath = normalizeFsPath(imagePath)
+    const buffer = await readFile(normalizedPath)
     const plaiceholderResult = await getPlaiceholder(buffer, { size: lqipSize })
     let lqipValue: string | GetSVGReturn | undefined
 
