@@ -13,19 +13,6 @@ function normalizeFsPath(path: string) {
   return path
 }
 
-function isNode() {
-  return typeof process !== 'undefined' && !!process.versions?.node
-}
-
-async function readIfExists(path: string): Promise<Buffer | undefined> {
-  if (!isNode()) return undefined
-  try {
-    return await readFile(path)
-  } catch {
-    return undefined
-  }
-}
-
 export async function generateLqip(
   imagePath: string,
   lqipType: LqipType,
@@ -35,7 +22,7 @@ export async function generateLqip(
   try {
     const normalizedPath = normalizeFsPath(imagePath)
 
-    const buffer = await readIfExists(normalizedPath)
+    const buffer = await readFile(normalizedPath)
 
     if (!buffer) {
       console.warn(`${PREFIX} image not found for:`, imagePath)
