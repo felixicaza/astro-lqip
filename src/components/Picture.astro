@@ -13,7 +13,6 @@ type Props = AstroPictureProps & LqipProps
 const { class: className, lqip = 'base64', lqipSize = 4, pictureAttributes = {}, ...props } = Astro.props as Props
 
 const isDevelopment = import.meta.env.MODE === 'development'
-const isPrerendered = Astro.isPrerendered
 
 const { combinedStyle, resolvedSrc } = await useLqipImage({
   src: props.src,
@@ -21,8 +20,7 @@ const { combinedStyle, resolvedSrc } = await useLqipImage({
   lqipSize,
   styleProps: (pictureAttributes.style ?? {}) as Record<string, string | number | undefined>,
   forbiddenVars: [],
-  isDevelopment,
-  isPrerendered
+  isDevelopment
 })
 
 const componentProps = {
