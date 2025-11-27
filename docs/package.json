@@ -11,7 +11,7 @@
     "preview": "astro preview"
   },
   "dependencies": {
-    "astro": "5.15.5",
+    "astro": "5.16.1",
     "astro-lqip": "workspace:*",
     "sharp": "0.34.5"
   }
