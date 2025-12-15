@@ -18,6 +18,24 @@ const SEARCH_ROOT = ['src']
 
 const searchCache = new Map<string, string | null>()
 
+function stripBasePath(src: string) {
+  if (typeof src !== 'string') return src
+
+  const queryIndex = src.indexOf('?')
+  const pathOnly = queryIndex >= 0 ? src.slice(0, queryIndex) : src
+
+  if (!pathOnly.startsWith('/')) return pathOnly
+
+  // TODO: improve base path detection
+  const astroIndex = pathOnly.indexOf('/_astro/')
+
+  if (astroIndex > 0) {
+    return pathOnly.slice(astroIndex)
+  }
+
+  return pathOnly
+}
+
 async function ensureCacheDir() {
   if (!existsSync(CACHE_DIR)) {
     await mkdir(CACHE_DIR, { recursive: true })
@@ -126,8 +144,8 @@ export async function getLqip(
 
   if (!isDevelopment) {
     const src = imagePath.src
-
-    const clean = src.replace(/^\//, '')
+    const normalizedSrc = stripBasePath(src)
+    const clean = normalizedSrc.replace(/^\//, '')
 
     const candidatePaths = [
       join(process.cwd(), 'dist', 'client', clean),
@@ -142,8 +160,8 @@ export async function getLqip(
     }
 
     // if not found, try to recursively find the original source
-    if (src.startsWith('/_astro/')) {
-      const originalBase = extractOriginalFileName(src)
+    if (normalizedSrc.startsWith('/_astro/')) {
+      const originalBase = extractOriginalFileName(normalizedSrc)
       const originalSource = await recursiveFind(originalBase)
 
       if (originalSource) {
