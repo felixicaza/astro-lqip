@@ -27,7 +27,7 @@ jobs:
            run: pnpm install --no-frozen-lockfile
 
          - name: Build project
-           run: pnpm build
+           run: pnpm build:docs
 
          - name: Deploy project to Firebase
            uses: FirebaseExtended/action-hosting-deploy@v0

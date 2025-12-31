@@ -1,0 +1,34 @@
+---
+import { Image, Picture } from 'astro-lqip/components'
+
+import volcanoImage from '../assets/pexels-fabianwiktor-3470872.jpg';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <div>
+      <p>Regular import</p>
+      <Image width={450} height={450} src={volcanoImage} alt="A beautiful volcano" />
+      <Picture width={450} height={450} src={volcanoImage} alt="A beautiful volcano in the sunset" />
+    </div>
+    <div>
+      <p>Relative path import</p>
+      <Image width={450} height={450} src="../assets/pexels-fabianwiktor-3470872.jpg" alt="A beautiful volcano" />
+      <Picture width={450} height={450} src="../assets/pexels-fabianwiktor-3470872.jpg" alt="A beautiful volcano in the sunset" />
+    </div>
+    <div>
+      <p>Absolute path import</p>
+      <Image width={450} height={450} src="/src/assets/pexels-fabianwiktor-3470872.jpg" alt="A beautiful volcano" />
+      <Picture width={450} height={450} src="/src/assets/pexels-fabianwiktor-3470872.jpg" alt="A beautiful volcano in the sunset" />
+    </div>
+    <div>
+      <p>Import with alias</p>
+      <Image width={450} height={450} src="@/assets/pexels-fabianwiktor-3470872.jpg" alt="A beautiful volcano" />
+      <Picture width={450} height={450} src="@/assets/pexels-fabianwiktor-3470872.jpg" alt="A beautiful volcano in the sunset" />
+    </div>
+  </body>
+</html>

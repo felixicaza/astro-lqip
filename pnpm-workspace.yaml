@@ -1,5 +1,6 @@
 packages:
    - "docs"
+   - tests/fixtures/*
 
 onlyBuiltDependencies:
    - esbuild
