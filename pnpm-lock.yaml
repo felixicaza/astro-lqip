@@ -70,6 +70,18 @@ importers:
         specifier: 0.34.5
         version: 0.34.5
 
+  tests/fixtures/custom-base:
+    dependencies:
+      astro:
+        specifier: 5.16.0
+        version: 5.16.0(@types/node@25.0.3)(jiti@2.6.1)(rollup@4.54.0)(typescript@5.9.3)(yaml@2.8.2)
+      astro-lqip:
+        specifier: workspace:*
+        version: link:../../..
+      sharp:
+        specifier: 0.34.5
+        version: 0.34.5
+
   tests/fixtures/default:
     dependencies:
       astro:
