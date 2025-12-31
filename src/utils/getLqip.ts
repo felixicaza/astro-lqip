@@ -15,6 +15,18 @@ function isRemoteUrl(url: string) {
 const CACHE_DIR = join(process.cwd(), 'node_modules', '.cache', 'astro-lqip')
 const EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp', 'avif']
 const SEARCH_ROOT = ['src']
+const HASHED_FILENAME_REGEX = /\.[A-Za-z0-9_-]{5,}\.[A-Za-z0-9]+$/
+const HASHED_FILENAME_CAPTURE_REGEX = /^(.+?)\.[A-Za-z0-9_-]{5,}\.[A-Za-z0-9]+$/
+
+const BASE_URL = (() => {
+  try {
+    const base = (import.meta.env?.BASE_URL ?? '/') as string
+    if (!base || base === '/') return '/'
+    return base.endsWith('/') ? base.slice(0, -1) : base
+  } catch {
+    return '/'
+  }
+})()
 
 const searchCache = new Map<string, string | null>()
 
@@ -22,15 +34,14 @@ function stripBasePath(src: string) {
   if (typeof src !== 'string') return src
 
   const queryIndex = src.indexOf('?')
-  const pathOnly = queryIndex >= 0 ? src.slice(0, queryIndex) : src
+  let pathOnly = queryIndex >= 0 ? src.slice(0, queryIndex) : src
 
-  if (!pathOnly.startsWith('/')) return pathOnly
+  if (BASE_URL !== '/' && pathOnly.startsWith(BASE_URL)) {
+    pathOnly = pathOnly.slice(BASE_URL.length) || '/'
+  }
 
-  // TODO: improve base path detection
-  const astroIndex = pathOnly.indexOf('/_astro/')
-
-  if (astroIndex > 0) {
-    return pathOnly.slice(astroIndex)
+  if (!pathOnly.startsWith('/')) {
+    pathOnly = `/${pathOnly}`
   }
 
   return pathOnly
@@ -45,7 +56,7 @@ async function ensureCacheDir() {
 function extractOriginalFileName(filename: string) {
   const file = filename.split('/').pop() || ''
 
-  const match = file.match(/^(.+?)\.[A-Za-z0-9_-]{5,}\.[A-Za-z0-9]+$/)
+  const match = file.match(HASHED_FILENAME_CAPTURE_REGEX)
   if (match) return match[1]
 
   const parts = file.split('.')
@@ -147,20 +158,21 @@ export async function getLqip(
     const normalizedSrc = stripBasePath(src)
     const clean = normalizedSrc.replace(/^\//, '')
 
-    const candidatePaths = [
-      join(process.cwd(), 'dist', 'client', clean),
-      join(process.cwd(), 'dist', clean),
-      join(process.cwd(), 'dist', '_astro', clean.replace(/^_astro\//, ''))
-    ]
+    if (clean) {
+      const candidatePaths = [
+        join(process.cwd(), 'dist', 'client', clean),
+        join(process.cwd(), 'dist', clean)
+      ]
 
-    for (const path of candidatePaths) {
-      if (existsSync(path)) {
-        return await generateLqip(path, lqipType, lqipSize, isDevelopment)
+      for (const path of candidatePaths) {
+        if (existsSync(path)) {
+          return await generateLqip(path, lqipType, lqipSize, isDevelopment)
+        }
       }
     }
 
-    // if not found, try to recursively find the original source
-    if (normalizedSrc.startsWith('/_astro/')) {
+    const fileName = normalizedSrc.split('/').pop() ?? ''
+    if (HASHED_FILENAME_REGEX.test(fileName)) {
       const originalBase = extractOriginalFileName(normalizedSrc)
       const originalSource = await recursiveFind(originalBase)
 
