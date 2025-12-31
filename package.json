@@ -28,13 +28,16 @@
     "src"
   ],
   "scripts": {
-    "build": "pnpm -r build",
-    "dev": "pnpm -r dev",
+    "build:docs": "pnpm --filter ./docs -r build",
+    "dev": "pnpm --filter=!./docs -r dev",
+    "dev:docs": "pnpm --filter ./docs -r dev",
     "lint": "eslint --cache .",
     "lint:fix": "eslint --cache --fix .",
     "prepare": "simple-git-hooks",
     "preview": "pnpm -r preview",
-    "release": "bumpp -r"
+    "release": "bumpp",
+    "test:fixtures": "pnpm --filter \"./tests/fixtures/**\" -r build",
+    "test:fixtures:preview": "pnpm --filter \"./tests/fixtures/**\" -r preview"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm nano-staged"
