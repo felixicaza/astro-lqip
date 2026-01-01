@@ -57,7 +57,7 @@
     "eslint-plugin-astro": "1.5.0",
     "eslint-plugin-jsonc": "2.21.0",
     "eslint-plugin-jsx-a11y": "6.10.2",
-    "eslint-plugin-package-json": "0.87.0",
+    "eslint-plugin-package-json": "0.87.1",
     "eslint-plugin-yml": "1.19.1",
     "globals": "16.5.0",
     "jiti": "2.6.1",
