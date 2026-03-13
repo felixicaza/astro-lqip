@@ -50,11 +50,11 @@
     "plaiceholder": "3.0.0"
   },
   "devDependencies": {
-    "@eslint/js": "9.39.4",
+    "@eslint/js": "10.0.1",
     "@typescript-eslint/parser": "8.57.0",
     "astro": "6.0.4",
     "bumpp": "10.4.1",
-    "eslint": "9.39.4",
+    "eslint": "10.0.3",
     "eslint-plugin-astro": "1.6.0",
     "eslint-plugin-jsonc": "3.1.2",
     "eslint-plugin-jsx-a11y": "6.10.2",
