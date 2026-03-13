@@ -19,10 +19,10 @@ const posts = (await getCollection('usageTips')).sort((a, b) => {
     <p>Learn how to easily use images in your Astro projects with these tips.</p>
     <section>
       {
-        posts.map(({ data, slug }) => {
+        posts.map(({ data, id }) => {
           const { title } = data
           return (
-            <TipsCard title={title} slug={slug} />
+            <TipsCard title={title} slug={id} />
           )
         })
       }

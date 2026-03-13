@@ -10,8 +10,9 @@ import { getCollection, render } from 'astro:content'
 
 export async function getStaticPaths() {
   const usageTips = await getCollection('usageTips')
+
   return usageTips.map((tip) => ({
-    params: { slug: tip.slug },
+    params: { slug: tip.id },
     props: { tip }
   }))
 }
