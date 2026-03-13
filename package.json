@@ -27,6 +27,7 @@
   "files": [
     "src"
   ],
+  "sideEffects": false,
   "scripts": {
     "build:docs": "pnpm --filter ./docs -r build",
     "dev": "pnpm --filter=!./docs -r dev",
@@ -49,20 +50,20 @@
     "plaiceholder": "3.0.0"
   },
   "devDependencies": {
-    "@eslint/js": "9.39.2",
-    "@typescript-eslint/parser": "8.53.1",
-    "astro": "5.16.12",
-    "bumpp": "10.4.0",
-    "eslint": "9.39.2",
-    "eslint-plugin-astro": "1.5.0",
-    "eslint-plugin-jsonc": "2.21.0",
+    "@eslint/js": "9.39.4",
+    "@typescript-eslint/parser": "8.57.0",
+    "astro": "6.0.4",
+    "bumpp": "10.4.1",
+    "eslint": "9.39.4",
+    "eslint-plugin-astro": "1.6.0",
+    "eslint-plugin-jsonc": "3.1.2",
     "eslint-plugin-jsx-a11y": "6.10.2",
-    "eslint-plugin-package-json": "0.88.1",
-    "eslint-plugin-yml": "3.0.0",
-    "globals": "17.0.0",
+    "eslint-plugin-package-json": "0.90.1",
+    "eslint-plugin-yml": "3.3.1",
+    "globals": "17.4.0",
     "jiti": "2.6.1",
     "nano-staged": "0.9.0",
-    "neostandard": "0.12.2",
+    "neostandard": "0.13.0",
     "simple-git-hooks": "2.13.1"
   },
   "peerDependencies": {
