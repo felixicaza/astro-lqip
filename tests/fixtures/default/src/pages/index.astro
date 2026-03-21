@@ -1,7 +1,8 @@
 ---
-import { Image, Picture } from 'astro-lqip/components'
+import { Image, Picture, Background } from 'astro-lqip/components'
 
-import volcanoImage from '../assets/pexels-fabianwiktor-3470872.jpg';
+import volcanoImage from '../assets/pexels-fabianwiktor-3470872.jpg'
+import volcanoSunsetImage from '../assets/pexels-fabianwiktor-3470482.jpg'
 ---
 
 <!DOCTYPE html>
@@ -11,24 +12,88 @@ import volcanoImage from '../assets/pexels-fabianwiktor-3470872.jpg';
   </head>
   <body>
     <div>
-      <p>Regular import</p>
+      <p>Background component ImageMetadata import</p>
+      <Background src={volcanoSunsetImage}>
+        <section>
+          <p>Optimized background</p>
+        </section>
+      </Background>
+    </div>
+    <div>
+      <p>Background component relative path import</p>
+      <Background src="../assets/pexels-fabianwiktor-3470482.jpg">
+        <section>
+          <p>Optimized background</p>
+        </section>
+      </Background>
+    </div>
+    <div>
+      <p>Background component absolute path import</p>
+      <Background src="/src/assets/pexels-fabianwiktor-3470482.jpg">
+        <section>
+          <p>Optimized background</p>
+        </section>
+      </Background>
+    </div>
+    <div>
+      <p>Background component alias path import</p>
+      <Background src="@/assets/pexels-fabianwiktor-3470482.jpg">
+        <section>
+          <p>Optimized background</p>
+        </section>
+      </Background>
+    </div>
+    <div>
+      <p>Background component with custom CSS variable</p>
+      <Background src="/src/assets/pexels-fabianwiktor-3470482.jpg" cssVariable="--custom-background">
+        <section class="custom-background">
+          <p>Optimized background</p>
+        </section>
+      </Background>
+    </div>
+    <div>
+      <p>Background component in AVIF format</p>
+      <Background src="/src/assets/pexels-fabianwiktor-3470482.jpg" format="avif">
+        <section>
+          <p>Optimized background</p>
+        </section>
+      </Background>
+    </div>
+    <div>
+      <p>Image and Picture components ImageMetadata import</p>
       <Image width={450} height={450} src={volcanoImage} alt="A beautiful volcano" />
       <Picture width={450} height={450} src={volcanoImage} alt="A beautiful volcano in the sunset" />
     </div>
     <div>
-      <p>Relative path import</p>
+      <p>Image and Picture components relative path import</p>
       <Image width={450} height={450} src="../assets/pexels-fabianwiktor-3470872.jpg" alt="A beautiful volcano" />
       <Picture width={450} height={450} src="../assets/pexels-fabianwiktor-3470872.jpg" alt="A beautiful volcano in the sunset" />
     </div>
     <div>
-      <p>Absolute path import</p>
+      <p>Image and Picture components absolute path import</p>
       <Image width={450} height={450} src="/src/assets/pexels-fabianwiktor-3470872.jpg" alt="A beautiful volcano" />
       <Picture width={450} height={450} src="/src/assets/pexels-fabianwiktor-3470872.jpg" alt="A beautiful volcano in the sunset" />
     </div>
     <div>
-      <p>Import with alias</p>
+      <p>Image and Picture components import with alias</p>
       <Image width={450} height={450} src="@/assets/pexels-fabianwiktor-3470872.jpg" alt="A beautiful volcano" />
       <Picture width={450} height={450} src="@/assets/pexels-fabianwiktor-3470872.jpg" alt="A beautiful volcano in the sunset" />
     </div>
   </body>
 </html>
+
+<style>
+  section {
+    background: var(--background);
+  }
+  .custom-background {
+    background: var(--custom-background);
+  }
+  section,
+  .custom-background {
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 300px;
+  }
+</style>
