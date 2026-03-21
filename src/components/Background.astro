@@ -11,18 +11,18 @@ import '../styles/background.css'
 interface Props {
   /**
    * Path of the image that will be used as the background.
-   * It can be a relative path, an absolute path, or an alias.
+   * It can be a relative path, an absolute path, an alias or ImageMetadata.
    */
-  src: string
+  src: string | ImageMetadata
   /**
    * Name of the CSS variable that will be used to set the optimized background.
    * It must follow the syntax of CSS variables, meaning it must start with "--".
-   * The default is "--background".
+   * The default is --background.
    */
   cssVariable?: string
   /**
    * Format of the optimized image.
-   * The default is "webp".
+   * The default is webp.
    */
   format?: 'webp' | 'avif'
 }
