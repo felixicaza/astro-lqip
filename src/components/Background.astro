@@ -1,0 +1,47 @@
+---
+import type { ImageMetadata } from 'astro'
+
+import { getImage } from 'astro:assets'
+
+import { resolveImagePath } from '../utils/resolveImagePath'
+import { PREFIX } from '../constants'
+
+import '../styles/background.css'
+
+interface Props {
+  /**
+   * Path of the image that will be used as the background.
+   * It can be a relative path, an absolute path, or an alias.
+   */
+  src: string
+  /**
+   * Name of the CSS variable that will be used to set the optimized background.
+   * It must follow the syntax of CSS variables, meaning it must start with "--".
+   * The default is "--background".
+   */
+  cssVariable?: string
+  /**
+   * Format of the optimized image.
+   * The default is "webp".
+   */
+  format?: 'webp' | 'avif'
+}
+
+const { src, cssVariable = '--background', format = 'webp' } = Astro.props as Props
+
+const resolvedSrc = await resolveImagePath(src)
+
+if (!resolvedSrc) {
+  throw new Error(` ${PREFIX} Could not resolve background image in "${src}"`)
+}
+
+const imageInput: string | ImageMetadata
+  = typeof resolvedSrc === 'string' ? resolvedSrc : (resolvedSrc as ImageMetadata)
+
+const optimizedBackground = await getImage({ src: imageInput, format })
+const backgroundStyle = `${cssVariable}: url('${optimizedBackground.src}')`;
+---
+
+<div data-astro-lqip-bg style={backgroundStyle}>
+  <slot />
+</div>
