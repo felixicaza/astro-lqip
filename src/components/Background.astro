@@ -6,6 +6,7 @@ import { getImage } from 'astro:assets'
 
 import { resolveImagePath } from '../utils/resolveImagePath'
 import { PREFIX } from '../constants'
+import { getLqip } from '../utils/getLqip'
 
 import '../styles/background.css'
 
@@ -29,7 +30,19 @@ type buildResponsiveBackgroundStyleOptions = {
 
 type Props = ImageTransform
 
-const { src, cssVariable = '--background', format = 'webp', widths, width, height, quality, fit } = Astro.props as Props
+const {
+  src,
+  cssVariable = '--background',
+  format = 'webp',
+  widths,
+  width,
+  height,
+  quality,
+  fit,
+  lqip = 'base64'
+} = Astro.props as Props
+
+const isDevelopment = import.meta.env.MODE === 'development'
 
 const resolvedSrc = await resolveImagePath(src)
 if (!resolvedSrc) {
@@ -37,6 +50,15 @@ if (!resolvedSrc) {
 }
 
 const imageInput: string | ImageMetadata = typeof resolvedSrc === 'string' ? resolvedSrc : (resolvedSrc as ImageMetadata)
+
+const lqipSize = 12
+let lqipLayer: string | undefined
+const lqipInput = typeof resolvedSrc === 'string' ? { src: resolvedSrc } : resolvedSrc
+if (lqipInput) {
+  const rawLqipValue = await getLqip(lqipInput, lqip, lqipSize, isDevelopment)
+  lqipLayer = formatLqipLayer(lqip, typeof rawLqipValue === 'string' ? rawLqipValue : undefined)
+}
+
 const isFormatArray = Array.isArray(format)
 const formatValues = isFormatArray ? format : [format]
 const normalizedFormats = sortFormats(formatValues.filter((value): value is string => typeof value === 'string' && value.trim().length > 0))
@@ -165,15 +187,21 @@ function selectSourceOrFallback(formatSource: FormatSourceSet, selector?: (forma
   )
 }
 
-function createBackgroundValue(selector?: (formatSource: FormatSourceSet) => SourceEntry | undefined) {
+function appendLqipLayer(baseValue: string, layer?: string) {
+  if (!layer) return baseValue
+  return `${baseValue}, ${layer}`
+}
+
+function createBackgroundValue(selector?: (formatSource: FormatSourceSet) => SourceEntry | undefined, layer?: string) {
   if (!formatSources.length) {
-    return `url('${optimizedImages[0]?.src ?? ''}')`
+    return appendLqipLayer(`url('${optimizedImages[0]?.src ?? ''}')`, layer)
   }
 
   if (!isFormatArray) {
     const primary = formatSources[0]
     const selected = selectSourceOrFallback(primary, selector)
-    return `url('${selected.url ?? primary.fallbackSrc}')`
+    const baseValue = `url('${selected.url ?? primary.fallbackSrc}')`
+    return appendLqipLayer(baseValue, layer)
   }
 
   const parts = formatSources.map((formatSource) => {
@@ -182,20 +210,30 @@ function createBackgroundValue(selector?: (formatSource: FormatSourceSet) => Sou
     return `url('${url}') type('${formatSource.mimeType}')`
   })
 
-  return `image-set(${parts.join(', ')})`
+  return appendLqipLayer(`image-set(${parts.join(', ')})`, layer)
+}
+
+function formatLqipLayer(lqipType: 'base64' | 'color' | undefined, value?: string) {
+  if (!lqipType || !value) return undefined
+  if (lqipType === 'color') {
+    return `linear-gradient(${value}, ${value})`
+  }
+  return `url("${value}")`
 }
 
 const baseVariable = normalizeCssVariableName(cssVariable)
 const referenceSources = formatSources[0]?.sources ?? []
 const hasWidths = Array.isArray(widths) && widths.length > 0
+const createValueWithLqip = (selector?: (formatSource: FormatSourceSet) => SourceEntry | undefined) =>
+  createBackgroundValue(selector, lqipLayer)
 
 const backgroundStyle = hasWidths
   ? buildResponsiveBackgroundStyle({
     referenceSources,
     baseVariable,
-    createValue: createBackgroundValue
+    createValue: createValueWithLqip
   })
-  : `${baseVariable}: ${createBackgroundValue()}`
+  : `${baseVariable}: ${createValueWithLqip()}`
 ---
 
 <div data-astro-lqip-bg style={backgroundStyle}>

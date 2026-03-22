@@ -21,6 +21,11 @@ export interface ImageTransform {
    */
   cssVariable?: string
   /**
+   * LQIP placeholder strategy for Background (defaults to 'base64').
+   * Only 'base64' and 'color' are supported to keep CSS-friendly values.
+   */
+  lqip?: 'base64' | 'color'
+  /**
    * Specifies one or more output formats (first entry is preferred fallback).
    * Accepts a single `ImageOutputFormat` or an ordered array.
    * (defaults to webp)
