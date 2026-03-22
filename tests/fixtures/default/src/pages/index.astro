@@ -60,6 +60,38 @@ import volcanoSunsetImage from '../assets/pexels-fabianwiktor-3470482.jpg'
       </Background>
     </div>
     <div>
+      <p>Background component with lqip color</p>
+      <Background src="/src/assets/pexels-fabianwiktor-3470482.jpg" lqip="color">
+        <section>
+          <p>Optimized background</p>
+        </section>
+      </Background>
+    </div>
+    <div>
+      <p>Background component in multiple formats</p>
+      <Background src="/src/assets/pexels-fabianwiktor-3470482.jpg" format={['avif', 'webp', 'jpeg']}>
+        <section>
+          <p>Optimized background</p>
+        </section>
+      </Background>
+    </div>
+    <div>
+      <p>Background component with custom width and height</p>
+      <Background src="/src/assets/pexels-fabianwiktor-3470482.jpg" width={720} height={720}>
+        <section>
+          <p>Optimized background</p>
+        </section>
+      </Background>
+    </div>
+    <div>
+      <p>Background component with several props</p>
+      <Background src="/src/assets/pexels-fabianwiktor-3470482.jpg" format="avif" width={720} height={720} widths={[100, 1200, 1536]} quality={80} fit="cover">
+        <section>
+          <p>Optimized background</p>
+        </section>
+      </Background>
+    </div>
+    <div>
       <p>Image and Picture components ImageMetadata import</p>
       <Image width={450} height={450} src={volcanoImage} alt="A beautiful volcano" />
       <Picture width={450} height={450} src={volcanoImage} alt="A beautiful volcano in the sunset" />
