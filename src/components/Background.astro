@@ -1,5 +1,6 @@
 ---
 import type { ImageMetadata } from 'astro'
+import type { ImageTransform } from '../types'
 
 import { getImage } from 'astro:assets'
 
@@ -8,38 +9,193 @@ import { PREFIX } from '../constants'
 
 import '../styles/background.css'
 
-interface Props {
-  /**
-   * Path of the image that will be used as the background.
-   * It can be a relative path, an absolute path, an alias or ImageMetadata.
-   */
-  src: string | ImageMetadata
-  /**
-   * Name of the CSS variable that will be used to set the optimized background.
-   * It must follow the syntax of CSS variables, meaning it must start with "--".
-   * The default is --background.
-   */
-  cssVariable?: string
-  /**
-   * Format of the optimized image.
-   * The default is webp.
-   */
-  format?: 'webp' | 'avif'
+type SourceEntry = {
+  url: string
+  width?: number
 }
 
-const { src, cssVariable = '--background', format = 'webp' } = Astro.props as Props
+type FormatSourceSet = {
+  format: string
+  mimeType: string
+  fallbackSrc: string
+  sources: SourceEntry[]
+}
+
+type buildResponsiveBackgroundStyleOptions = {
+  referenceSources: SourceEntry[]
+  baseVariable: string
+  createValue: (selector?: (formatSource: FormatSourceSet) => SourceEntry | undefined) => string
+}
+
+type Props = ImageTransform
+
+const { src, cssVariable = '--background', format = 'webp', widths, width, height, quality, fit } = Astro.props as Props
 
 const resolvedSrc = await resolveImagePath(src)
-
 if (!resolvedSrc) {
   throw new Error(` ${PREFIX} Could not resolve background image in "${src}"`)
 }
 
-const imageInput: string | ImageMetadata
-  = typeof resolvedSrc === 'string' ? resolvedSrc : (resolvedSrc as ImageMetadata)
+const imageInput: string | ImageMetadata = typeof resolvedSrc === 'string' ? resolvedSrc : (resolvedSrc as ImageMetadata)
+const isFormatArray = Array.isArray(format)
+const formatValues = isFormatArray ? format : [format]
+const normalizedFormats = sortFormats(formatValues.filter((value): value is string => typeof value === 'string' && value.trim().length > 0))
+const targetFormats = normalizedFormats.length ? normalizedFormats : ['webp']
 
-const optimizedBackground = await getImage({ src: imageInput, format })
-const backgroundStyle = `${cssVariable}: url('${optimizedBackground.src}')`;
+const sharedImageOptions = { src: imageInput, widths, width, height, quality, fit }
+
+const optimizedImages = await Promise.all(targetFormats.map((currentFormat) => getImage({ ...sharedImageOptions, format: currentFormat })))
+
+const formatSources: FormatSourceSet[] = optimizedImages.map((optimizedImage, index) => ({
+  format: targetFormats[index],
+  mimeType: mimeTypeFromFormat(targetFormats[index]),
+  fallbackSrc: optimizedImage.src,
+  sources: parseSrcSetAttribute(optimizedImage.srcSet?.attribute)
+}))
+
+function normalizeCssVariableName(variable: string) {
+  const trimmed = variable.trim()
+  if (!trimmed) return '--background'
+  return trimmed.startsWith('--') ? trimmed : `--${trimmed}`
+}
+
+function normalizeFormatValue(value: string) {
+  return value.trim().toLowerCase()
+}
+
+function sortFormats(values: string[]) {
+  const formatPriority = ['avif', 'webp', 'png', 'jpeg', 'jpg', 'svg']
+  const seen = new Set<string>()
+  const unique = values
+    .map((value) => normalizeFormatValue(value))
+    .filter((value) => {
+      if (!value || seen.has(value)) return false
+      seen.add(value)
+      return true
+    })
+
+  return unique.sort((a, b) => {
+    const priorityA = formatPriority.indexOf(a)
+    const priorityB = formatPriority.indexOf(b)
+    const normalizedA = priorityA === -1 ? Number.MAX_SAFE_INTEGER : priorityA
+    const normalizedB = priorityB === -1 ? Number.MAX_SAFE_INTEGER : priorityB
+    if (normalizedA === normalizedB) {
+      return a.localeCompare(b)
+    }
+    return normalizedA - normalizedB
+  })
+}
+
+function mimeTypeFromFormat(value: string) {
+  switch (value) {
+    case 'avif':
+      return 'image/avif'
+    case 'webp':
+      return 'image/webp'
+    case 'png':
+      return 'image/png'
+    case 'jpeg':
+    case 'jpg':
+      return 'image/jpeg'
+    case 'svg':
+      return 'image/svg+xml'
+    default:
+      return `image/${value}`
+  }
+}
+
+function parseSrcSetAttribute(attribute?: string): SourceEntry[] {
+  if (!attribute) return []
+
+  const entries = attribute
+    .split(',')
+    .map((entry) => entry.trim())
+    .filter(Boolean)
+    .map((entry) => {
+      const lastSpaceIndex = entry.lastIndexOf(' ')
+      if (lastSpaceIndex === -1) {
+        return { url: entry } satisfies SourceEntry
+      }
+
+      const url = entry.slice(0, lastSpaceIndex)
+      const descriptor = entry.slice(lastSpaceIndex + 1)
+      const widthMatch = descriptor.match(/(?<value>\d+(?:\.\d+)?)(?<unit>[wx])/i)
+      const width = widthMatch?.groups?.unit?.toLowerCase() === 'w'
+        ? Number.parseFloat(widthMatch.groups.value)
+        : undefined
+
+      return { url, width }
+    })
+
+  const unique = new Map(entries.map((entry) => [entry.url, entry]))
+  return Array.from(unique.values()).sort((a, b) => (a.width ?? 0) - (b.width ?? 0))
+}
+
+function buildResponsiveBackgroundStyle({ referenceSources, baseVariable, createValue }: buildResponsiveBackgroundStyleOptions) {
+  if (!referenceSources.length) {
+    return `${baseVariable}: ${createValue()}`
+  }
+
+  const declarations = [
+    `${baseVariable}: ${createValue((formatSource) => formatSource.sources[formatSource.sources.length - 1])}`
+  ]
+
+  const buckets = [
+    { suffix: '-small', match: (width?: number) => typeof width === 'number' && width < 768 },
+    { suffix: '-medium', match: (width?: number) => typeof width === 'number' && width >= 768 && width <= 1200 },
+    { suffix: '-large', match: (width?: number) => typeof width === 'number' && width > 1200 && width <= 1920 },
+    { suffix: '-xlarge', match: (width?: number) => typeof width === 'number' && width > 1920 }
+  ] as const
+
+  for (const bucket of buckets) {
+    const referenceMatch = [...referenceSources].reverse().find((source) => bucket.match(source.width))
+    if (!referenceMatch || typeof referenceMatch.width !== 'number') continue
+
+    const value = createValue((formatSource) => formatSource.sources.find((source) => source.width === referenceMatch.width))
+    declarations.push(`${baseVariable}${bucket.suffix}: ${value}`)
+  }
+
+  return declarations.join('; ')
+}
+
+function selectSourceOrFallback(formatSource: FormatSourceSet, selector?: (formatSource: FormatSourceSet) => SourceEntry | undefined) {
+  return (
+    selector?.(formatSource)
+    ?? formatSource.sources[formatSource.sources.length - 1] ?? { url: formatSource.fallbackSrc }
+  )
+}
+
+function createBackgroundValue(selector?: (formatSource: FormatSourceSet) => SourceEntry | undefined) {
+  if (!formatSources.length) {
+    return `url('${optimizedImages[0]?.src ?? ''}')`
+  }
+
+  if (!isFormatArray) {
+    const primary = formatSources[0]
+    const selected = selectSourceOrFallback(primary, selector)
+    return `url('${selected.url ?? primary.fallbackSrc}')`
+  }
+
+  const parts = formatSources.map((formatSource) => {
+    const selected = selectSourceOrFallback(formatSource, selector)
+    const url = selected.url ?? formatSource.fallbackSrc
+    return `url('${url}') type('${formatSource.mimeType}')`
+  })
+
+  return `image-set(${parts.join(', ')})`
+}
+
+const baseVariable = normalizeCssVariableName(cssVariable)
+const referenceSources = formatSources[0]?.sources ?? []
+const hasWidths = Array.isArray(widths) && widths.length > 0
+
+const backgroundStyle = hasWidths
+  ? buildResponsiveBackgroundStyle({
+    referenceSources,
+    baseVariable,
+    createValue: createBackgroundValue
+  })
+  : `${baseVariable}: ${createBackgroundValue()}`
 ---
 
 <div data-astro-lqip-bg style={backgroundStyle}>
