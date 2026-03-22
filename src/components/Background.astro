@@ -2,7 +2,7 @@
 import type { ImageMetadata } from 'astro'
 import type { ImageTransform } from '../types'
 
-import { getImage } from 'astro:assets'
+import { getImage, inferRemoteSize } from 'astro:assets'
 
 import { resolveImagePath } from '../utils/resolveImagePath'
 import { PREFIX } from '../constants'
@@ -44,9 +44,29 @@ const {
 
 const isDevelopment = import.meta.env.MODE === 'development'
 
+let normalizedWidth = width
+let normalizedHeight = height
+
 const resolvedSrc = await resolveImagePath(src)
 if (!resolvedSrc) {
   throw new Error(` ${PREFIX} Could not resolve background image in "${src}"`)
+}
+
+const remoteBackgroundUrl = typeof resolvedSrc === 'string' && isRemoteSource(resolvedSrc) ? resolvedSrc : null
+if (remoteBackgroundUrl && (!normalizedWidth || !normalizedHeight)) {
+  try {
+    const { width: inferredWidth, height: inferredHeight } = await inferRemoteSize(remoteBackgroundUrl)
+    normalizedWidth ??= inferredWidth
+    normalizedHeight ??= inferredHeight
+  } catch (error) {
+    console.warn(`${PREFIX} Failed to infer remote background size for "${remoteBackgroundUrl}".`, error)
+  }
+
+  if (!normalizedWidth || !normalizedHeight) {
+    throw new Error(
+      `${PREFIX} Remote background images require width and height. Provide both props or ensure the URL is reachable in your Astro config 'image.domains'.`
+    )
+  }
 }
 
 const imageInput: string | ImageMetadata = typeof resolvedSrc === 'string' ? resolvedSrc : (resolvedSrc as ImageMetadata)
@@ -64,7 +84,14 @@ const formatValues = isFormatArray ? format : [format]
 const normalizedFormats = sortFormats(formatValues.filter((value): value is string => typeof value === 'string' && value.trim().length > 0))
 const targetFormats = normalizedFormats.length ? normalizedFormats : ['webp']
 
-const sharedImageOptions = { src: imageInput, widths, width, height, quality, fit }
+const sharedImageOptions = {
+  src: imageInput,
+  widths,
+  width: normalizedWidth,
+  height: normalizedHeight,
+  quality,
+  fit
+}
 
 const optimizedImages = await Promise.all(targetFormats.map((currentFormat) => getImage({ ...sharedImageOptions, format: currentFormat })))
 
@@ -106,6 +133,10 @@ function sortFormats(values: string[]) {
     }
     return normalizedA - normalizedB
   })
+}
+
+function isRemoteSource(value: unknown): value is string {
+  return typeof value === 'string' && /^https?:\/\//.test(value)
 }
 
 function mimeTypeFromFormat(value: string) {
