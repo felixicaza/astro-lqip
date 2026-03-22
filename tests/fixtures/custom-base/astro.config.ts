@@ -7,5 +7,8 @@ export default defineConfig({
   build: {
     assets: '_weird-name1'
   },
-  compressHTML: false
+  compressHTML: false,
+  image: {
+    domains: ['images.pexels.com']
+  }
 })

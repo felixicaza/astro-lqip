@@ -44,6 +44,14 @@ import volcanoSunsetImage from '../assets/pexels-fabianwiktor-3470482.jpg'
       </Background>
     </div>
     <div>
+      <p>Background component with remote image</p>
+      <Background src="https://images.pexels.com/photos/994605/pexels-photo-994605.jpeg">
+        <section>
+          <p>Optimized background</p>
+        </section>
+      </Background>
+    </div>
+    <div>
       <p>Background component with custom CSS variable</p>
       <Background src="/src/assets/pexels-fabianwiktor-3470482.jpg" cssVariable="--custom-background">
         <section class="custom-background">
@@ -110,6 +118,11 @@ import volcanoSunsetImage from '../assets/pexels-fabianwiktor-3470482.jpg'
       <p>Image and Picture components import with alias</p>
       <Image width={450} height={450} src="@/assets/pexels-fabianwiktor-3470872.jpg" alt="A beautiful volcano" />
       <Picture width={450} height={450} src="@/assets/pexels-fabianwiktor-3470872.jpg" alt="A beautiful volcano in the sunset" />
+    </div>
+    <div>
+      <p>Image and Picture components with remote images</p>
+      <Image width={450} height={450} src="https://images.pexels.com/photos/994605/pexels-photo-994605.jpeg" alt="A beautiful volcano" />
+      <Picture width={450} height={450} src="https://images.pexels.com/photos/994605/pexels-photo-994605.jpeg" alt="A beautiful volcano in the sunset" />
     </div>
   </body>
 </html>
