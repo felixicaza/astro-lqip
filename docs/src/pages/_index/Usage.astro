@@ -10,40 +10,96 @@ const importingPicture = `- import { Picture } from 'astro:components';
 + import { Picture } from 'astro-lqip/components';
 `
 
-const example = `---
-import { Image, Picture } from 'astro-lqip/components';
+const importingBackground = `+ import { Background } from 'astro-lqip/components';
+`
 
-import image from './path/to/image.png';
-import otherImage from './path/to/other-image.png';
+const example = `---
+import { Image, Picture, Background } from 'astro-lqip/components';
+
+import image from '/src/assets/images/image.png';
+import otherImage from '/src/assets/images/other-image.png';
+import backgroundImage from '/src/assets/images/background-image.png';
 ---
 
 <Image src={image} alt="Cover Image" width={220} height={220} />
 <Picture src={otherImage} alt="Other cover Image" width={220} height={220} />
+<Background src={backgroundImage}>
+  <section>
+    <p>Optimized background</p>
+  </section>
+</Background>
+
+<style>
+  section {
+    background-image: var(--background);
+    background-size: cover;
+    background-position: center;
+  }
+</style>
 `
 
 const exampleWithAbsolutePath = `---
-import { Image, Picture } from 'astro-lqip/components';
+import { Image, Picture, Background } from 'astro-lqip/components';
 ---
 
 <Image src="/src/assets/images/image.png" alt="Cover Image" width={220} height={220} />
 <Picture src="/src/assets/images/other-image.png" alt="Other Image" width={220} height={220} />
+<Background src="/src/assets/images/background-image.png">
+  <section>
+    <p>Optimized background</p>
+  </section>
+</Background>
+
+<style>
+  section {
+    background-image: var(--background);
+    background-size: cover;
+    background-position: center;
+  }
+</style>
 `
 
 const exampleWithRelativePath = `---
-import { Image, Picture } from 'astro-lqip/components';
+import { Image, Picture, Background } from 'astro-lqip/components';
 ---
 
 <!-- assuming you are on the path \`/src/pages/index.astro\` -->
 <Image src="../assets/images/image.png" alt="Cover Image" width={220} height={220} />
 <Picture src="../assets/images/other-image.png" alt="Other Image" width={220} height={220} />
+<Background src="../assets/images/background-image.png">
+  <section>
+    <p>Optimized background</p>
+  </section>
+</Background>
+
+<style>
+  section {
+    background-image: var(--background);
+    background-size: cover;
+    background-position: center;
+  }
+</style>
 `
 
 const exampleWithAlias = `---
-import { Image, Picture } from 'astro-lqip/components';
+import { Image, Picture, Background } from 'astro-lqip/components';
 ---
 
 <Image src="@/assets/images/image.png" alt="Cover Image" width={220} height={220} />
 <Picture src="@/assets/images/other-image.png" alt="Other Image" width={220} height={220} />
+<Background src="@/assets/images/background-image.png">
+  <section>
+    <p>Optimized background</p>
+  </section>
+</Background>
+
+<style>
+  section {
+    background-image: var(--background);
+    background-size: cover;
+    background-position: center;
+  }
+</style>
 `
 ---
 
@@ -56,12 +112,19 @@ import { Image, Picture } from 'astro-lqip/components';
       or
       <code>&lt;Picture&gt;</code>
       component with the ones provided by
-      <a href="https://www.npmjs.com/package/astro-lqip" target="_blank" rel="noopener noreferrer">astro-lqip</a>
+      <a href="https://npmx.dev/package/astro-lqip" target="_blank" rel="noopener noreferrer">astro-lqip</a>
+      {' '}
+      or import the
+      <code>&lt;Background&gt;</code>
+      {' '}
+      component for CSS background images.
     </p>
     <h3>Image</h3>
     <Code code={importingImage} lang="diff" />
     <h3>Picture</h3>
     <Code code={importingPicture} lang="diff" />
+    <h3>Background</h3>
+    <Code code={importingBackground} lang="diff" />
     <p>Example:</p>
     <Code class="example" code={example} lang="astro" />
     <AlertBlock type="tip" label="Tip">

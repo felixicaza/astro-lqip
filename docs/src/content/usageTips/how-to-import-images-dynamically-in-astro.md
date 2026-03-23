@@ -5,7 +5,7 @@ title: "How to import images dynamically in Astro"
 
 # How to import images dynamically in Astro
 
-To import images dynamically in Astro, a few additional steps are required, since Astro doesn’t allow passing the path directly. However, [astro-lqip](https://npmjs.com/package/astro-lqip) does support this. Even so, let’s take a look at how we can do it.
+To import images dynamically in Astro, a few additional steps are required, since Astro doesn’t allow passing the path directly. However, [astro-lqip](https://npmx.dev/package/astro-lqip) does support this. Even so, let’s take a look at how we can do it.
 
 ## Image paths
 
@@ -44,7 +44,7 @@ export const images = [
 
 ## Using the images in an Astro component
 
-Now, let’s suppose we want to use these images in an Astro component, which we’ll create in `src/components/Carousel.astro`. In this component, we can import the `carousel.ts` file and then use its paths to render the images. Although in this example we’ll use the `Picture` component from [astro-lqip](https://npmjs.com/package/astro-lqip), the same concept applies to the `Image` component.
+Now, let’s suppose we want to use these images in an Astro component, which we’ll create in `src/components/Carousel.astro`. In this component, we can import the `carousel.ts` file and then use its paths to render the images. Although in this example we’ll use the `Picture` component from [astro-lqip](https://npmx.dev/package/astro-lqip), the same concept applies to the `Image` component.
 
 ```astro
 ---

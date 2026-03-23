@@ -6,18 +6,78 @@ import AlertBlock from '@components/AlertBlock.astro'
 const example = `---
 import { Image, Picture } from 'astro-lqip/components';
 
-import image from './path/to/image.png';
-import otherImage from './path/to/other-image.png';
+import image from '/src/assets/images/image.png';
+import otherImage from '/src/assets/images/other-image.png';
 ---
 
 <Image src={image} alt="Cover Image" width={220} height={220} lqip="svg" lqipSize={10} />
 <Picture src={otherImage} alt="Other cover Image" width={220} height={220} lqip="css" lqipSize={7} />
+`
+
+const exampleBackground = `---
+import { Background } from 'astro-lqip/components';
+import backgroundImage from '/src/assets/images/background-image.png';
+---
+
+<Background src={backgroundImage} lqip="color" cssVariable="--bg-lqip" format={["avif", "webp"]} width={500} height={300} quality={80} fit="cover">
+  <section>
+    <p>Optimized background</p>
+  </section>
+</Background>
+
+<style>
+  section {
+    background-image: var(--bg-lqip);
+    background-size: cover;
+    background-position: center;
+  }
+</style>
+`
+
+const exampleBackgroundResponsive = `---
+import { Background } from 'astro-lqip/components';
+import backgroundImage from '/src/assets/images/background-image.png';
+---
+
+<Background src={backgroundImage} format="avif" widths={[475, 1000, 1536, 2100]}>
+  <section>
+    <p>Optimized background</p>
+  </section>
+</Background>
+
+<style>
+  section {
+    background-image: var(--background-small); /* 475px */
+    background-size: cover;
+    background-position: center;
+  }
+
+  @media (width >= 768px) {
+    section {
+      background-image: var(--background-medium); /* 1000px */
+    }
+  }
+
+  @media (width >= 1200px) {
+    section {
+      background-image: var(--background-large); /* 1536px */
+    }
+  }
+
+  @media (width >= 1920px) {
+    section {
+      /* or var(--background), since it's the default variable for the largest image */
+      background-image: var(--background-xlarge); /* 2100px */
+    }
+  }
+</style>
 `
 ---
 
 <article>
   <section>
     <h2>Props</h2>
+    <h3>Image and Picture</h3>
     <p>
       Both
       <code>&lt;Image&gt;</code>
@@ -84,6 +144,180 @@ import otherImage from './path/to/other-image.png';
       prop similar to
       <code>pictureAttributes</code>
       has been added.
+    </p>
+  </AlertBlock>
+
+  <section>
+    <h3>Background</h3>
+    <p>
+      The
+      <code>&lt;Background&gt;</code>
+      {' '}
+      component supports the following props:
+    </p>
+    <ul>
+      <li>
+        <code>src</code>
+        {' '}
+        (required): The source of the background image located in
+        {' '}
+        <code>src</code>
+        {' '}
+        folder. It can be a static import, absolute path, relative path, alias path or remote URL.
+      </li>
+      <li>
+        <code>lqip</code>
+        : The LQIP type to use. It can be one of the following:
+        <ul>
+          <li>
+            <code>base64</code>
+            : Generates a Base64-encoded LQIP image. (default option)
+          </li>
+          <li>
+            <code>color</code>
+            : Generates a solid color placeholder.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <code>cssVariable</code>
+        : A string that represents the name of the CSS variable to store the background data.
+        <ul>
+          <li>
+            By default, the background data is stored in a CSS variable named
+            <code>--background</code>
+            .
+          </li>
+          <li>
+            For responsive backgrounds, the CSS variable names are generated based on the provided widths, following the pattern
+            <code>--background-small</code>
+            {' '}
+            (lower than 768px),
+            <code>--background-medium</code>
+            {' '}
+            (768px to 1199px),
+            <code>--background-large</code>
+            {' '}
+            (1200px to 1919px) and
+            <code>--background-xlarge</code>
+            {' '}
+            (1920px and above).
+            <code>--background</code>
+            {' '}
+            is also generated for the largest image for backward compatibility.
+          </li>
+          <li>
+            If the
+            <code>cssVariable</code>
+            {' '}
+            prop is provided, the generated CSS variable names will follow the pattern
+            <code>--&lcub;cssVariable&rcub;-small</code>
+            ,
+            <code>--&lcub;cssVariable&rcub;-medium</code>
+            ,
+            <code>--&lcub;cssVariable&rcub;-large</code>
+            {' '}
+            and
+            <code>--&lcub;cssVariable&rcub;-xlarge</code>
+            .
+          </li>
+        </ul>
+      </li>
+      <li>
+        <code>format</code>
+        : The image format to use for the background. It can be one of the following in string or an array of strings. If an array is provided, this generates multiple background images with the native
+        {' '}
+        <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/image/image-set">
+          <code>image-set()</code>
+        </a>
+        {' '}
+        CSS function, which allows the browser to choose the best format to use based on its support:
+        <ul>
+          <li>
+            <code>avif</code>
+          </li>
+          <li>
+            <code>webp</code>
+            {' '}
+            (default option)
+          </li>
+          <li>
+            <code>jpeg</code>
+          </li>
+          <li>
+            <code>png</code>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <code>widths</code>
+        : An array of numbers that represents the widths to use for responsive background images.
+      </li>
+      <li>
+        <code>width</code>
+        : The width to use for the background image. This prop is ignored if the
+        {' '}
+        <code>widths</code>
+        {' '}
+        prop is provided.
+      </li>
+      <li>
+        <code>height</code>
+        : The height to use for the background image. This prop is ignored if the
+        {' '}
+        <code>widths</code>
+        {' '}
+        prop is provided.
+      </li>
+      <li>
+        <code>quality</code>
+        : The quality to use for the background image. It can be a number from
+        {' '}
+        <code>1</code>
+        {' '}
+        to
+        {' '}
+        <code>100</code>
+        .
+      </li>
+      <li>
+        <code>fit</code>
+        : The fit to use for the background image. It can be one of the following:
+        <ul>
+          <li>
+            <code>cover</code>
+          </li>
+          <li>
+            <code>contain</code>
+          </li>
+          <li>
+            <code>fill</code>
+          </li>
+          <li>
+            <code>inside</code>
+          </li>
+          <li>
+            <code>outside</code>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+  <section>
+    <p>Example:</p>
+    <Code code={exampleBackground} lang="astro" />
+  </section>
+  <section>
+    <p>Example with responsive background:</p>
+    <Code code={exampleBackgroundResponsive} lang="astro" />
+  </section>
+  <AlertBlock type="note" label="Note">
+    <p>
+      The
+      {' '}
+      <code>lqipSize</code>
+      {' '}
+      prop is not compatible with this component, to avoid large CSS outputs.
     </p>
   </AlertBlock>
 </article>
