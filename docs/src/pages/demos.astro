@@ -1,5 +1,5 @@
 ---
-import { Image, Picture } from 'astro-lqip/components'
+import { Image, Picture, Background } from 'astro-lqip/components'
 
 import Layout from '@layouts/Layout.astro'
 
@@ -18,7 +18,7 @@ import thirdImage from '@images/pexels-fabianwiktor-3470478.jpg'
     <div>
       <label class="toggle-lqip">
         <input type="checkbox" />
-        Enable LQIP
+        Show LQIP for Image and Picture components
       </label>
       <section>
         <div>
@@ -113,6 +113,65 @@ import thirdImage from '@images/pexels-fabianwiktor-3470478.jpg'
         </div>
       </section>
     </div>
+    <div>
+      <p>Background Component</p>
+      <section>
+        <div>
+          <h3>LQIP Base64 (Default)</h3>
+          <Background
+            src="../images/pexels-fabianwiktor-3470482.jpg"
+            width={234}
+            height={234}
+            format={['avif', 'webp']}
+          >
+            <section class="background-demo">
+              <h3>A beautiful landscape with a lake and mountains 1</h3>
+            </section>
+          </Background>
+        </div>
+        <div>
+          <h3>LQIP Color</h3>
+          <Background
+            src="/src/images/pexels-fabianwiktor-3470872.jpg"
+            width={234}
+            height={234}
+            format={['avif', 'webp']}
+            lqip="color"
+          >
+            <section class="background-demo">
+              <h3>A beautiful landscape with a lake and mountains 2</h3>
+            </section>
+          </Background>
+        </div>
+        <div>
+          <h3>LQIP Base64 (Default)</h3>
+          <Background
+            src="@images/pexels-fabianwiktor-3470478.jpg"
+            width={234}
+            height={234}
+            format={['avif', 'webp']}
+          >
+            <section class="background-demo">
+              <h3>A beautiful landscape with a lake and mountains 3</h3>
+            </section>
+          </Background>
+        </div>
+        <div>
+          <h3>LQIP Color</h3>
+          <Background
+            src="https://images.pexels.com/photos/994605/pexels-photo-994605.jpeg"
+            width={234}
+            height={234}
+            format={['avif', 'webp']}
+            lqip="color"
+          >
+            <section class="background-demo">
+              <h3>A beautiful landscape with a lake and mountains 4</h3>
+            </section>
+          </Background>
+        </div>
+      </section>
+    </div>
     <NextButton href="/usage-tips" label="Tips" />
   </main>
   <Footer />
@@ -150,11 +209,14 @@ import thirdImage from '@images/pexels-fabianwiktor-3470478.jpg'
         }
       }
 
+      & p {
+        margin: 0;
+      }
+
       & section {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(234px, 1fr));
         gap: 8px;
-        text-align: center;
 
         @media (width >= 1200px) {
           text-align: initial;
@@ -163,6 +225,30 @@ import thirdImage from '@images/pexels-fabianwiktor-3470478.jpg'
         & h3 {
           font-size: 18px;
           font-weight: normal;
+        }
+
+        .background-demo {
+          box-sizing: border-box;
+          position: relative;
+          background: var(--background) no-repeat;
+          background-size: cover;
+          height: 234px;
+          border-radius: 4px;
+          overflow: hidden;
+
+          & > h3 {
+            isolation: isolate;
+            padding: 10px;
+            text-align: center;
+          }
+
+          &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgb(0 0 0 / 0.45);
+            z-index: 0;
+          }
         }
       }
     }

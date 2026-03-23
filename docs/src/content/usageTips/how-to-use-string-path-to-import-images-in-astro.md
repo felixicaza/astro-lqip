@@ -7,7 +7,7 @@ title: "How to use string path to import images in Astro"
 
 ## Absolute import of images using string paths
 
-Unlike [how images are normally imported in Astro](/usage-tips/how-to-import-images-in-astro), in this usage tip you’ll learn how to import images using absolute paths defined as string values, thanks to [astro-lqip](https://npmjs.com/package/astro-lqip).
+Unlike [how images are normally imported in Astro](/usage-tips/how-to-import-images-in-astro), in this usage tip you’ll learn how to import images using absolute paths defined as string values, thanks to [astro-lqip](https://npmx.dev/package/astro-lqip).
 
 ```astro
 ---

@@ -1,15 +1,16 @@
 ---
 import Warning from '@icons/warning.svg'
 import LightBulb from '@icons/lightbulb.svg'
+import Information from '@icons/information.svg'
 
 interface Props {
-  type: 'tip' | 'warning'
+  type: 'tip' | 'warning' | 'note'
   label: string
 }
 
 const { type, label } = Astro.props as Props
 
-const IconMap = { tip: LightBulb, warning: Warning } as const
+const IconMap = { tip: LightBulb, warning: Warning, note: Information } as const
 const resolvedType = (type ?? 'tip') as keyof typeof IconMap
 const Icon = IconMap[resolvedType];
 ---
@@ -24,7 +25,8 @@ const Icon = IconMap[resolvedType];
 
 <style>
   .warning,
-  .tip {
+  .tip,
+  .note {
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -70,6 +72,18 @@ const Icon = IconMap[resolvedType];
     & :global(p code) {
       background: #0c271c;
       border-color: #40d07c;
+    }
+  }
+
+  .note {
+    background-color: #1e2a3b;
+    color: #c3d9f9;
+    border-color: #4079d0;
+
+    /* Necessary `:global()` function for styling child blocks. Reference: https://docs.astro.build/en/guides/styling/#global-styles */
+    & :global(p code) {
+      background: #16202b;
+      border-color: #4079d0;
     }
   }
 </style>

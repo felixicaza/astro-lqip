@@ -5,7 +5,7 @@ title: "How to use string path to dynamically import images in Astro"
 
 # How to use string path to dynamically import images in Astro
 
-Similarly, [astro-lqip](https://www.npmjs.com/package/astro-lqip) allows importing images dynamically using string paths. This was developed with developer experience (DX) in mind, as [dynamic imports in Astro](/usage-tips/how-to-import-images-dynamically-in-astro) can be somewhat tricky.
+Similarly, [astro-lqip](https://npmx.dev/package/astro-lqip) allows importing images dynamically using string paths. This was developed with developer experience (DX) in mind, as [dynamic imports in Astro](/usage-tips/how-to-import-images-dynamically-in-astro) can be somewhat tricky.
 
 ```astro
 ---
