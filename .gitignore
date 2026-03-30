@@ -11,3 +11,4 @@ temp
 cache
 .eslintcache
 .astro
+/dist/
