@@ -1,6 +1,6 @@
 {
   "name": "docs",
-  "version": "1.7.1",
+  "version": "0.0.0",
   "private": true,
   "description": "Docs project for Astro LQIP",
   "type": "module",
@@ -11,7 +11,7 @@
     "preview": "astro preview"
   },
   "dependencies": {
-    "astro": "6.0.4",
+    "astro": "6.1.2",
     "astro-lqip": "workspace:*",
     "sharp": "0.34.5"
   }
