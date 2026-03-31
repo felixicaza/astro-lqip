@@ -3,6 +3,8 @@
  * Extracted from Astro's Types, reference: https://github.com/withastro/astro/blob/2dcd8d54c6fb00183228d757bf684e67c79029d8/packages/astro/src/assets/types.ts#L82
  */
 
+import type { ImageMetadata } from 'astro'
+
 type ValidOutputFormats = ['avif', 'png', 'webp', 'jpeg', 'jpg', 'svg']
 type ImageQualityPreset = 'low' | 'mid' | 'high' | 'max' | (string & {})
 type ImageQuality = ImageQualityPreset | number
