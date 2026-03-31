@@ -19,11 +19,20 @@ function isNode() {
 
 async function readIfExists(path: string): Promise<Buffer | undefined> {
   if (!isNode()) return undefined
+
   try {
     return await readFile(path)
   } catch {
     return undefined
   }
+}
+
+function normalizeLqipSize(size: number, fallback = 4) {
+  const numeric = Number(size)
+
+  if (!Number.isFinite(numeric)) return fallback
+
+  return Math.min(64, Math.max(4, Math.round(numeric)))
 }
 
 export async function generateLqip(
@@ -34,6 +43,7 @@ export async function generateLqip(
 ) {
   try {
     const normalizedPath = normalizeFsPath(imagePath)
+    const normalizedSize = normalizeLqipSize(lqipSize)
 
     const buffer = await readIfExists(normalizedPath)
 
@@ -42,7 +52,7 @@ export async function generateLqip(
       return undefined
     }
 
-    const plaiceholderResult = await getPlaiceholder(buffer, { size: lqipSize })
+    const plaiceholderResult = await getPlaiceholder(buffer, { size: normalizedSize })
     let lqipValue: string | GetSVGReturn | undefined
 
     switch (lqipType) {

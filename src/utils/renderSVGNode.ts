@@ -1,10 +1,6 @@
-import type { StyleAttrs, SVGNode } from '../types'
+import type { SVGNode } from '../types'
 
-function styleToString(style: StyleAttrs) {
-  return Object.entries(style)
-    .map(([key, val]) => `${key.replace(/([A-Z])/g, '-$1').toLowerCase()}:${val}`)
-    .join(';')
-}
+import { styleToString } from './styleToString'
 
 export function renderSVGNode([tag, attrs, children = []]: SVGNode): string {
   let attrString = ''
