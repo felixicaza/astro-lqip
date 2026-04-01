@@ -11,5 +11,8 @@ export default defineConfig({
   },
   deps: {
     neverBundle: 'astro:assets'
+  },
+  checks: {
+    pluginTimings: false
   }
 })
