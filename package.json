@@ -58,7 +58,9 @@
     "test:fixtures:preview:custom-base": "pnpm --filter \"./tests/fixtures/custom-base\" preview",
     "test:fixtures:preview:default": "pnpm --filter \"./tests/fixtures/default\" preview",
     "test:fixtures:preview:ssr": "pnpm --filter \"./tests/fixtures/ssr-node\" preview",
-    "test:fixtures:ssr": "pnpm --filter \"./tests/fixtures/ssr-node\" build"
+    "test:fixtures:preview:ssr:custom-base": "pnpm --filter \"./tests/fixtures/ssr-node-custom-base\" preview",
+    "test:fixtures:ssr": "pnpm --filter \"./tests/fixtures/ssr-node\" build",
+    "test:fixtures:ssr:custom-base": "pnpm --filter \"./tests/fixtures/ssr-node-custom-base\" build"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm nano-staged"
