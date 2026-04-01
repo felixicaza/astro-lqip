@@ -18,7 +18,7 @@ const IS_DEV = import.meta.env?.MODE === 'development'
 const STACK_PATH_REGEX = /(file:\/\/[^\s)]+|\/[^\s)]+|[A-Za-z]:[^\s)]+):\d+:\d+/
 const IGNORED_STACK_SEGMENTS = [`${sep}node_modules${sep}`, `${sep}dist${sep}`, `${sep}.astro${sep}`, `${sep}.prerender${sep}`]
 const DIRS_IGNORED_IN_WALK = new Set(['node_modules', 'dist', '.astro'])
-const DIRS_IGNORED_IN_DIST_WALK = new Set(['.prerender', '.astro', '.vite'])
+const DIRS_IGNORED_IN_DIST_WALK = new Set(['.astro', '.vite'])
 
 const LOCAL_IMAGE_MODULES = import.meta.glob('/src/**/*.{jpg,jpeg,png,webp,avif,svg,gif}')
 
@@ -224,6 +224,21 @@ function matchesBuildAsset(sourceFilePath: string, emittedFileName: string) {
   return emittedFileName.startsWith(`${sourceName}.`) && emittedFileName.endsWith(sourceExt)
 }
 
+function toPublicPathFromDist(foundAbs: string) {
+  const normalized = foundAbs.replace(/\\/g, '/')
+  const prerenderMarker = '.prerender/'
+  const astroMarker = '/_astro/'
+
+  const astroIdx = normalized.lastIndexOf(astroMarker)
+  if (astroIdx !== -1) return normalized.slice(astroIdx)
+
+  const relDist = relative(DIST_DIR, foundAbs).replace(/\\/g, '/')
+  const preIdx = relDist.indexOf(prerenderMarker)
+  if (preIdx !== -1) return `/${relDist.slice(preIdx + prerenderMarker.length)}`
+
+  return `/${relDist}`
+}
+
 async function findBuildAssetPublicPath(sourceFilePath: string) {
   if (distAssetBySourceCache.has(sourceFilePath)) return distAssetBySourceCache.get(sourceFilePath) ?? null
   if (!existsSync(DIST_DIR)) {
@@ -254,8 +269,7 @@ async function findBuildAssetPublicPath(sourceFilePath: string) {
     return null
   }
 
-  const rel = relative(DIST_DIR, found).replace(/\\/g, '/')
-  const publicPath = `/${rel}`
+  const publicPath = toPublicPathFromDist(found)
   distAssetBySourceCache.set(sourceFilePath, publicPath)
   return publicPath
 }
