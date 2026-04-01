@@ -124,6 +124,36 @@ importers:
         specifier: 0.34.5
         version: 0.34.5
 
+  tests/fixtures/ssr-node:
+    dependencies:
+      '@astrojs/node':
+        specifier: 10.0.4
+        version: 10.0.4(astro@6.1.2(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.32.0)(rollup@4.60.1)(typescript@5.9.3)(yaml@2.8.3))
+      astro:
+        specifier: 6.1.2
+        version: 6.1.2(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.32.0)(rollup@4.60.1)(typescript@5.9.3)(yaml@2.8.3)
+      astro-lqip:
+        specifier: workspace:*
+        version: link:../../..
+      sharp:
+        specifier: 0.34.5
+        version: 0.34.5
+
+  tests/fixtures/ssr-node-custom-base:
+    dependencies:
+      '@astrojs/node':
+        specifier: 10.0.4
+        version: 10.0.4(astro@6.1.2(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.32.0)(rollup@4.60.1)(typescript@5.9.3)(yaml@2.8.3))
+      astro:
+        specifier: 6.1.2
+        version: 6.1.2(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.32.0)(rollup@4.60.1)(typescript@5.9.3)(yaml@2.8.3)
+      astro-lqip:
+        specifier: workspace:*
+        version: link:../../..
+      sharp:
+        specifier: 0.34.5
+        version: 0.34.5
+
 packages:
 
   '@altano/repository-tools@2.0.3':
