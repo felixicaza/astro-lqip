@@ -39,16 +39,26 @@
   ],
   "sideEffects": false,
   "scripts": {
+    "build": "tsdown",
     "build:docs": "pnpm --filter ./docs -r build",
-    "dev": "pnpm --filter=!./docs -r dev",
+    "build:watch": "tsdown --watch",
+    "dev": "concurrently \"pnpm dev:lib\" \"pnpm dev:fixtures\"",
     "dev:docs": "pnpm --filter ./docs -r dev",
+    "dev:fixtures": "pnpm --filter \"./tests/fixtures/**\" -r --parallel dev",
+    "dev:lib": "tsdown --watch",
     "lint": "eslint --cache .",
     "lint:fix": "eslint --cache --fix .",
     "prepare": "simple-git-hooks",
-    "preview": "pnpm -r preview",
     "release": "bumpp",
+    "test": "pnpm test:fixtures",
     "test:fixtures": "pnpm --filter \"./tests/fixtures/**\" -r build",
-    "test:fixtures:preview": "pnpm --filter \"./tests/fixtures/**\" -r preview"
+    "test:fixtures:custom-base": "pnpm --filter \"./tests/fixtures/custom-base\" build",
+    "test:fixtures:default": "pnpm --filter \"./tests/fixtures/default\" build",
+    "test:fixtures:preview": "pnpm --filter \"./tests/fixtures/**\" -r preview",
+    "test:fixtures:preview:custom-base": "pnpm --filter \"./tests/fixtures/custom-base\" preview",
+    "test:fixtures:preview:default": "pnpm --filter \"./tests/fixtures/default\" preview",
+    "test:fixtures:preview:ssr": "pnpm --filter \"./tests/fixtures/ssr-node\" preview",
+    "test:fixtures:ssr": "pnpm --filter \"./tests/fixtures/ssr-node\" build"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm nano-staged"
@@ -66,6 +76,7 @@
     "@typescript-eslint/parser": "8.57.0",
     "astro": "6.1.2",
     "bumpp": "11.0.1",
+    "concurrently": "9.2.1",
     "eslint": "9.39.4",
     "eslint-plugin-astro": "1.6.0",
     "eslint-plugin-jsonc": "3.1.2",
