@@ -1,8 +1,8 @@
 {
-  "name": "default",
+  "name": "custom-base",
   "version": "0.0.0",
   "private": true,
-  "description": "astro-lqip default configs test",
+  "description": "astro-lqip custom base configs test",
   "author": "Felix Icaza",
   "type": "module",
   "scripts": {
