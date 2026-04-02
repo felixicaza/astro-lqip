@@ -1,5 +1,5 @@
 import type { SSRResult } from 'astro'
-import type { Props as AstroPictureProps } from 'astro/components/Picture.astro'
+import type { ComponentProps } from 'astro/types'
 import type { Props as LqipProps, StyleMap } from '../types'
 
 import { createComponent, renderComponent } from 'astro/runtime/server/index.js'
@@ -9,6 +9,7 @@ import { useLqipImage } from '../utils/useLqipImage'
 
 import '../styles/lqip.css'
 
+type AstroPictureProps = ComponentProps<typeof AstroPicture>
 export type Props = AstroPictureProps & LqipProps
 
 export const Picture = createComponent({
