@@ -11,7 +11,7 @@ import { styleToString } from '../utils/styleToString'
 
 import '../styles/lqip.css'
 
-type Props = (LocalImageProps | RemoteImageProps) & LqipProps & {
+export type Props = (LocalImageProps | RemoteImageProps) & LqipProps & {
   parentAttributes?: HTMLAttributes<'div'>
 }
 
