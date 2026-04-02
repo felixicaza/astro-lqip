@@ -1,0 +1,64 @@
+name: Tests
+
+on:
+   push:
+      branches:
+         - "**"
+
+   pull_request:
+      branches:
+         - "**"
+
+jobs:
+   lint:
+      if: github.actor != 'dependabot[bot]' && !startsWith(github.head_ref, 'dependabot/')
+      runs-on: ubuntu-latest
+      steps:
+         - uses: actions/checkout@v4
+
+         - name: Install pnpm
+           uses: pnpm/action-setup@v5
+
+         - name: Set node
+           uses: actions/setup-node@v6
+           with:
+              node-version: lts/*
+
+         - name: Install
+           run: pnpm install
+
+         - name: Build
+           run: pnpm build
+
+         - name: Lint
+           run: pnpm lint
+
+         - name: Typecheck
+           run: pnpm typecheck
+
+   test:
+      if: github.actor != 'dependabot[bot]' && !startsWith(github.head_ref, 'dependabot/')
+      runs-on: ${{ matrix.os }}
+
+      strategy:
+         matrix:
+            node: [lts/*]
+            os: [ubuntu-latest, windows-latest, macos-latest]
+         fail-fast: false
+
+      steps:
+         - uses: actions/checkout@v4
+
+         - name: Install pnpm
+           uses: pnpm/action-setup@v4
+
+         - name: Set node ${{ matrix.node }}
+           uses: actions/setup-node@v4
+           with:
+              node-version: ${{ matrix.node }}
+
+         - name: Install
+           run: pnpm install
+
+         - name: Test
+           run: pnpm test:fixtures
