@@ -9,7 +9,7 @@ import { useLqipBackground } from '../utils/useLqipBackground'
 import '../styles/background.css'
 
 type Slots = Record<'default', ComponentSlots['default']>
-type Props = ImageTransform
+export type Props = ImageTransform
 
 export const Background = createComponent({
   factory: async (result: SSRResult, props: Props, slots: Slots) => {

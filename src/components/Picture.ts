@@ -9,7 +9,7 @@ import { useLqipImage } from '../utils/useLqipImage'
 
 import '../styles/lqip.css'
 
-type Props = AstroPictureProps & LqipProps
+export type Props = AstroPictureProps & LqipProps
 
 export const Picture = createComponent({
   // @ts-expect-error using renderComponent instead of renderTemplate
