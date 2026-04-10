@@ -1,0 +1,109 @@
+---
+title: "My First Post"
+description: "This is a test post using Astro and MDX!"
+pubDate: "2026-04-04"
+---
+import { Image, Picture, Background } from 'astro-lqip/components'
+import volcanoImage from '@/images/pexels-fabianwiktor-3470872.jpg'
+import volcanoSunsetImage from '@/images/pexels-fabianwiktor-3470482.jpg'
+
+# Hello World!
+
+This is a test post using Astro and MDX!
+
+Background component ImageMetadata import
+<Background src={volcanoSunsetImage}>
+  <section>
+    <p>Optimized background</p>
+  </section>
+</Background>
+
+Background component relative path import
+<Background src="../images/pexels-fabianwiktor-3470482.jpg">
+  <section>
+    <p>Optimized background</p>
+  </section>
+</Background>
+
+Background component absolute path import
+<Background src="/src/images/pexels-fabianwiktor-3470482.jpg">
+  <section>
+    <p>Optimized background</p>
+  </section>
+</Background>
+
+Background component alias path import
+<Background src="@/images/pexels-fabianwiktor-3470482.jpg">
+  <section>
+    <p>Optimized background</p>
+  </section>
+</Background>
+
+Background component with remote image
+<Background src="https://images.pexels.com/photos/994605/pexels-photo-994605.jpeg">
+  <section>
+    <p>Optimized background</p>
+  </section>
+</Background>
+
+Background component with custom CSS variable
+<Background src="/src/images/pexels-fabianwiktor-3470482.jpg" cssVariable="--custom-background">
+  <section class="custom-background">
+    <p>Optimized background</p>
+  </section>
+</Background>
+
+Background component in AVIF format
+<Background src="/src/images/pexels-fabianwiktor-3470482.jpg" format="avif">
+  <section>
+    <p>Optimized background</p>
+  </section>
+</Background>
+
+Background component with lqip color
+<Background src="/src/images/pexels-fabianwiktor-3470482.jpg" lqip="color">
+  <section>
+    <p>Optimized background</p>
+  </section>
+</Background>
+
+Background component in multiple formats
+<Background src="/src/images/pexels-fabianwiktor-3470482.jpg" format={['avif', 'webp', 'jpeg']}>
+  <section>
+    <p>Optimized background</p>
+  </section>
+</Background>
+
+Background component with custom width and height
+<Background src="/src/images/pexels-fabianwiktor-3470482.jpg" width={720} height={720}>
+  <section>
+    <p>Optimized background</p>
+  </section>
+</Background>
+
+Background component with several props
+<Background src="/src/images/pexels-fabianwiktor-3470482.jpg" format="avif" width={720} height={720} widths={[100, 1200, 1536]} quality={80} fit="cover">
+  <section>
+    <p>Optimized background</p>
+  </section>
+</Background>
+
+Image and Picture components ImageMetadata import
+<Image width={450} src={volcanoImage} alt="A beautiful volcano" />
+<Picture width={450} src={volcanoImage} alt="A beautiful volcano in the sunset" />
+
+Image and Picture components relative path import
+<Image width={450} src="../images/pexels-fabianwiktor-3470872.jpg" alt="A beautiful volcano" />
+<Picture width={450} src="../images/pexels-fabianwiktor-3470872.jpg" alt="A beautiful volcano in the sunset" />
+
+Image and Picture components absolute path import
+<Image width={450} src="/src/images/pexels-fabianwiktor-3470872.jpg" alt="A beautiful volcano" />
+<Picture width={450} src="/src/images/pexels-fabianwiktor-3470872.jpg" alt="A beautiful volcano in the sunset" />
+
+Image and Picture components import with alias
+<Image width={450} src="@/images/pexels-fabianwiktor-3470872.jpg" alt="A beautiful volcano" />
+<Picture width={450} src="@/images/pexels-fabianwiktor-3470872.jpg" alt="A beautiful volcano in the sunset" />
+
+Image and Picture components with remote images
+<Image width={450} height={450} src="https://images.pexels.com/photos/994605/pexels-photo-994605.jpeg" alt="A beautiful volcano" />
+<Picture width={450} height={450} src="https://images.pexels.com/photos/994605/pexels-photo-994605.jpeg" alt="A beautiful volcano in the sunset" />

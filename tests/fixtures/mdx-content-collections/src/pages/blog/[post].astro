@@ -1,0 +1,19 @@
+---
+import { getCollection, render } from 'astro:content'
+
+import '@/styles/post.css'
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog')
+
+  return posts.map((post) => ({
+    params: { post: post.id },
+    props: { post }
+  }))
+}
+
+const { post } = Astro.props
+const { Content } = await render(post)
+---
+
+<Content />
