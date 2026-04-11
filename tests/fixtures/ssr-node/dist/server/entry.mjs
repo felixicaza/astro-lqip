@@ -2434,12 +2434,10 @@ class DevalueError extends Error {
 
 /** @param {any} thing */
 function is_primitive(thing) {
-	return Object(thing) !== thing;
+	return thing === null || (typeof thing !== 'object' && typeof thing !== 'function');
 }
 
-const object_proto_names = /* @__PURE__ */ Object.getOwnPropertyNames(
-	Object.prototype
-)
+const object_proto_names = /* @__PURE__ */ Object.getOwnPropertyNames(Object.prototype)
 	.sort()
 	.join('\0');
 
@@ -2484,9 +2482,7 @@ function get_escaped_char(char) {
 		case '\u2029':
 			return '\\u2029';
 		default:
-			return char < ' '
-				? `\\u${char.charCodeAt(0).toString(16).padStart(4, '0')}`
-				: '';
+			return char < ' ' ? `\\u${char.charCodeAt(0).toString(16).padStart(4, '0')}` : '';
 	}
 }
 
@@ -2552,116 +2548,66 @@ function valid_array_indices(array) {
 	return keys;
 }
 
-/**
- * Base64 Encodes an arraybuffer
- * @param {ArrayBuffer} arraybuffer
- * @returns {string}
- */
-function encode64(arraybuffer) {
-  const dv = new DataView(arraybuffer);
-  let binaryString = "";
+/* Baseline 2025 runtimes */
 
-  for (let i = 0; i < arraybuffer.byteLength; i++) {
-    binaryString += String.fromCharCode(dv.getUint8(i));
-  }
-
-  return binaryToAscii(binaryString);
+/**	@type {(array_buffer: ArrayBuffer) => string} */
+function encode_native(array_buffer) {
+	return new Uint8Array(array_buffer).toBase64();
 }
 
-/**
- * Decodes a base64 string into an arraybuffer
- * @param {string} string
- * @returns {ArrayBuffer}
- */
-function decode64(string) {
-  const binaryString = asciiToBinary(string);
-  const arraybuffer = new ArrayBuffer(binaryString.length);
-  const dv = new DataView(arraybuffer);
-
-  for (let i = 0; i < arraybuffer.byteLength; i++) {
-    dv.setUint8(i, binaryString.charCodeAt(i));
-  }
-
-  return arraybuffer;
+/**	@type {(base64: string) => ArrayBuffer} */
+function decode_native(base64) {
+	return Uint8Array.fromBase64(base64).buffer;
 }
 
-const KEY_STRING =
-  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+/* Node-compatible runtimes */
 
-/**
- * Substitute for atob since it's deprecated in node.
- * Does not do any input validation.
- *
- * @see https://github.com/jsdom/abab/blob/master/lib/atob.js
- *
- * @param {string} data
- * @returns {string}
- */
-function asciiToBinary(data) {
-  if (data.length % 4 === 0) {
-    data = data.replace(/==?$/, "");
-  }
-
-  let output = "";
-  let buffer = 0;
-  let accumulatedBits = 0;
-
-  for (let i = 0; i < data.length; i++) {
-    buffer <<= 6;
-    buffer |= KEY_STRING.indexOf(data[i]);
-    accumulatedBits += 6;
-    if (accumulatedBits === 24) {
-      output += String.fromCharCode((buffer & 0xff0000) >> 16);
-      output += String.fromCharCode((buffer & 0xff00) >> 8);
-      output += String.fromCharCode(buffer & 0xff);
-      buffer = accumulatedBits = 0;
-    }
-  }
-  if (accumulatedBits === 12) {
-    buffer >>= 4;
-    output += String.fromCharCode(buffer);
-  } else if (accumulatedBits === 18) {
-    buffer >>= 2;
-    output += String.fromCharCode((buffer & 0xff00) >> 8);
-    output += String.fromCharCode(buffer & 0xff);
-  }
-  return output;
+/** @type {(array_buffer: ArrayBuffer) => string} */
+function encode_buffer(array_buffer) {
+	return Buffer.from(array_buffer).toString('base64');
 }
 
-/**
- * Substitute for btoa since it's deprecated in node.
- * Does not do any input validation.
- *
- * @see https://github.com/jsdom/abab/blob/master/lib/btoa.js
- *
- * @param {string} str
- * @returns {string}
- */
-function binaryToAscii(str) {
-  let out = "";
-  for (let i = 0; i < str.length; i += 3) {
-    /** @type {[number, number, number, number]} */
-    const groupsOfSix = [undefined, undefined, undefined, undefined];
-    groupsOfSix[0] = str.charCodeAt(i) >> 2;
-    groupsOfSix[1] = (str.charCodeAt(i) & 0x03) << 4;
-    if (str.length > i + 1) {
-      groupsOfSix[1] |= str.charCodeAt(i + 1) >> 4;
-      groupsOfSix[2] = (str.charCodeAt(i + 1) & 0x0f) << 2;
-    }
-    if (str.length > i + 2) {
-      groupsOfSix[2] |= str.charCodeAt(i + 2) >> 6;
-      groupsOfSix[3] = str.charCodeAt(i + 2) & 0x3f;
-    }
-    for (let j = 0; j < groupsOfSix.length; j++) {
-      if (typeof groupsOfSix[j] === "undefined") {
-        out += "=";
-      } else {
-        out += KEY_STRING[groupsOfSix[j]];
-      }
-    }
-  }
-  return out;
+/**	@type {(base64: string) => ArrayBuffer} */
+function decode_buffer(base64) {
+	return Uint8Array.from(Buffer.from(base64, 'base64')).buffer;
 }
+
+/* Legacy runtimes */
+
+/** @type {(array_buffer: ArrayBuffer) => string} */
+function encode_legacy(array_buffer) {
+	const array = new Uint8Array(array_buffer);
+	let binary = '';
+
+	// the maximum number of arguments to String.fromCharCode.apply
+	// should be around 0xFFFF in modern engines
+	const chunk_size = 0x8000;
+	for (let i = 0; i < array.length; i += chunk_size) {
+		const chunk = array.subarray(i, i + chunk_size);
+		binary += String.fromCharCode.apply(null, chunk);
+	}
+
+	return btoa(binary);
+}
+
+/**	@type {(base64: string) => ArrayBuffer} */
+function decode_legacy(base64) {
+	const binary_string = atob(base64);
+	const len = binary_string.length;
+	const array = new Uint8Array(len);
+
+	for (let i = 0; i < len; i++) {
+		array[i] = binary_string.charCodeAt(i);
+	}
+
+	return array.buffer;
+}
+
+const native = typeof Uint8Array.fromBase64 === 'function';
+const buffer = typeof process === 'object' && process.versions?.node !== undefined;
+
+const encode64 = native ? encode_native : buffer ? encode_buffer : encode_legacy;
+const decode64 = native ? decode_native : buffer ? decode_buffer : decode_legacy;
 
 const UNDEFINED = -1;
 const HOLE = -2;
@@ -2728,10 +2674,7 @@ function unflatten$1(parsed, revivers) {
 			if (typeof value[0] === 'string') {
 				const type = value[0];
 
-				const reviver =
-					revivers && Object.hasOwn(revivers, type)
-						? revivers[type]
-						: undefined;
+				const reviver = revivers && Object.hasOwn(revivers, type) ? revivers[type] : undefined;
 
 				if (reviver) {
 					let i = value[1];
@@ -2779,15 +2722,20 @@ function unflatten$1(parsed, revivers) {
 						hydrated[index] = new RegExp(value[1], value[2]);
 						break;
 
-					case 'Object':
-						const object = Object(value[1]);
+					case 'Object': {
+						const wrapped_index = value[1];
 
-						if (Object.hasOwn(object, '__proto__')) {
-							throw new Error('Cannot parse an object with a `__proto__` property');
+						if (
+							typeof values[wrapped_index] === 'object' &&
+							values[wrapped_index][0] !== 'BigInt'
+						) {
+							// avoid infinite recusion in case of malformed input
+							throw new Error('Invalid input');
 						}
 
-						hydrated[index] = object;
+						hydrated[index] = Object(hydrate(wrapped_index));
 						break;
+					}
 
 					case 'BigInt':
 						hydrated[index] = BigInt(value[1]);
@@ -2810,12 +2758,14 @@ function unflatten$1(parsed, revivers) {
 					case 'Uint8ClampedArray':
 					case 'Int16Array':
 					case 'Uint16Array':
+					case 'Float16Array':
 					case 'Int32Array':
 					case 'Uint32Array':
 					case 'Float32Array':
 					case 'Float64Array':
 					case 'BigInt64Array':
-					case 'BigUint64Array': {
+					case 'BigUint64Array':
+					case 'DataView': {
 						if (values[value[1]][0] !== 'ArrayBuffer') {
 							// without this, if we receive malformed input we could
 							// end up trying to hydrate in a circle or allocate
@@ -2825,12 +2775,11 @@ function unflatten$1(parsed, revivers) {
 
 						const TypedArrayConstructor = globalThis[type];
 						const buffer = hydrate(value[1]);
-						const typedArray = new TypedArrayConstructor(buffer);
 
 						hydrated[index] =
 							value[2] !== undefined
-								? typedArray.subarray(value[2], value[3])
-								: typedArray;
+								? new TypedArrayConstructor(buffer, value[2], value[3])
+								: new TypedArrayConstructor(buffer);
 
 						break;
 					}
@@ -2959,7 +2908,7 @@ function stringify$2(value, reducers) {
 		if (thing === -Infinity) return NEGATIVE_INFINITY;
 		if (thing === 0 && 1 / thing < 0) return NEGATIVE_ZERO;
 
-		if (indexes.has(thing)) return indexes.get(thing);
+		if (indexes.has(thing)) return /** @type {number} */ (indexes.get(thing));
 
 		const index = p++;
 		indexes.set(thing, index);
@@ -2974,6 +2923,8 @@ function stringify$2(value, reducers) {
 
 		if (typeof thing === 'function') {
 			throw new DevalueError(`Cannot stringify a function`, keys, thing, value);
+		} else if (typeof thing === 'symbol') {
+			throw new DevalueError(`Cannot stringify a Symbol primitive`, keys, thing, value);
 		}
 
 		let str = '';
@@ -2987,11 +2938,8 @@ function stringify$2(value, reducers) {
 				case 'Number':
 				case 'String':
 				case 'Boolean':
-					str = `["Object",${stringify_primitive(thing)}]`;
-					break;
-
 				case 'BigInt':
-					str = `["BigInt",${thing}]`;
+					str = `["Object",${flatten(thing.valueOf())}]`;
 					break;
 
 				case 'Date':
@@ -3112,9 +3060,7 @@ function stringify$2(value, reducers) {
 					str = '["Map"';
 
 					for (const [key, value] of thing) {
-						keys.push(
-							`.get(${is_primitive(key) ? stringify_primitive(key) : '...'})`
-						);
+						keys.push(`.get(${is_primitive(key) ? stringify_primitive(key) : '...'})`);
 						str += `,${flatten(key)},${flatten(value)}`;
 						keys.pop();
 					}
@@ -3127,23 +3073,22 @@ function stringify$2(value, reducers) {
 				case 'Uint8ClampedArray':
 				case 'Int16Array':
 				case 'Uint16Array':
+				case 'Float16Array':
 				case 'Int32Array':
 				case 'Uint32Array':
 				case 'Float32Array':
 				case 'Float64Array':
 				case 'BigInt64Array':
-				case 'BigUint64Array': {
+				case 'BigUint64Array':
+				case 'DataView': {
 					/** @type {import("./types.js").TypedArray} */
 					const typedArray = thing;
 					str = '["' + type + '",' + flatten(typedArray.buffer);
 
-					const a = thing.byteOffset;
-					const b = a + thing.byteLength;
-
 					// handle subarrays
-					if (a > 0 || b !== typedArray.buffer.byteLength) {
-						const m = +/(\d+)/.exec(type)[1] / 8;
-						str += `,${a / m},${b / m}`;
+					if (typedArray.byteLength !== typedArray.buffer.byteLength) {
+						// to be used with `new TypedArray(buffer, byteOffset, length)`
+						str += `,${typedArray.byteOffset},${typedArray.length}`;
 					}
 
 					str += ']';
@@ -3172,21 +3117,11 @@ function stringify$2(value, reducers) {
 
 				default:
 					if (!is_plain_object(thing)) {
-						throw new DevalueError(
-							`Cannot stringify arbitrary non-POJOs`,
-							keys,
-							thing,
-							value
-						);
+						throw new DevalueError(`Cannot stringify arbitrary non-POJOs`, keys, thing, value);
 					}
 
 					if (enumerable_symbols(thing).length > 0) {
-						throw new DevalueError(
-							`Cannot stringify POJOs with symbolic keys`,
-							keys,
-							thing,
-							value
-						);
+						throw new DevalueError(`Cannot stringify POJOs with symbolic keys`, keys, thing, value);
 					}
 
 					if (Object.getPrototypeOf(thing) === null) {
@@ -3249,7 +3184,6 @@ function stringify$2(value, reducers) {
 function stringify_primitive(thing) {
 	const type = typeof thing;
 	if (type === 'string') return stringify_string(thing);
-	if (thing instanceof String) return stringify_string(thing.toString());
 	if (thing === void 0) return UNDEFINED.toString();
 	if (thing === 0 && 1 / thing < 0) return NEGATIVE_ZERO.toString();
 	if (type === 'bigint') return `["BigInt","${thing}"]`;
@@ -13807,7 +13741,7 @@ const pageMap = new Map([
     
 ]);
 
-const _manifest = deserializeManifest(({"rootDir":"file:///home/felixicaza/dev/astro-aura/tests/fixtures/ssr-node/","cacheDir":"file:///home/felixicaza/dev/astro-aura/tests/fixtures/ssr-node/node_modules/.astro/","outDir":"file:///home/felixicaza/dev/astro-aura/tests/fixtures/ssr-node/dist/","srcDir":"file:///home/felixicaza/dev/astro-aura/tests/fixtures/ssr-node/src/","publicDir":"file:///home/felixicaza/dev/astro-aura/tests/fixtures/ssr-node/public/","buildClientDir":"file:///home/felixicaza/dev/astro-aura/tests/fixtures/ssr-node/dist/client/","buildServerDir":"file:///home/felixicaza/dev/astro-aura/tests/fixtures/ssr-node/dist/server/","adapterName":"@astrojs/node","assetsDir":"_astro","routes":[{"file":"","links":[],"scripts":[],"styles":[],"routeData":{"type":"page","component":"_server-islands.astro","params":["name"],"segments":[[{"content":"_server-islands","dynamic":false,"spread":false}],[{"content":"name","dynamic":true,"spread":false}]],"pattern":"^\\/_server-islands\\/([^/]+?)\\/?$","prerender":false,"isIndex":false,"fallbackRoutes":[],"route":"/_server-islands/[name]","origin":"internal","distURL":[],"_meta":{"trailingSlash":"ignore"}}},{"file":"","links":[],"scripts":[],"styles":[{"type":"inline","content":"[data-astro-lqip]{--opacity:1;--z-index:0;width:fit-content;height:fit-content;display:inline-block;position:relative}[data-astro-lqip]:after{content:\"\";pointer-events:none;width:100%;height:100%;opacity:var(--opacity);z-index:var(--z-index);background:var(--lqip-background);background-position:50%;background-size:cover;transition:opacity 1s;position:absolute;inset:0}[data-astro-lqip] img{z-index:1;position:relative;overflow:hidden}@media(scripting:none){[data-astro-lqip]{--opacity:0;--z-index:1}}[data-astro-lqip-bg]{display:contents}section[data-astro-cid-j7pv25f6]{background:var(--background)}.custom-background[data-astro-cid-j7pv25f6]{background:var(--custom-background)}section[data-astro-cid-j7pv25f6],.custom-background[data-astro-cid-j7pv25f6]{background-size:cover;background-position:center;width:100%;height:300px}\n"}],"routeData":{"route":"/","isIndex":true,"type":"page","pattern":"^\\/$","segments":[],"params":[],"component":"src/pages/index.astro","pathname":"/","prerender":true,"fallbackRoutes":[],"distURL":[],"origin":"project","_meta":{"trailingSlash":"ignore"}}}],"serverLike":true,"middlewareMode":"classic","base":"/","trailingSlash":"ignore","compressHTML":false,"experimentalQueuedRendering":{"enabled":false,"poolSize":0,"contentCache":false},"componentMetadata":[["/home/felixicaza/dev/astro-aura/tests/fixtures/ssr-node/src/pages/index.astro",{"propagation":"none","containsHead":true}]],"renderers":[],"clientDirectives":[["idle","(()=>{var l=(n,t)=>{let i=async()=>{await(await n())()},e=typeof t.value==\"object\"?t.value:void 0,s={timeout:e==null?void 0:e.timeout};\"requestIdleCallback\"in window?window.requestIdleCallback(i,s):setTimeout(i,s.timeout||200)};(self.Astro||(self.Astro={})).idle=l;window.dispatchEvent(new Event(\"astro:idle\"));})();"],["load","(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event(\"astro:load\"));})();"],["media","(()=>{var n=(a,t)=>{let i=async()=>{await(await a())()};if(t.value){let e=matchMedia(t.value);e.matches?i():e.addEventListener(\"change\",i,{once:!0})}};(self.Astro||(self.Astro={})).media=n;window.dispatchEvent(new Event(\"astro:media\"));})();"],["only","(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event(\"astro:only\"));})();"],["visible","(()=>{var a=(s,i,o)=>{let r=async()=>{await(await s())()},t=typeof i.value==\"object\"?i.value:void 0,c={rootMargin:t==null?void 0:t.rootMargin},n=new IntersectionObserver(e=>{for(let l of e)if(l.isIntersecting){n.disconnect(),r();break}},c);for(let e of o.children)n.observe(e)};(self.Astro||(self.Astro={})).visible=a;window.dispatchEvent(new Event(\"astro:visible\"));})();"]],"entryModules":{"\u0000virtual:astro:actions/noop-entrypoint":"chunks/noop-entrypoint_BOlrdqWF.mjs","\u0000noop-middleware":"virtual_astro_middleware.mjs","\u0000virtual:astro:session-driver":"chunks/_virtual_astro_session-driver_CqFkrO5f.mjs","\u0000virtual:astro:server-island-manifest":"chunks/_virtual_astro_server-island-manifest_CQQ1F5PF.mjs","/home/felixicaza/dev/astro-aura/node_modules/.pnpm/astro@6.1.2_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_rollup@4.60.1_typescript@5.9.3_yaml@2.8.3/node_modules/astro/dist/assets/services/sharp.js":"chunks/sharp_CD-r59RE.mjs","astro/entrypoints/prerender":"prerender-entry.D8FrCwCT.mjs","@astrojs/node/server.js":"entry.mjs","virtual:astro:noop":"_astro/_virtual_astro_noop.hkMvWsZl.js","astro:scripts/before-hydration.js":""},"inlinedScripts":[],"assets":["/_astro/pexels-fabianwiktor-3470482.BFMY_gvF.jpg","/_astro/pexels-fabianwiktor-3470872.DAdQtAbe.jpg","/index.html"],"buildFormat":"directory","checkOrigin":true,"actionBodySizeLimit":1048576,"serverIslandBodySizeLimit":1048576,"allowedDomains":[],"key":"2sZg7mlenh5Ym0n7A++6fkiC7KFFb70rZdXP89U9S3w=","sessionConfig":{"driver":"unstorage/drivers/fs-lite","options":{"base":"/home/felixicaza/dev/astro-aura/tests/fixtures/ssr-node/node_modules/.astro/sessions"}},"image":{},"devToolbar":{"enabled":false,"debugInfoOutput":""},"logLevel":"info","shouldInjectCspMetaTags":false}));
+const _manifest = deserializeManifest(({"rootDir":"file:///home/felixicaza/dev/astro-aura/tests/fixtures/ssr-node/","cacheDir":"file:///home/felixicaza/dev/astro-aura/tests/fixtures/ssr-node/node_modules/.astro/","outDir":"file:///home/felixicaza/dev/astro-aura/tests/fixtures/ssr-node/dist/","srcDir":"file:///home/felixicaza/dev/astro-aura/tests/fixtures/ssr-node/src/","publicDir":"file:///home/felixicaza/dev/astro-aura/tests/fixtures/ssr-node/public/","buildClientDir":"file:///home/felixicaza/dev/astro-aura/tests/fixtures/ssr-node/dist/client/","buildServerDir":"file:///home/felixicaza/dev/astro-aura/tests/fixtures/ssr-node/dist/server/","adapterName":"@astrojs/node","assetsDir":"_astro","routes":[{"file":"","links":[],"scripts":[],"styles":[],"routeData":{"type":"page","component":"_server-islands.astro","params":["name"],"segments":[[{"content":"_server-islands","dynamic":false,"spread":false}],[{"content":"name","dynamic":true,"spread":false}]],"pattern":"^\\/_server-islands\\/([^/]+?)\\/?$","prerender":false,"isIndex":false,"fallbackRoutes":[],"route":"/_server-islands/[name]","origin":"internal","distURL":[],"_meta":{"trailingSlash":"ignore"}}},{"file":"","links":[],"scripts":[],"styles":[{"type":"inline","content":"@layer astro-lqip{[data-astro-lqip]{--opacity:1;--z-index:0;isolation:isolate;width:fit-content;height:fit-content;line-height:0;display:inline-block;position:relative;overflow:clip;&:after{content:\"\";pointer-events:none;opacity:var(--opacity);z-index:var(--z-index);background:var(--lqip-background);background-position:50%;background-size:cover;transition:opacity 1s;position:absolute;inset:0}& img{z-index:1;position:relative}@media(scripting:none){--opacity:0;--z-index:1}}[data-astro-lqip-bg]{display:contents}}section[data-astro-cid-j7pv25f6]{background:var(--background)}.custom-background[data-astro-cid-j7pv25f6]{background:var(--custom-background)}section[data-astro-cid-j7pv25f6],.custom-background[data-astro-cid-j7pv25f6]{background-size:cover;background-position:center;width:100%;height:300px}\n"}],"routeData":{"route":"/","isIndex":true,"type":"page","pattern":"^\\/$","segments":[],"params":[],"component":"src/pages/index.astro","pathname":"/","prerender":true,"fallbackRoutes":[],"distURL":[],"origin":"project","_meta":{"trailingSlash":"ignore"}}}],"serverLike":true,"middlewareMode":"classic","base":"/","trailingSlash":"ignore","compressHTML":false,"experimentalQueuedRendering":{"enabled":false,"poolSize":0,"contentCache":false},"componentMetadata":[["/home/felixicaza/dev/astro-aura/tests/fixtures/ssr-node/src/pages/index.astro",{"propagation":"none","containsHead":true}]],"renderers":[],"clientDirectives":[["idle","(()=>{var l=(n,t)=>{let i=async()=>{await(await n())()},e=typeof t.value==\"object\"?t.value:void 0,s={timeout:e==null?void 0:e.timeout};\"requestIdleCallback\"in window?window.requestIdleCallback(i,s):setTimeout(i,s.timeout||200)};(self.Astro||(self.Astro={})).idle=l;window.dispatchEvent(new Event(\"astro:idle\"));})();"],["load","(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event(\"astro:load\"));})();"],["media","(()=>{var n=(a,t)=>{let i=async()=>{await(await a())()};if(t.value){let e=matchMedia(t.value);e.matches?i():e.addEventListener(\"change\",i,{once:!0})}};(self.Astro||(self.Astro={})).media=n;window.dispatchEvent(new Event(\"astro:media\"));})();"],["only","(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event(\"astro:only\"));})();"],["visible","(()=>{var a=(s,i,o)=>{let r=async()=>{await(await s())()},t=typeof i.value==\"object\"?i.value:void 0,c={rootMargin:t==null?void 0:t.rootMargin},n=new IntersectionObserver(e=>{for(let l of e)if(l.isIntersecting){n.disconnect(),r();break}},c);for(let e of o.children)n.observe(e)};(self.Astro||(self.Astro={})).visible=a;window.dispatchEvent(new Event(\"astro:visible\"));})();"]],"entryModules":{"\u0000virtual:astro:actions/noop-entrypoint":"chunks/noop-entrypoint_BOlrdqWF.mjs","\u0000noop-middleware":"virtual_astro_middleware.mjs","\u0000virtual:astro:session-driver":"chunks/_virtual_astro_session-driver_CqFkrO5f.mjs","\u0000virtual:astro:server-island-manifest":"chunks/_virtual_astro_server-island-manifest_CQQ1F5PF.mjs","/home/felixicaza/dev/astro-aura/node_modules/.pnpm/astro@6.1.2_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_rollup@4.60.1_typescript@5.9.3_yaml@2.8.3/node_modules/astro/dist/assets/services/sharp.js":"chunks/sharp_py50eKMM.mjs","astro/entrypoints/prerender":"prerender-entry.DlquikDW.mjs","@astrojs/node/server.js":"entry.mjs","virtual:astro:noop":"_astro/_virtual_astro_noop.hkMvWsZl.js","astro:scripts/before-hydration.js":""},"inlinedScripts":[],"assets":["/_astro/pexels-fabianwiktor-3470872.DAdQtAbe.jpg","/_astro/pexels-fabianwiktor-3470482.BFMY_gvF.jpg","/index.html"],"buildFormat":"directory","checkOrigin":true,"actionBodySizeLimit":1048576,"serverIslandBodySizeLimit":1048576,"allowedDomains":[],"key":"Lk9ti9CAz5W8121Gs138lCqKhkk/QKPmGriKCwx4WkM=","sessionConfig":{"driver":"unstorage/drivers/fs-lite","options":{"base":"/home/felixicaza/dev/astro-aura/tests/fixtures/ssr-node/node_modules/.astro/sessions"}},"image":{},"devToolbar":{"enabled":false,"debugInfoOutput":""},"logLevel":"info","shouldInjectCspMetaTags":false}));
 					const manifestRoutes = _manifest.routes;
 					
 					const manifest = Object.assign(_manifest, {
