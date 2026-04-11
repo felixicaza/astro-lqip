@@ -53,7 +53,7 @@
     "release": "bumpp",
     "sync:types": " pnpm --filter \"./tests/fixtures/**\" astro sync",
     "test": "pnpm test:fixtures",
-    "test:fixtures": "pnpm --filter \"./tests/fixtures/**\" -r build",
+    "test:fixtures": "pnpm --filter \"./tests/fixtures/**\" -r --workspace-concurrency=1 build",
     "test:fixtures:custom-base": "pnpm --filter \"./tests/fixtures/custom-base\" build",
     "test:fixtures:default": "pnpm --filter \"./tests/fixtures/default\" build",
     "test:fixtures:mdx": "pnpm --filter \"./tests/fixtures/mdx\" build",
