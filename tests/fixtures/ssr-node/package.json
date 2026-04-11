@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@astrojs/node": "10.0.4",
-    "astro": "6.1.2",
+    "astro": "6.1.5",
     "astro-lqip": "workspace:*",
     "sharp": "0.34.5"
   }
