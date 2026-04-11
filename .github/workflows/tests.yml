@@ -31,7 +31,7 @@ jobs:
               node-version: lts/*
 
          - name: Install
-           run: pnpm install
+           run: pnpm install --no-frozen-lockfile
 
          - name: Build
            run: pnpm build
@@ -66,10 +66,10 @@ jobs:
               node-version: ${{ matrix.node }}
 
          - name: Install
-           run: pnpm install
+           run: pnpm install --no-frozen-lockfile
 
          - name: Build
            run: pnpm build
 
          - name: Test
-           run: pnpm test:fixtures
+           run: pnpm test
