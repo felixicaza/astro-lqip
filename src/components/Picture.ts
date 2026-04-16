@@ -26,6 +26,15 @@ export const Picture = createComponent({
       isDevelopment: import.meta.env.MODE === 'development'
     })
 
+    if (lqip === false) {
+      return await renderComponent(result, 'Picture', AstroPicture, {
+        ...props,
+        class: className,
+        src: resolvedSrc ?? props.src,
+        pictureAttributes
+      })
+    }
+
     return await renderComponent(result, 'Picture', AstroPicture,
       {
         ...props,

@@ -20,6 +20,10 @@ export async function useLqipImage({
   // resolved may be an object (module-like), { src: '...' } or null
   const resolvedSrc = resolved ?? null
 
+  if (lqip === false) {
+    return { lqipImage: undefined, svgHTML: '', lqipStyle: {}, combinedStyle: { ...styleProps }, resolvedSrc }
+  }
+
   let lqipImage
   if (resolvedSrc) {
     const lqipInput = typeof resolvedSrc === 'string' ? { src: resolvedSrc } : resolvedSrc

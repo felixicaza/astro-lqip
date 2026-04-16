@@ -28,6 +28,14 @@ export const Image = createComponent({
       isDevelopment: import.meta.env.MODE === 'development'
     })
 
+    if (lqip === false) {
+      return renderComponent(result, 'Image', AstroImage, {
+        ...props,
+        class: className,
+        src: resolvedSrc ?? props.src
+      })
+    }
+
     const wrapperAttributes = {
       ...parentAttributes,
       class: [parentAttributes.class, className].filter(Boolean).join(' ') || undefined,

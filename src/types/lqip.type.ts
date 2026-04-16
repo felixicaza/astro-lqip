@@ -1,1 +1,1 @@
-export type LqipType = 'color' | 'css' | 'base64' | 'svg'
+export type LqipType = 'color' | 'css' | 'base64' | 'svg' | false

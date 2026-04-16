@@ -1,5 +1,6 @@
 import { join } from 'node:path'
-import { mkdir, writeFile, unlink, readdir } from 'node:fs/promises'
+import { createHash } from 'node:crypto'
+import { mkdir, writeFile, readFile, unlink, readdir } from 'node:fs/promises'
 import { existsSync, statSync } from 'node:fs'
 
 import type { LqipType } from '../types'
@@ -51,6 +52,38 @@ async function ensureCacheDir() {
   if (!existsSync(CACHE_DIR)) {
     await mkdir(CACHE_DIR, { recursive: true })
   }
+}
+
+function getFileMtime(filePath: string): number | undefined {
+  try {
+    return statSync(filePath).mtimeMs
+  } catch {
+    return undefined
+  }
+}
+
+function computeCacheKey(imageSrc: string, lqipType: string, lqipSize: number, mtimeMs?: number): string {
+  const input = mtimeMs !== undefined
+    ? `${imageSrc}:${lqipType}:${lqipSize}:${mtimeMs}`
+    : `${imageSrc}:${lqipType}:${lqipSize}`
+  const hash = createHash('sha256').update(input).digest('hex').slice(0, 16)
+  return `lqip-${hash}.json`
+}
+
+async function readCache(cacheKey: string): Promise<unknown | undefined> {
+  const cachePath = join(CACHE_DIR, cacheKey)
+  try {
+    const data = await readFile(cachePath, 'utf-8')
+    return JSON.parse(data)
+  } catch {
+    return undefined
+  }
+}
+
+async function writeCache(cacheKey: string, value: unknown): Promise<void> {
+  await ensureCacheDir()
+  const cachePath = join(CACHE_DIR, cacheKey)
+  await writeFile(cachePath, JSON.stringify(value))
 }
 
 function extractOriginalFileName(filename: string) {
@@ -129,6 +162,24 @@ export async function getLqip(
   isDevelopment: boolean | undefined
 ) {
   if (!imagePath?.src) return undefined
+  if (lqipType === false) return undefined
+
+  // Resolve the actual file path for mtime-based cache invalidation
+  let resolvedFilePath: string | undefined
+
+  if (isRemoteUrl(imagePath.src)) {
+    // Remote images use URL as cache key (no mtime available)
+    resolvedFilePath = undefined
+  } else if (isDevelopment && imagePath.src.startsWith('/@fs/')) {
+    resolvedFilePath = imagePath.src.replace(/^\/@fs/, '').split('?')[0]
+  }
+
+  const mtimeMs = resolvedFilePath ? getFileMtime(resolvedFilePath) : undefined
+  const cacheKey = computeCacheKey(imagePath.src, lqipType, lqipSize, mtimeMs)
+  const cached = await readCache(cacheKey)
+  if (cached !== undefined) return cached
+
+  let result: Awaited<ReturnType<typeof generateLqip>>
 
   if (isRemoteUrl(imagePath.src)) {
     await ensureCacheDir()
@@ -138,22 +189,22 @@ export async function getLqip(
 
     const arrayBuffer = await response.arrayBuffer()
     const buffer = Buffer.from(arrayBuffer)
-    const tempPath = join(CACHE_DIR, `astro-lqip-${Math.random().toString(36).slice(2)}.jpg`)
+    const tempPath = join(CACHE_DIR, `temp-${cacheKey.replace('.json', '')}-${Math.random().toString(36).slice(2)}.jpg`)
     await writeFile(tempPath, buffer)
 
     try {
-      return await generateLqip(tempPath, lqipType, lqipSize, isDevelopment)
+      result = await generateLqip(tempPath, lqipType, lqipSize, isDevelopment)
     } finally {
-      await unlink(tempPath)
+      try {
+        await unlink(tempPath)
+      } catch {
+        // temp file may already be removed
+      }
     }
-  }
-
-  if (isDevelopment && imagePath.src.startsWith('/@fs/')) {
+  } else if (isDevelopment && imagePath.src.startsWith('/@fs/')) {
     const filePath = imagePath.src.replace(/^\/@fs/, '').split('?')[0]
-    return await generateLqip(filePath, lqipType, lqipSize, isDevelopment)
-  }
-
-  if (!isDevelopment) {
+    result = await generateLqip(filePath, lqipType, lqipSize, isDevelopment)
+  } else if (!isDevelopment) {
     const src = imagePath.src
     const normalizedSrc = stripBasePath(src)
     const clean = normalizedSrc.replace(/^\//, '')
@@ -166,24 +217,31 @@ export async function getLqip(
 
       for (const path of candidatePaths) {
         if (existsSync(path)) {
-          return await generateLqip(path, lqipType, lqipSize, isDevelopment)
+          result = await generateLqip(path, lqipType, lqipSize, isDevelopment)
+          break
         }
       }
     }
 
-    const fileName = normalizedSrc.split('/').pop() ?? ''
-    if (HASHED_FILENAME_REGEX.test(fileName)) {
-      const originalBase = extractOriginalFileName(normalizedSrc)
-      const originalSource = await recursiveFind(originalBase)
+    if (result === undefined) {
+      const fileName = normalizedSrc.split('/').pop() ?? ''
+      if (HASHED_FILENAME_REGEX.test(fileName)) {
+        const originalBase = extractOriginalFileName(normalizedSrc)
+        const originalSource = await recursiveFind(originalBase)
 
-      if (originalSource) {
-        console.log(`${PREFIX} fallback recursive source found:`, originalSource)
-        return await generateLqip(originalSource, lqipType, lqipSize, isDevelopment)
-      } else {
-        console.warn(`${PREFIX} original source not found recursively for basename:`, originalBase)
+        if (originalSource) {
+          console.log(`${PREFIX} fallback recursive source found:`, originalSource)
+          result = await generateLqip(originalSource, lqipType, lqipSize, isDevelopment)
+        } else {
+          console.warn(`${PREFIX} original source not found recursively for basename:`, originalBase)
+        }
       }
     }
   }
 
-  return undefined
+  if (result !== undefined) {
+    await writeCache(cacheKey, result)
+  }
+
+  return result
 }
