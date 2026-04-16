@@ -37,7 +37,7 @@ type CreateBackgroundValueOptions = {
 
 export type UseLqipBackgroundOptions = ImageTransform & {
   cssVariable?: string
-  lqip?: string
+  lqip?: 'base64' | 'color' | false
   isDevelopment: boolean
 }
 
@@ -81,11 +81,13 @@ export async function useLqipBackground({
   const imageInput: string | ImageMetadata = typeof resolvedSrc === 'string' ? resolvedSrc : (resolvedSrc as ImageMetadata)
 
   let lqipLayer: string | undefined
-  const lqipSize = 12
-  const lqipInput = typeof resolvedSrc === 'string' ? { src: resolvedSrc } : resolvedSrc
-  if (lqipInput) {
-    const rawLqipValue = await getLqip(lqipInput, lqip, lqipSize, isDevelopment)
-    lqipLayer = formatLqipLayer(lqip, typeof rawLqipValue === 'string' ? rawLqipValue : undefined)
+  if (lqip !== false) {
+    const lqipSize = 12
+    const lqipInput = typeof resolvedSrc === 'string' ? { src: resolvedSrc } : resolvedSrc
+    if (lqipInput) {
+      const rawLqipValue = await getLqip(lqipInput, lqip, lqipSize, isDevelopment)
+      lqipLayer = formatLqipLayer(lqip, typeof rawLqipValue === 'string' ? rawLqipValue : undefined)
+    }
   }
 
   const formatValues = Array.isArray(format) ? format : [format]

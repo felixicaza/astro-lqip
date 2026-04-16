@@ -124,6 +124,19 @@ import volcanoSunsetImage from '../assets/pexels-fabianwiktor-3470482.jpg'
       <Image width={450} height={450} src="https://images.pexels.com/photos/994605/pexels-photo-994605.jpeg" alt="A beautiful volcano" />
       <Picture width={450} height={450} src="https://images.pexels.com/photos/994605/pexels-photo-994605.jpeg" alt="A beautiful volcano in the sunset" />
     </div>
+    <div>
+      <p>Image and Picture components with lqip={false}</p>
+      <Image width={450} height={450} src={volcanoImage} alt="Volcano no LQIP" lqip={false} />
+      <Picture width={450} height={450} src={volcanoImage} alt="Volcano no LQIP" lqip={false} />
+    </div>
+    <div>
+      <p>Background component with lqip={false}</p>
+      <Background src="/src/assets/pexels-fabianwiktor-3470482.jpg" lqip={false}>
+        <section>
+          <p>Background without LQIP</p>
+        </section>
+      </Background>
+    </div>
   </body>
 </html>
 

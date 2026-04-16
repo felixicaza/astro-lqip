@@ -3,7 +3,7 @@ import type { LqipType } from './lqip.type'
 export type Props = {
   /**
    * LQIP type.
-   * This can be 'color', 'css', 'svg' or 'base64'.
+   * This can be 'color', 'css', 'svg', 'base64' or false.
    * The default value is 'base64'.
    */
   lqip?: LqipType

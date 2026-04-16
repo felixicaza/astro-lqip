@@ -22,8 +22,13 @@ export const Background = createComponent({
 
     const slotHtml = await renderSlotToString(result, slots.default)
 
+    const wrapperAttributes: Record<string, string> = { style: backgroundStyle }
+    if (props.lqip !== false) {
+      wrapperAttributes['data-astro-lqip-bg'] = ''
+    }
+
     return renderTemplate`
-      <div data-astro-lqip-bg ${spreadAttributes({ style: backgroundStyle })}>
+      <div ${spreadAttributes(wrapperAttributes)}>
         ${slotHtml}
       </div>
     `

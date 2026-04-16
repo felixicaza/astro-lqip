@@ -179,6 +179,7 @@ Both `<Image>` and `<Picture>` components support all the props of the [native A
   - `color`: Generates a solid color placeholder. Not compatible with `lqipSize`.
   - `css`: Generates a CSS-based LQIP image.
   - `svg`: Generates an SVG-based LQIP image.
+  - `false`: Disables LQIP generation entirely. The component renders the underlying Astro image unchanged — no placeholder, no `data-astro-lqip` attribute, no `onload` handler.
 - `lqipSize`: The size of the LQIP image, which can be any number from `4` to `64`. (default is 4)
 
 > [!WARNING]
@@ -198,6 +199,23 @@ import otherImage from '/src/assets/images/other-image.png';
 <Picture src={otherImage} alt="Other Image" width={220} height={220} lqip="css" lqipSize={7} />
 ```
 
+#### Disabling LQIP
+
+Pass `lqip={false}` to skip LQIP generation entirely. This is useful for faster development, since generating placeholders adds latency to page loads and HMR:
+
+```astro
+---
+import { Image } from 'astro-lqip/components';
+
+import hero from '/src/assets/images/hero.jpg';
+---
+
+<!-- Skip LQIP in development for faster HMR, keep it in production -->
+<Image src={hero} alt="Hero" lqip={import.meta.env.DEV ? false : 'color'} />
+```
+
+When `lqip={false}`, the `<Image>` component renders without its wrapper `<div>`, and `<Picture>` renders without LQIP-related attributes — identical to using the native Astro components directly.
+
 > [!TIP]
 > For the `<Image>` component, a `parentAttributes` prop similar to `pictureAttributes` has been added.
 
@@ -209,6 +227,7 @@ The `<Background>` component supports the following props:
 - `lqip`: The LQIP type to use. It can be one of the following:
   - `base64`: Generates a Base64-encoded LQIP image. (default option)
   - `color`: Generates a solid color placeholder.
+  - `false`: Disables LQIP generation. The background renders without a placeholder layer.
 - `cssVariable`: A string that represents the name of the CSS variable to store the background data.
   - By default, the background data is stored in a CSS variable named `--background`.
   - For responsive backgrounds, the CSS variable names are generated based on the provided widths, following the pattern `--background-small` (lower than 768px), `--background-medium` (768px to 1199px), `--background-large` (1200px to 1919px) and `--background-xlarge` (1920px and above). `--background` is also generated for the largest image for backward compatibility.
