@@ -84,10 +84,8 @@ export async function useLqipBackground({
   if (lqip !== false) {
     const lqipSize = 12
     const lqipInput = typeof resolvedSrc === 'string' ? { src: resolvedSrc } : resolvedSrc
-    if (lqipInput) {
-      const rawLqipValue = await getLqip(lqipInput, lqip, lqipSize, isDevelopment)
-      lqipLayer = formatLqipLayer(lqip, typeof rawLqipValue === 'string' ? rawLqipValue : undefined)
-    }
+    const rawLqipValue = await getLqip(lqipInput, lqip, lqipSize, isDevelopment)
+    lqipLayer = formatLqipLayer(lqip, typeof rawLqipValue === 'string' ? rawLqipValue : undefined)
   }
 
   const formatValues = Array.isArray(format) ? format : [format]
@@ -121,22 +119,22 @@ export async function useLqipBackground({
   const referenceSources = formatSources[0]?.sources ?? []
   const hasWidths = Array.isArray(widths) && widths.length > 0
 
-  const createValueWithLqip = (selector?: FormatSelector) =>
+  const createValue = (selector?: FormatSelector) =>
     createBackgroundValue({
       formatSources,
       optimizedImages,
       isFormatArray,
       selector,
-      layer: lqipLayer
+      layer: lqip === false ? undefined : lqipLayer
     })
 
   const backgroundStyle = hasWidths
     ? buildResponsiveBackgroundStyle({
       referenceSources,
       baseVariable,
-      createValue: createValueWithLqip
+      createValue
     })
-    : `${baseVariable}: ${createValueWithLqip()}`
+    : `${baseVariable}: ${createValue()}`
 
   return { style: backgroundStyle, resolvedSrc }
 }

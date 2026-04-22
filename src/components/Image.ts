@@ -7,6 +7,7 @@ import { createComponent, renderComponent, renderTemplate, spreadAttributes } fr
 import { Image as AstroImage } from 'astro:assets'
 
 import { useLqipImage } from '../utils/useLqipImage'
+import { resolveImagePath } from '../utils/resolveImagePath'
 import { styleToString } from '../utils/styleToString'
 
 import '../styles/lqip.css'
@@ -16,8 +17,19 @@ export type Props = (LocalImageProps | RemoteImageProps) & LqipProps & {
 }
 
 export const Image = createComponent({
+  // @ts-expect-error using renderComponent when LQIP is disabled, and renderTemplate when LQIP is enabled
   factory: async (result: SSRResult, rawProps: Props) => {
     const { class: className, lqip = 'base64', lqipSize = 4, parentAttributes = {}, ...props } = rawProps
+
+    if (lqip === false) {
+      const resolvedSrc = await resolveImagePath(props.src as never)
+
+      return renderComponent(result, 'Image', AstroImage, {
+        ...props,
+        class: className,
+        src: resolvedSrc ?? props.src
+      })
+    }
 
     const { combinedStyle, resolvedSrc } = await useLqipImage({
       src: props.src,
@@ -27,14 +39,6 @@ export const Image = createComponent({
       forbiddenVars: [],
       isDevelopment: import.meta.env.MODE === 'development'
     })
-
-    if (lqip === false) {
-      return renderComponent(result, 'Image', AstroImage, {
-        ...props,
-        class: className,
-        src: resolvedSrc ?? props.src
-      })
-    }
 
     const wrapperAttributes = {
       ...parentAttributes,
