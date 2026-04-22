@@ -6,6 +6,7 @@ import { createComponent, renderComponent } from 'astro/runtime/server/index.js'
 import { Picture as AstroPicture } from 'astro:assets'
 
 import { useLqipImage } from '../utils/useLqipImage'
+import { resolveImagePath } from '../utils/resolveImagePath'
 
 import '../styles/lqip.css'
 
@@ -17,6 +18,17 @@ export const Picture = createComponent({
   factory: async (result: SSRResult, rawProps: Props) => {
     const { class: className, lqip = 'base64', lqipSize = 4, pictureAttributes = {}, ...props } = rawProps
 
+    if (lqip === false) {
+      const resolvedSrc = await resolveImagePath(props.src as never)
+
+      return await renderComponent(result, 'Picture', AstroPicture, {
+        ...props,
+        class: className,
+        src: resolvedSrc ?? props.src,
+        pictureAttributes
+      })
+    }
+
     const { combinedStyle, resolvedSrc } = await useLqipImage({
       src: props.src,
       lqip,
@@ -25,15 +37,6 @@ export const Picture = createComponent({
       forbiddenVars: [],
       isDevelopment: import.meta.env.MODE === 'development'
     })
-
-    if (lqip === false) {
-      return await renderComponent(result, 'Picture', AstroPicture, {
-        ...props,
-        class: className,
-        src: resolvedSrc ?? props.src,
-        pictureAttributes
-      })
-    }
 
     return await renderComponent(result, 'Picture', AstroPicture,
       {
