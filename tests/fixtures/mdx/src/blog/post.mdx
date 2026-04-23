@@ -88,6 +88,13 @@ Background component with several props
   </section>
 </Background>
 
+Background component with lqip false
+<Background src="/src/assets/pexels-fabianwiktor-3470482.jpg" lqip={false}>
+  <section>
+    <p>Background without LQIP</p>
+  </section>
+</Background>
+
 Image and Picture components ImageMetadata import
 <Image width={450} src={volcanoImage} alt="A beautiful volcano" />
 <Picture width={450} src={volcanoImage} alt="A beautiful volcano in the sunset" />
@@ -107,3 +114,7 @@ Image and Picture components import with alias
 Image and Picture components with remote images
 <Image width={450} height={450} src="https://images.pexels.com/photos/994605/pexels-photo-994605.jpeg" alt="A beautiful volcano" />
 <Picture width={450} height={450} src="https://images.pexels.com/photos/994605/pexels-photo-994605.jpeg" alt="A beautiful volcano in the sunset" />
+
+Image and Picture components with lqip false
+<Image width={450} height={450} src={volcanoImage} alt="Volcano no LQIP" lqip={false} />
+<Picture width={450} height={450} src={volcanoImage} alt="Volcano no LQIP in the sunset" lqip={false} />
