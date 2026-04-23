@@ -82,7 +82,7 @@ export async function useLqipBackground({
 
   let lqipLayer: string | undefined
   if (lqip !== false) {
-    const lqipSize = 12
+    const lqipSize = 8
     const lqipInput = typeof resolvedSrc === 'string' ? { src: resolvedSrc } : resolvedSrc
     const rawLqipValue = await getLqip(lqipInput, lqip, lqipSize, isDevelopment)
     lqipLayer = formatLqipLayer(lqip, typeof rawLqipValue === 'string' ? rawLqipValue : undefined)
