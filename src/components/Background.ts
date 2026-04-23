@@ -9,10 +9,10 @@ import { useLqipBackground } from '../utils/useLqipBackground'
 import '../styles/background.css'
 
 type Slots = Record<'default', ComponentSlots['default']>
-export type Props = ImageTransform
+export interface BackgroundProps extends ImageTransform {}
 
 export const Background = createComponent({
-  factory: async (result: SSRResult, props: Props, slots: Slots) => {
+  factory: async (result: SSRResult, props: BackgroundProps, slots: Slots) => {
     const isDevelopment = import.meta.env.MODE === 'development'
 
     const { style: backgroundStyle } = await useLqipBackground({
@@ -27,10 +27,6 @@ export const Background = createComponent({
       'data-astro-lqip-bg': ''
     }
 
-    return renderTemplate`
-      <div ${spreadAttributes(wrapperAttributes)}>
-        ${slotHtml}
-      </div>
-    `
+    return renderTemplate`<div ${spreadAttributes(wrapperAttributes)}>${slotHtml}</div>`
   }
 })

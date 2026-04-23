@@ -11,11 +11,11 @@ import { resolveImagePath } from '../utils/resolveImagePath'
 import '../styles/lqip.css'
 
 type AstroPictureProps = ComponentProps<typeof AstroPicture>
-export type Props = AstroPictureProps & LqipProps
+export type PictureProps = AstroPictureProps & LqipProps
 
 export const Picture = createComponent({
   // @ts-expect-error using renderComponent instead of renderTemplate
-  factory: async (result: SSRResult, rawProps: Props) => {
+  factory: async (result: SSRResult, rawProps: PictureProps) => {
     const { class: className, lqip = 'base64', lqipSize = 4, pictureAttributes = {}, ...props } = rawProps
 
     if (lqip === false) {
@@ -48,10 +48,7 @@ export const Picture = createComponent({
           ...pictureAttributes,
           style: combinedStyle
         },
-        onload: `
-          parentElement.style.setProperty("--z-index", 1);
-          parentElement.style.setProperty("--opacity", 0);
-        `
+        onload: `parentElement.style.setProperty("--z-index", 1);parentElement.style.setProperty("--opacity", 0);`
       }
     )
   }

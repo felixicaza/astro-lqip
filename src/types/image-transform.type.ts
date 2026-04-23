@@ -13,44 +13,64 @@ type ImageFit = 'fill' | 'contain' | 'cover' | 'none' | 'scale-down' | (string &
 
 export interface ImageTransform {
   /**
-   * Path of the image that will be used as the background.
-   * It can be a relative path, an absolute path, an alias or ImageMetadata.
+   * Source image used to generate the background asset.
+   * @remarks
+   * Accepts a relative path, absolute path, alias, or Astro `ImageMetadata`.
    */
   src: string | ImageMetadata
+
   /**
-   * CSS custom property that will receive the generated background.
-   * (defaults to --background)
+   * CSS custom property that receives the generated background value.
+   * @defaultValue '--background'
    */
   cssVariable?: string
+
   /**
-   * LQIP placeholder strategy for Background (defaults to 'base64').
-   * Only 'base64' and 'color' are supported to keep CSS-friendly values.
+   * Placeholder strategy used while the final background asset is loading.
+   * @remarks
+   * Only `'base64'` and `'color'` are supported because they can be represented
+   * as CSS-friendly values for background rendering.
+   * @defaultValue 'base64'
    */
   lqip?: 'base64' | 'color' | false
+
   /**
-   * Specifies one or more output formats (first entry is preferred fallback).
-   * Accepts a single `ImageOutputFormat` or an ordered array.
-   * (defaults to webp)
+   * Output format or ordered list of formats for generated assets.
+   * @remarks
+   * When an array is provided, the first entry is treated as the preferred
+   * fallback format.
+   * @defaultValue 'webp'
    */
   format?: ImageOutputFormat | ImageOutputFormat[] | undefined
+
   /**
-   * Explicit widths used for responsive variants.
+   * Explicit widths used to generate responsive variants.
    */
   widths?: number[] | undefined
+
   /**
-   * Single width fallback when `widths` is omitted.
+   * Target width for generated assets.
+   * @remarks
+   * Omitted when `widths` is provided.
    */
   width?: number | undefined
+
   /**
    * Target height for generated assets.
+   * @remarks
+   * Omitted when `widths` is provided, as height is determined by the aspect ratio of the source image.
    */
   height?: number | undefined
+
   /**
-   * Compression quality preset or numeric percentage.
+   * Compression quality applied to generated assets.
+   * @remarks
+   * Accepts either a named quality preset or a numeric percentage.
    */
   quality?: ImageQuality | undefined
+
   /**
-   * Object-fit behavior applied during resizing.
+   * Object-fit behavior applied during image resizing.
    */
   fit?: ImageFit | undefined
 }
