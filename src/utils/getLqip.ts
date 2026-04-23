@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto'
 import { mkdir, writeFile, readFile, unlink, readdir } from 'node:fs/promises'
 import { existsSync, statSync } from 'node:fs'
 
-import type { LqipType } from '../types'
+import type { GetSVGReturn, LqipType } from '../types'
 
 import { generateLqip } from './generateLqip'
 
@@ -160,7 +160,7 @@ export async function getLqip(
   lqipType: LqipType,
   lqipSize: number,
   isDevelopment: boolean | undefined
-) {
+): Promise<string | GetSVGReturn | undefined> {
   if (!imagePath?.src) return undefined
   if (lqipType === false) return undefined
 
@@ -177,7 +177,7 @@ export async function getLqip(
   const mtimeMs = resolvedFilePath ? getFileMtime(resolvedFilePath) : undefined
   const cacheKey = computeCacheKey(imagePath.src, lqipType, lqipSize, mtimeMs)
   const cached = await readCache(cacheKey)
-  if (cached !== undefined) return cached
+  if (cached !== undefined) return cached as string | GetSVGReturn | undefined
 
   let result: Awaited<ReturnType<typeof generateLqip>>
 
