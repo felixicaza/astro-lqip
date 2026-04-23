@@ -1,4 +1,4 @@
-import type { ComponentsOptions, ImagePath, SVGNode } from '../types'
+import type { ComponentsOptions, GetSVGReturn, ImagePath, SVGNode } from '../types'
 
 import { PREFIX } from '../constants'
 
@@ -24,7 +24,7 @@ export async function useLqipImage({
     return { lqipImage: undefined, svgHTML: '', lqipStyle: {}, combinedStyle: { ...styleProps }, resolvedSrc }
   }
 
-  let lqipImage
+  let lqipImage: string | GetSVGReturn | undefined
   if (resolvedSrc) {
     const lqipInput = typeof resolvedSrc === 'string' ? { src: resolvedSrc } : resolvedSrc
     lqipImage = await getLqip(lqipInput, lqip, lqipSize, isDevelopment)
