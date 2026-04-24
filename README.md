@@ -1,6 +1,4 @@
-<a href="https://astro-lqip.web.app/">
-  ![astro-lqip](https://raw.githubusercontent.com/felixicaza/astro-lqip/HEAD/.github/assets/astro-lqip.jpg)
-</a>
+[![astro-lqip](https://raw.githubusercontent.com/felixicaza/astro-lqip/HEAD/.github/assets/astro-lqip.jpg)](https://astro-lqip.web.app/)
 
 # 🖼️ astro-lqip
 
