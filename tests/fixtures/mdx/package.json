@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@astrojs/mdx": "5.0.3",
-    "astro": "6.1.2",
+    "astro": "6.1.9",
     "astro-lqip": "workspace:*",
     "sharp": "0.34.5"
   }
