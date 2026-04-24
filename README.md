@@ -102,85 +102,85 @@ import backgroundImage from '/src/assets/images/background-image.png';
 >
 >
 > <details>
->  <summary>Example with absolute path</summary>
->  <br/>
+>   <summary>Example with absolute path</summary>
+>   <br/>
 >
->  ```astro
->  ---
->  import { Image, Picture, Background } from 'astro-lqip/components';
->  ---
+>   ```astro
+>   ---
+>   import { Image, Picture, Background } from 'astro-lqip/components';
+>   ---
 >
->  <Image src="/src/assets/images/image.png" alt="Cover Image" width={220} height={220} />
->  <Picture src="/src/assets/images/other-image.png" alt="Other Image" width={220} height={220} />
->  <Background src="/src/assets/images/background-image.png">
->    <section>
->      <p>Optimized background</p>
->    </section>
->  </Background>
+>   <Image src="/src/assets/images/image.png" alt="Cover Image" width={220} height={220} />
+>   <Picture src="/src/assets/images/other-image.png" alt="Other Image" width={220} height={220} />
+>   <Background src="/src/assets/images/background-image.png">
+>     <section>
+>       <p>Optimized background</p>
+>     </section>
+>   </Background>
 >
->  <style>
->    section {
->      background-image: var(--background);
->      background-size: cover;
->      background-position: center;
->    }
->  </style>
->  ```
+>   <style>
+>     section {
+>       background-image: var(--background);
+>       background-size: cover;
+>       background-position: center;
+>     }
+>   </style>
+>   ```
 > </details>
 >
 > <details>
->  <summary>Example with relative path</summary>
->  <br/>
+>   <summary>Example with relative path</summary>
+>   <br/>
 >
->  ```astro
->  ---
->  import { Image, Picture, Background } from 'astro-lqip/components';
->  ---
+>   ```astro
+>   ---
+>   import { Image, Picture, Background } from 'astro-lqip/components';
+>   ---
 >
->  <!-- assuming you are on the path `/src/pages/index.astro` -->
->  <Image src="../assets/images/image.png" alt="Cover Image" width={220} height={220} />
->  <Picture src="../assets/images/other-image.png" alt="Other Image" width={220} height={220} />
->  <Background src="../assets/images/background-image.png">
->    <section>
->      <p>Optimized background</p>
->    </section>
->  </Background>
+>   <!-- assuming you are on the path `/src/pages/index.astro` -->
+>   <Image src="../assets/images/image.png" alt="Cover Image" width={220} height={220} />
+>   <Picture src="../assets/images/other-image.png" alt="Other Image" width={220} height={220} />
+>   <Background src="../assets/images/background-image.png">
+>     <section>
+>       <p>Optimized background</p>
+>     </section>
+>   </Background>
 >
->  <style>
->    section {
->      background-image: var(--background);
->      background-size: cover;
->      background-position: center;
->    }
->  </style>
->  ```
+>   <style>
+>     section {
+>       background-image: var(--background);
+>       background-size: cover;
+>       background-position: center;
+>     }
+>   </style>
+>   ```
 > </details>
 >
 > <details>
->  <summary>Example with alias</summary>
->  <br/>
+>   <summary>Example with alias</summary>
+>   <br/>
 >
->  ```astro
->  ---
->  import { Image, Picture, Background } from 'astro-lqip/components';
->  ---
+>   ```astro
+>   ---
+>   import { Image, Picture, Background } from 'astro-lqip/components';
+>   ---
 >
->  <Image src="@/assets/images/image.png" alt="Cover Image" width={220} height={220} />
->  <Picture src="@/assets/images/other-image.png" alt="Other Image" width={220} height={220} />
->  <Background src="@/assets/images/background-image.png">
->    <section>
->      <p>Optimized background</p>
->    </section>
->  </Background>
+>   <Image src="@/assets/images/image.png" alt="Cover Image" width={220} height={220} />
+>   <Picture src="@/assets/images/other-image.png" alt="Other Image" width={220} height={220} />
+>   <Background src="@/assets/images/background-image.png">
+>     <section>
+>       <p>Optimized background</p>
+>     </section>
+>   </Background>
 >
->  <style>
->    section {
->      background-image: var(--background);
->      background-size: cover;
->      background-position: center;
->    }
->  </style>
->  ```
+>   <style>
+>     section {
+>       background-image: var(--background);
+>       background-size: cover;
+>       background-position: center;
+>     }
+>   </style>
+>   ```
 > </details>
 
 Learn how to configure path aliasing in the [Astro documentation](https://docs.astro.build/en/guides/typescript/#import-aliases). If you want more examples of uses you can see the [Usage Tips](https://astro-lqip.web.app/usage-tips/) page.
@@ -255,7 +255,7 @@ The `<Background>` component supports the following props:
 #### `src` (string) — required
 The source of the background image located in `src` folder. It can be a static import, absolute path, relative path, alias path or remote URL.
 
-#### `lqip` — optional
+#### `lqip` (string) — optional
 The LQIP type to use. It can be one of the following:
 - `base64` (default) — Base64-encoded LQIP image
 - `color` — Solid color placeholder
