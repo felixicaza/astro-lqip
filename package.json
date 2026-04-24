@@ -1,7 +1,7 @@
 {
   "name": "astro-lqip",
   "version": "1.8.2",
-  "description": "🖼️ Native extended Astro components for generating low-quality image placeholders (LQIP), compatible with <img>, <picture> and CSS background images.",
+  "description": "🖼️ Native extended Astro components for generating low-quality image placeholders (LQIP), compatible with `<Image>`, `<Picture>` and CSS background images.",
   "keywords": [
     "astro",
     "astro-component",
@@ -100,8 +100,5 @@
   },
   "peerDependencies": {
     "astro": ">=3.3.0"
-  },
-  "engines": {
-    "node": ">=22"
   }
 }
