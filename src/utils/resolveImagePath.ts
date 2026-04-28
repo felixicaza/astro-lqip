@@ -15,6 +15,7 @@ const SRC_DIR = join(PROJECT_ROOT, 'src')
 const PUBLIC_DIR = join(PROJECT_ROOT, 'public')
 const DIST_DIR = join(PROJECT_ROOT, 'dist')
 const DIST_ASTRO_DIR = join(DIST_DIR, '_astro')
+const DIST_SERVER_PRERENDER_ASTRO_DIR = join(DIST_DIR, 'server', '.prerender', '_astro')
 const IS_DEV = import.meta.env?.MODE === 'development'
 
 const STACK_PATH_REGEX = /(file:\/\/[^\s)]+|\/[^\s)]+|[A-Za-z]:[^\s)]+):\d+:\d+/
@@ -133,10 +134,11 @@ function collectFsCandidates(specifier: string, callerDir: string | null) {
   if (isRelativeSpecifier(normalized)) {
     const trimmed = stripLeadingRelativeSegments(normalized)
     if (trimmed) {
-      const srcC = ensureInsideProject(join(SRC_DIR, trimmed))
-      if (srcC) out.add(srcC)
-      const pubC = ensureInsideProject(join(PUBLIC_DIR, trimmed))
-      if (pubC) out.add(pubC)
+      const srcCandidate = ensureInsideProject(join(SRC_DIR, trimmed))
+      if (srcCandidate) out.add(srcCandidate)
+
+      const publicCandidate = ensureInsideProject(join(PUBLIC_DIR, trimmed))
+      if (publicCandidate) out.add(publicCandidate)
     }
   }
 
@@ -147,13 +149,14 @@ function collectFsCandidates(specifier: string, callerDir: string | null) {
   else if (normalized.startsWith('public/')) out.add(join(PROJECT_ROOT, normalized))
 
   if (!normalized.startsWith('/')) {
-    const srcC = ensureInsideProject(join(SRC_DIR, normalized))
-    if (srcC) out.add(srcC)
-    const rootC = ensureInsideProject(join(PROJECT_ROOT, normalized))
-    if (rootC) out.add(rootC)
+    const srcCandidate = ensureInsideProject(join(SRC_DIR, normalized))
+    if (srcCandidate) out.add(srcCandidate)
+
+    const rootCandidate = ensureInsideProject(join(PROJECT_ROOT, normalized))
+    if (rootCandidate) out.add(rootCandidate)
   } else if (noLeading) {
-    const rootC = ensureInsideProject(join(PROJECT_ROOT, noLeading))
-    if (rootC) out.add(rootC)
+    const rootCandidate = ensureInsideProject(join(PROJECT_ROOT, noLeading))
+    if (rootCandidate) out.add(rootCandidate)
   }
 
   return Array.from(out)
@@ -168,14 +171,18 @@ async function walkSrcForFile(target: string) {
     let entries
     try {
       entries = await readdir(dir, { withFileTypes: true })
-    } catch { return }
-    for (const e of entries) {
-      const full = join(dir, e.name)
-      if (e.isDirectory()) {
-        if (DIRS_IGNORED_IN_WALK.has(e.name)) continue
+    } catch {
+      return
+    }
+
+    for (const entry of entries) {
+      const full = join(dir, entry.name)
+
+      if (entry.isDirectory()) {
+        if (DIRS_IGNORED_IN_WALK.has(entry.name)) continue
         const found = await walk(full)
         if (found) return found
-      } else if (e.name === target) {
+      } else if (entry.name === target) {
         return full
       }
     }
@@ -197,22 +204,51 @@ function toDevSrc(filePath: string, width: number, height: number, format: strin
   return `/@fs${normalized}?origWidth=${String(width)}&origHeight=${String(height)}&origFormat=${format}`
 }
 
+function isSsrBuildLayoutPresent() {
+  return (
+    existsSync(join(DIST_DIR, 'server'))
+    || existsSync(join(DIST_DIR, 'client'))
+    || existsSync(join(DIST_DIR, 'server', '.prerender'))
+  )
+}
+
+function getBuildStageDirs() {
+  const dirs = new Set<string>()
+  const hasSsrLayout = isSsrBuildLayoutPresent()
+
+  if (hasSsrLayout) {
+    dirs.add(DIST_SERVER_PRERENDER_ASTRO_DIR)
+  }
+
+  if (!hasSsrLayout || existsSync(DIST_ASTRO_DIR)) {
+    dirs.add(DIST_ASTRO_DIR)
+  }
+
+  if (dirs.size === 0) {
+    dirs.add(DIST_ASTRO_DIR)
+  }
+
+  return Array.from(dirs)
+}
+
 async function ensureBuildAssetPublicPath(sourceFilePath: string) {
   if (stagedAssetCache.has(sourceFilePath)) return stagedAssetCache.get(sourceFilePath) ?? null
 
   try {
-    await mkdir(DIST_ASTRO_DIR, { recursive: true })
-
     const st = await stat(sourceFilePath)
     const ext = extname(sourceFilePath).toLowerCase()
     const sourceBase = basename(sourceFilePath, ext)
     const digestInput = `${sourceFilePath}:${String(st.size)}:${String(st.mtimeMs)}`
     const digest = createHash('sha256').update(digestInput).digest('hex').slice(0, 8)
     const fileName = `${sourceBase}.${digest}${ext}`
-    const targetAbs = join(DIST_ASTRO_DIR, fileName)
 
-    if (!existsSync(targetAbs)) {
-      await copyFile(sourceFilePath, targetAbs)
+    for (const dir of getBuildStageDirs()) {
+      await mkdir(dir, { recursive: true })
+      const targetAbs = join(dir, fileName)
+
+      if (!existsSync(targetAbs)) {
+        await copyFile(sourceFilePath, targetAbs)
+      }
     }
 
     const publicPath = `/_astro/${fileName}`
@@ -245,7 +281,13 @@ async function createMetadataFromFile(filePath: string) {
 
     if (!src) return null
 
-    const imageMeta: ResolvedImage & { width: number, height: number, format: string } = { src, width, height, format }
+    const imageMeta: ResolvedImage & { width: number, height: number, format: string } = {
+      src,
+      width,
+      height,
+      format
+    }
+
     Object.defineProperty(imageMeta, 'fsPath', {
       value: filePath,
       enumerable: false,
