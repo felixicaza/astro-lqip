@@ -10,12 +10,15 @@ import type { ImagePath, ImportModule, ResolvedImage } from '../types'
 
 import { PREFIX } from '../constants'
 
+type RuntimePathConfig = {
+  basePath: string
+  assetsDir: string
+}
+
 const PROJECT_ROOT = process.cwd()
 const SRC_DIR = join(PROJECT_ROOT, 'src')
 const PUBLIC_DIR = join(PROJECT_ROOT, 'public')
 const DIST_DIR = join(PROJECT_ROOT, 'dist')
-const DIST_ASTRO_DIR = join(DIST_DIR, '_astro')
-const DIST_SERVER_PRERENDER_ASTRO_DIR = join(DIST_DIR, 'server', '.prerender', '_astro')
 const IS_DEV = import.meta.env?.MODE === 'development'
 
 const STACK_PATH_REGEX = /(file:\/\/[^\s)]+|\/[^\s)]+|[A-Za-z]:[^\s)]+):\d+:\d+/
@@ -26,9 +29,17 @@ const IGNORED_STACK_SEGMENTS = [
   `${sep}.prerender${sep}`
 ]
 const DIRS_IGNORED_IN_WALK = new Set(['node_modules', 'dist', '.astro'])
+const ASTRO_CONFIG_CANDIDATES = [
+  'astro.config.ts',
+  'astro.config.mts',
+  'astro.config.js',
+  'astro.config.mjs',
+  'astro.config.cjs'
+]
 
 const fileLookupCache = new Map<string, string | null>()
 const stagedAssetCache = new Map<string, string | null>()
+let runtimePathConfigPromise: Promise<RuntimePathConfig> | undefined
 
 function warnFiles(filePath: string | undefined) {
   if (!filePath) return
@@ -164,7 +175,8 @@ function collectFsCandidates(specifier: string, callerDir: string | null) {
 
 async function walkSrcForFile(target: string) {
   if (!target) return null
-  const key = `${SRC_DIR}::${target}`
+
+  const key = SRC_DIR + '::' + target
   if (fileLookupCache.has(key)) return fileLookupCache.get(key) ?? null
 
   async function walk(dir: string): Promise<string | undefined> {
@@ -204,6 +216,75 @@ function toDevSrc(filePath: string, width: number, height: number, format: strin
   return `/@fs${normalized}?origWidth=${String(width)}&origHeight=${String(height)}&origFormat=${format}`
 }
 
+function normalizeBasePath(input?: string) {
+  const normalized = (input ?? '/').trim().replace(/\\/g, '/')
+  if (!normalized || normalized === '/') return ''
+  const stripped = normalized.replace(/^\/+|\/+$/g, '')
+  return stripped ? `/${stripped}` : ''
+}
+
+function normalizeAssetsDir(input?: string) {
+  const normalized = (input ?? '_astro').trim().replace(/\\/g, '/')
+  const stripped = normalized.replace(/^\/+|\/+$/g, '')
+  return stripped || '_astro'
+}
+
+function parseSimpleStringAssignment(source: string, key: string) {
+  const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const regex = new RegExp(escapedKey + '\\s*:\\s*[\'"]([^\'"]+)[\'"]')
+  const m = source.match(regex)
+  return m?.[1]
+}
+
+function parseBasePathFromConfig(source: string) {
+  return parseSimpleStringAssignment(source, 'base')
+}
+
+function parseAssetsDirFromConfig(source: string) {
+  const buildBlock = source.match(/build\s*:\s*{([\s\S]*?)}/)
+  if (!buildBlock?.[1]) return undefined
+  return parseSimpleStringAssignment(buildBlock[1], 'assets')
+}
+
+async function resolveRuntimePathConfig(): Promise<RuntimePathConfig> {
+  for (const relPath of ASTRO_CONFIG_CANDIDATES) {
+    const absPath = join(PROJECT_ROOT, relPath)
+    if (!existsSync(absPath)) continue
+
+    try {
+      const source = await readFile(absPath, 'utf-8')
+      const basePath = normalizeBasePath(parseBasePathFromConfig(source))
+      const assetsDir = normalizeAssetsDir(parseAssetsDirFromConfig(source))
+      return { basePath, assetsDir }
+    } catch {
+      continue
+    }
+  }
+
+  return { basePath: '', assetsDir: '_astro' }
+}
+
+function getRuntimePathConfig() {
+  if (!runtimePathConfigPromise) {
+    runtimePathConfigPromise = resolveRuntimePathConfig()
+  }
+  return runtimePathConfigPromise
+}
+
+function getPublicAssetPrefix(config: RuntimePathConfig) {
+  return config.basePath
+    ? `${config.basePath}/${config.assetsDir}`
+    : `/${config.assetsDir}`
+}
+
+function getPublicAssetPath(fileName: string, config: RuntimePathConfig) {
+  return (`${getPublicAssetPrefix(config)}/${fileName}`).replace(/\/{2,}/g, '/')
+}
+
+function getStageAssetSegments(config: RuntimePathConfig) {
+  return [config.assetsDir]
+}
+
 function isSsrBuildLayoutPresent() {
   return (
     existsSync(join(DIST_DIR, 'server'))
@@ -212,29 +293,21 @@ function isSsrBuildLayoutPresent() {
   )
 }
 
-function getBuildStageDirs() {
-  const dirs = new Set<string>()
-  const hasSsrLayout = isSsrBuildLayoutPresent()
+function getBuildStageDirs(config: RuntimePathConfig) {
+  const segments = getStageAssetSegments(config)
 
-  if (hasSsrLayout) {
-    dirs.add(DIST_SERVER_PRERENDER_ASTRO_DIR)
+  if (isSsrBuildLayoutPresent()) {
+    return [join(DIST_DIR, 'server', '.prerender', ...segments)]
   }
 
-  if (!hasSsrLayout || existsSync(DIST_ASTRO_DIR)) {
-    dirs.add(DIST_ASTRO_DIR)
-  }
-
-  if (dirs.size === 0) {
-    dirs.add(DIST_ASTRO_DIR)
-  }
-
-  return Array.from(dirs)
+  return [join(DIST_DIR, ...segments)]
 }
 
 async function ensureBuildAssetPublicPath(sourceFilePath: string) {
   if (stagedAssetCache.has(sourceFilePath)) return stagedAssetCache.get(sourceFilePath) ?? null
 
   try {
+    const runtimeConfig = await getRuntimePathConfig()
     const st = await stat(sourceFilePath)
     const ext = extname(sourceFilePath).toLowerCase()
     const sourceBase = basename(sourceFilePath, ext)
@@ -242,7 +315,7 @@ async function ensureBuildAssetPublicPath(sourceFilePath: string) {
     const digest = createHash('sha256').update(digestInput).digest('hex').slice(0, 8)
     const fileName = `${sourceBase}.${digest}${ext}`
 
-    for (const dir of getBuildStageDirs()) {
+    for (const dir of getBuildStageDirs(runtimeConfig)) {
       await mkdir(dir, { recursive: true })
       const targetAbs = join(dir, fileName)
 
@@ -251,7 +324,7 @@ async function ensureBuildAssetPublicPath(sourceFilePath: string) {
       }
     }
 
-    const publicPath = `/_astro/${fileName}`
+    const publicPath = getPublicAssetPath(fileName, runtimeConfig)
     stagedAssetCache.set(sourceFilePath, publicPath)
     return publicPath
   } catch (err) {
