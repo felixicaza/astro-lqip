@@ -278,7 +278,7 @@ Represents the name of the CSS variable to store the background data.
   - `--{cssVariable}-large`
   - `--{cssVariable}-xlarge`, `--{cssVariable}` is also generated for the largest image for backward compatibility.
 
-#### `format` (string | array&lt;string&gt;) — optional
+#### `format` (string | string[]) — optional
 The image format to use for the background. It can be one of the following in string or an array of strings. If an array is provided, this generates multiple background images with the native [`image-set()`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/image/image-set) CSS function, which allows the browser to choose the best format to use based on its support:
 - `avif`
 - `webp` (default)
