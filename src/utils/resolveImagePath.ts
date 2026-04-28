@@ -1,5 +1,6 @@
+import { createHash } from 'node:crypto'
 import { existsSync } from 'node:fs'
-import { readFile, readdir } from 'node:fs/promises'
+import { copyFile, mkdir, readFile, readdir, stat } from 'node:fs/promises'
 import { basename, dirname, extname, join, relative, resolve as resolvePath, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -13,17 +14,20 @@ const PROJECT_ROOT = process.cwd()
 const SRC_DIR = join(PROJECT_ROOT, 'src')
 const PUBLIC_DIR = join(PROJECT_ROOT, 'public')
 const DIST_DIR = join(PROJECT_ROOT, 'dist')
+const DIST_ASTRO_DIR = join(DIST_DIR, '_astro')
 const IS_DEV = import.meta.env?.MODE === 'development'
 
 const STACK_PATH_REGEX = /(file:\/\/[^\s)]+|\/[^\s)]+|[A-Za-z]:[^\s)]+):\d+:\d+/
-const IGNORED_STACK_SEGMENTS = [`${sep}node_modules${sep}`, `${sep}dist${sep}`, `${sep}.astro${sep}`, `${sep}.prerender${sep}`]
+const IGNORED_STACK_SEGMENTS = [
+  `${sep}node_modules${sep}`,
+  `${sep}dist${sep}`,
+  `${sep}.astro${sep}`,
+  `${sep}.prerender${sep}`
+]
 const DIRS_IGNORED_IN_WALK = new Set(['node_modules', 'dist', '.astro'])
-const DIRS_IGNORED_IN_DIST_WALK = new Set(['.astro', '.vite'])
-
-const LOCAL_IMAGE_MODULES = import.meta.glob('/src/**/*.{jpg,jpeg,png,webp,avif,svg,gif}')
 
 const fileLookupCache = new Map<string, string | null>()
-const distAssetBySourceCache = new Map<string, string | null>()
+const stagedAssetCache = new Map<string, string | null>()
 
 function warnFiles(filePath: string | undefined) {
   if (!filePath) return
@@ -32,7 +36,8 @@ function warnFiles(filePath: string | undefined) {
     console.warn(`${PREFIX} Warning: image resolved from /public. Images should not be placed in /public - move them to /src so Astro can process them correctly.`)
   }
   if (lower.endsWith('.webp') || lower.endsWith('.avif')) {
-    console.warn(`${PREFIX} Warning: image is in ${lower.endsWith('.webp') ? 'webp' : 'avif'} format. These formats are usually already optimized; using this component to re-process them may degrade quality.`)
+    const format = lower.endsWith('.webp') ? 'webp' : 'avif'
+    console.warn(`${PREFIX} Warning: image is in ${format} format. These formats are usually already optimized; using this component to re-process them may degrade quality.`)
   }
 }
 
@@ -74,7 +79,9 @@ function isRelativeSpecifier(path: string) {
 
 function stripLeadingRelativeSegments(path: string) {
   let cur = path
-  while (cur.startsWith('./') || cur.startsWith('../')) cur = cur.startsWith('./') ? cur.slice(2) : cur.slice(3)
+  while (cur.startsWith('./') || cur.startsWith('../')) {
+    cur = cur.startsWith('./') ? cur.slice(2) : cur.slice(3)
+  }
   return cur
 }
 
@@ -111,34 +118,6 @@ function ensureInsideProject(candidate: string) {
   const rel = relative(PROJECT_ROOT, candidate)
   if (!candidate || rel.startsWith('..') || rel.includes(`..${sep}`) || rel.includes('node_modules')) return null
   return candidate
-}
-
-function toProjectKey(filePath: string) {
-  const rel = relative(PROJECT_ROOT, filePath).replace(/\\/g, '/')
-  return !rel || rel.startsWith('../') ? null : `/${rel}`
-}
-
-function collectModuleCandidates(specifier: string, callerDir: string | null) {
-  const normalized = normalizeSpecifier(specifier)
-  const out = new Set<string>()
-
-  if (normalized.startsWith('/src/')) out.add(normalized)
-  else if (normalized.startsWith('src/')) out.add(`/${normalized}`)
-
-  if (callerDir && isRelativeSpecifier(normalized)) {
-    const fromCaller = toProjectKey(resolvePath(callerDir, normalized))
-    if (fromCaller?.startsWith('/src/')) out.add(fromCaller)
-  }
-
-  if (isRelativeSpecifier(normalized)) {
-    const trimmed = stripLeadingRelativeSegments(normalized)
-    if (trimmed) out.add(trimmed.startsWith('src/') ? `/${trimmed}` : `/src/${trimmed}`)
-    const suffix = `/${trimmed}`
-    for (const key of Object.keys(LOCAL_IMAGE_MODULES)) if (key.endsWith(suffix)) out.add(key)
-  }
-
-  if (!normalized.startsWith('/') && !normalized.startsWith('src/') && !isRelativeSpecifier(normalized)) out.add(`/src/${normalized}`)
-  return Array.from(out)
 }
 
 function collectFsCandidates(specifier: string, callerDir: string | null) {
@@ -196,7 +175,9 @@ async function walkSrcForFile(target: string) {
         if (DIRS_IGNORED_IN_WALK.has(e.name)) continue
         const found = await walk(full)
         if (found) return found
-      } else if (e.name === target) return full
+      } else if (e.name === target) {
+        return full
+      }
     }
   }
 
@@ -213,71 +194,42 @@ function normalizeFormat(format: string | number | symbol | undefined, filePath:
 
 function toDevSrc(filePath: string, width: number, height: number, format: string) {
   const normalized = filePath.replace(/\\/g, '/')
-  return `/@fs${normalized}?origWidth=${width}&origHeight=${height}&origFormat=${format}`
+  return `/@fs${normalized}?origWidth=${String(width)}&origHeight=${String(height)}&origFormat=${format}`
 }
 
-function matchesBuildAsset(sourceFilePath: string, emittedFileName: string) {
-  const sourceBase = basename(sourceFilePath)
-  if (emittedFileName === sourceBase) return true
-  const sourceExt = extname(sourceBase)
-  const sourceName = sourceExt ? sourceBase.slice(0, -sourceExt.length) : sourceBase
-  return emittedFileName.startsWith(`${sourceName}.`) && emittedFileName.endsWith(sourceExt)
-}
+async function ensureBuildAssetPublicPath(sourceFilePath: string) {
+  if (stagedAssetCache.has(sourceFilePath)) return stagedAssetCache.get(sourceFilePath) ?? null
 
-function toPublicPathFromDist(foundAbs: string) {
-  const normalized = foundAbs.replace(/\\/g, '/')
-  const prerenderMarker = '.prerender/'
-  const astroMarker = '/_astro/'
+  try {
+    await mkdir(DIST_ASTRO_DIR, { recursive: true })
 
-  const astroIdx = normalized.lastIndexOf(astroMarker)
-  if (astroIdx !== -1) return normalized.slice(astroIdx)
+    const st = await stat(sourceFilePath)
+    const ext = extname(sourceFilePath).toLowerCase()
+    const sourceBase = basename(sourceFilePath, ext)
+    const digestInput = `${sourceFilePath}:${String(st.size)}:${String(st.mtimeMs)}`
+    const digest = createHash('sha256').update(digestInput).digest('hex').slice(0, 8)
+    const fileName = `${sourceBase}.${digest}${ext}`
+    const targetAbs = join(DIST_ASTRO_DIR, fileName)
 
-  const relDist = relative(DIST_DIR, foundAbs).replace(/\\/g, '/')
-  const preIdx = relDist.indexOf(prerenderMarker)
-  if (preIdx !== -1) return `/${relDist.slice(preIdx + prerenderMarker.length)}`
-
-  return `/${relDist}`
-}
-
-async function findBuildAssetPublicPath(sourceFilePath: string) {
-  if (distAssetBySourceCache.has(sourceFilePath)) return distAssetBySourceCache.get(sourceFilePath) ?? null
-  if (!existsSync(DIST_DIR)) {
-    distAssetBySourceCache.set(sourceFilePath, null)
-    return null
-  }
-
-  async function walk(dir: string): Promise<string | undefined> {
-    let entries
-    try {
-      entries = await readdir(dir, { withFileTypes: true })
-    } catch { return }
-    for (const e of entries) {
-      const full = join(dir, e.name)
-      if (e.isDirectory()) {
-        if (DIRS_IGNORED_IN_DIST_WALK.has(e.name)) continue
-        const nested = await walk(full)
-        if (nested) return nested
-      } else if (matchesBuildAsset(sourceFilePath, e.name)) {
-        return full
-      }
+    if (!existsSync(targetAbs)) {
+      await copyFile(sourceFilePath, targetAbs)
     }
-  }
 
-  const found = await walk(DIST_DIR)
-  if (!found) {
-    distAssetBySourceCache.set(sourceFilePath, null)
+    const publicPath = `/_astro/${fileName}`
+    stagedAssetCache.set(sourceFilePath, publicPath)
+    return publicPath
+  } catch (err) {
+    console.warn(`${PREFIX} Failed to stage build asset for "${sourceFilePath}".`, err)
+    stagedAssetCache.set(sourceFilePath, null)
     return null
   }
-
-  const publicPath = toPublicPathFromDist(found)
-  distAssetBySourceCache.set(sourceFilePath, publicPath)
-  return publicPath
 }
 
 async function createMetadataFromFile(filePath: string) {
   try {
     const buffer = await readFile(filePath)
-    const { metadata } = await getPlaiceholder(buffer, { size: 4 })
+    const placeholderResult = await getPlaiceholder(buffer, { size: 4 })
+    const metadata = placeholderResult.metadata
     const width = metadata?.width ?? 0
     const height = metadata?.height ?? 0
     const format = normalizeFormat(metadata?.format, filePath)
@@ -287,30 +239,25 @@ async function createMetadataFromFile(filePath: string) {
       return null
     }
 
-    const src = IS_DEV ? toDevSrc(filePath, width, height, format) : await findBuildAssetPublicPath(filePath)
+    const src = IS_DEV
+      ? toDevSrc(filePath, width, height, format)
+      : await ensureBuildAssetPublicPath(filePath)
+
     if (!src) return null
 
     const imageMeta: ResolvedImage & { width: number, height: number, format: string } = { src, width, height, format }
-    Object.defineProperty(imageMeta, 'fsPath', { value: filePath, enumerable: false, configurable: false, writable: false })
+    Object.defineProperty(imageMeta, 'fsPath', {
+      value: filePath,
+      enumerable: false,
+      configurable: false,
+      writable: false
+    })
+
     return imageMeta
   } catch (err) {
     console.warn(`${PREFIX} Failed to derive metadata for "${filePath}".`, err)
     return null
   }
-}
-
-async function resolveFromModuleMap(specifier: string, callerDir: string | null) {
-  const candidates = collectModuleCandidates(specifier, callerDir)
-  for (const key of candidates) {
-    const loader = LOCAL_IMAGE_MODULES[key]
-    if (!loader) continue
-    const mod = await loader() as ImportModule
-    const resolved = (mod.default ?? mod) as unknown
-    if (!hasSrc(resolved)) continue
-    warnFiles((resolved as ResolvedImage).src)
-    return resolved as ResolvedImage
-  }
-  return null
 }
 
 async function resolveFromFileSystem(specifier: string, callerDir: string | null) {
@@ -365,9 +312,6 @@ export async function resolveImagePath(path: ImagePath) {
     if (isRemoteUrl(path)) return path
     const spec = normalizeSpecifier(path)
     const callerDir = isRelativeSpecifier(spec) ? getCallerDirectory() : null
-
-    const moduleMatch = await resolveFromModuleMap(spec, callerDir)
-    if (moduleMatch) return moduleMatch
 
     const fsMatch = await resolveFromFileSystem(spec, callerDir)
     if (fsMatch) return fsMatch
