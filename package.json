@@ -100,5 +100,8 @@
   },
   "peerDependencies": {
     "astro": ">=3.3.0"
+  },
+  "engines": {
+    "node": ">=18.14.1"
   }
 }
