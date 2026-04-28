@@ -15,7 +15,7 @@ import require$$0$4 from 'crypto';
 import require$$1$2 from 'fs';
 import require$$13 from 'stream';
 
-function appendForwardSlash(path) {
+function appendForwardSlash$1(path) {
   return path.endsWith("/") ? path : path + "/";
 }
 function prependForwardSlash$1(path) {
@@ -54,10 +54,10 @@ function trimSlashes(path) {
 function isString(path) {
   return typeof path === "string" || path instanceof String;
 }
-const INTERNAL_PREFIXES = /* @__PURE__ */ new Set(["/_", "/@", "/.", "//"]);
-const JUST_SLASHES = /^\/{2,}$/;
-function isInternalPath(path) {
-  return INTERNAL_PREFIXES.has(path.slice(0, 2)) && !JUST_SLASHES.test(path);
+const INTERNAL_PREFIXES$1 = /* @__PURE__ */ new Set(["/_", "/@", "/.", "//"]);
+const JUST_SLASHES$1 = /^\/{2,}$/;
+function isInternalPath$1(path) {
+  return INTERNAL_PREFIXES$1.has(path.slice(0, 2)) && !JUST_SLASHES$1.test(path);
 }
 function joinPaths(...paths) {
   return paths.filter(isString).map((path, i) => {
@@ -77,9 +77,9 @@ function fileExtension(path) {
   const ext = path.split(".").pop();
   return ext !== path ? `.${ext}` : "";
 }
-const WITH_FILE_EXT = /\/[^/]+\.\w+$/;
-function hasFileExtension(path) {
-  return WITH_FILE_EXT.test(path);
+const WITH_FILE_EXT$1 = /\/[^/]+\.\w+$/;
+function hasFileExtension$1(path) {
+  return WITH_FILE_EXT$1.test(path);
 }
 
 function matchPattern(url, remotePattern) {
@@ -128,75 +128,41 @@ function matchPathname(url, pathname, allowWildcard = false) {
   return false;
 }
 
-function normalizeLF(code) {
-  return code.replace(/\r\n|\r(?!\n)|\n/g, "\n");
+function shouldAppendForwardSlash(trailingSlash, buildFormat) {
+  switch (trailingSlash) {
+    case "always":
+      return true;
+    case "never":
+      return false;
+    case "ignore": {
+      switch (buildFormat) {
+        case "directory":
+          return true;
+        case "preserve":
+        case "file":
+          return false;
+      }
+    }
+  }
 }
 
-function codeFrame(src, loc) {
-  if (!loc || loc.line === void 0 || loc.column === void 0) {
-    return "";
-  }
-  const lines = normalizeLF(src).split("\n").map((ln) => ln.replace(/\t/g, "  "));
-  const visibleLines = [];
-  for (let n = -2; n <= 2; n++) {
-    if (lines[loc.line + n]) visibleLines.push(loc.line + n);
-  }
-  let gutterWidth = 0;
-  for (const lineNo of visibleLines) {
-    let w = `> ${lineNo}`;
-    if (w.length > gutterWidth) gutterWidth = w.length;
-  }
-  let output = "";
-  for (const lineNo of visibleLines) {
-    const isFocusedLine = lineNo === loc.line - 1;
-    output += isFocusedLine ? "> " : "  ";
-    output += `${lineNo + 1} | ${lines[lineNo]}
-`;
-    if (isFocusedLine)
-      output += `${Array.from({ length: gutterWidth }).join(" ")}  | ${Array.from({
-        length: loc.column
-      }).join(" ")}^
-`;
-  }
-  return output;
-}
-
-class AstroError extends Error {
-  loc;
-  title;
-  hint;
-  frame;
-  type = "AstroError";
-  constructor(props, options) {
-    const { name, title, message, stack, location, hint, frame } = props;
-    super(message, options);
-    this.title = title;
-    this.name = name;
-    if (message) this.message = message;
-    this.stack = stack ? stack : this.stack;
-    this.loc = location;
-    this.hint = hint;
-    this.frame = frame;
-  }
-  setLocation(location) {
-    this.loc = location;
-  }
-  setName(name) {
-    this.name = name;
-  }
-  setMessage(message) {
-    this.message = message;
-  }
-  setHint(hint) {
-    this.hint = hint;
-  }
-  setFrame(source, location) {
-    this.frame = codeFrame(source, location);
-  }
-  static is(err) {
-    return err?.type === "AstroError";
-  }
-}
+const ASTRO_VERSION = "6.1.9";
+const ASTRO_GENERATOR = `Astro v${ASTRO_VERSION}`;
+const REROUTE_DIRECTIVE_HEADER = "X-Astro-Reroute";
+const REWRITE_DIRECTIVE_HEADER_KEY = "X-Astro-Rewrite";
+const REWRITE_DIRECTIVE_HEADER_VALUE = "yes";
+const NOOP_MIDDLEWARE_HEADER = "X-Astro-Noop";
+const ROUTE_TYPE_HEADER = "X-Astro-Route-Type";
+const DEFAULT_404_COMPONENT = "astro-default-404.astro";
+const REDIRECT_STATUS_CODES = [301, 302, 303, 307, 308, 300, 304];
+const REROUTABLE_STATUS_CODES = [404, 500];
+const clientAddressSymbol = /* @__PURE__ */ Symbol.for("astro.clientAddress");
+const originPathnameSymbol = /* @__PURE__ */ Symbol.for("astro.originPathname");
+const pipelineSymbol = /* @__PURE__ */ Symbol.for("astro.pipeline");
+const nodeRequestAbortControllerCleanupSymbol = /* @__PURE__ */ Symbol.for(
+  "astro.nodeRequestAbortControllerCleanup"
+);
+const responseSentSymbol$1 = /* @__PURE__ */ Symbol.for("astro.responseSent");
 
 const ClientAddressNotAvailable = {
   name: "ClientAddressNotAvailable",
@@ -392,972 +358,75 @@ const CacheNotEnabled = {
   hint: 'Use an adapter that provides a default cache provider, or set one explicitly: `experimental: { cache: { provider: "..." } }`. See https://docs.astro.build/en/reference/experimental-flags/route-caching/.'
 };
 
-const decoder$2 = new TextDecoder();
-const toUTF8String = (input, start = 0, end = input.length) => decoder$2.decode(input.slice(start, end));
-const toHexString = (input, start = 0, end = input.length) => input.slice(start, end).reduce((memo, i) => memo + `0${i.toString(16)}`.slice(-2), "");
-const getView = (input, offset) => new DataView(input.buffer, input.byteOffset + offset);
-const readInt16LE = (input, offset = 0) => getView(input, offset).getInt16(0, true);
-const readUInt16BE = (input, offset = 0) => getView(input, offset).getUint16(0, false);
-const readUInt16LE = (input, offset = 0) => getView(input, offset).getUint16(0, true);
-const readUInt24LE = (input, offset = 0) => {
-  const view = getView(input, offset);
-  return view.getUint16(0, true) + (view.getUint8(2) << 16);
-};
-const readInt32LE = (input, offset = 0) => getView(input, offset).getInt32(0, true);
-const readUInt32BE = (input, offset = 0) => getView(input, offset).getUint32(0, false);
-const readUInt32LE = (input, offset = 0) => getView(input, offset).getUint32(0, true);
-const readUInt64 = (input, offset, isBigEndian) => getView(input, offset).getBigUint64(0, !isBigEndian);
-const methods = {
-  readUInt16BE,
-  readUInt16LE,
-  readUInt32BE,
-  readUInt32LE
-};
-function readUInt(input, bits, offset = 0, isBigEndian = false) {
-  const endian = isBigEndian ? "BE" : "LE";
-  const methodName = `readUInt${bits}${endian}`;
-  return methods[methodName](input, offset);
-}
-function readBox(input, offset) {
-  if (input.length - offset < 4) return;
-  const boxSize = readUInt32BE(input, offset);
-  if (input.length - offset < boxSize) return;
-  return {
-    name: toUTF8String(input, 4 + offset, 8 + offset),
-    offset,
-    size: boxSize
-  };
-}
-function findBox(input, boxName, currentOffset) {
-  while (currentOffset < input.length) {
-    const box = readBox(input, currentOffset);
-    if (!box) break;
-    if (box.name === boxName) return box;
-    currentOffset += box.size > 0 ? box.size : 8;
-  }
+function normalizeLF(code) {
+  return code.replace(/\r\n|\r(?!\n)|\n/g, "\n");
 }
 
-const BMP = {
-  validate: (input) => toUTF8String(input, 0, 2) === "BM",
-  calculate: (input) => ({
-    height: Math.abs(readInt32LE(input, 22)),
-    width: readUInt32LE(input, 18)
-  })
-};
-
-const TYPE_ICON = 1;
-const SIZE_HEADER$1 = 2 + 2 + 2;
-const SIZE_IMAGE_ENTRY = 1 + 1 + 1 + 1 + 2 + 2 + 4 + 4;
-function getSizeFromOffset(input, offset) {
-  const value = input[offset];
-  return value === 0 ? 256 : value;
-}
-function getImageSize$1(input, imageIndex) {
-  const offset = SIZE_HEADER$1 + imageIndex * SIZE_IMAGE_ENTRY;
-  return {
-    height: getSizeFromOffset(input, offset + 1),
-    width: getSizeFromOffset(input, offset)
-  };
-}
-const ICO = {
-  validate(input) {
-    const reserved = readUInt16LE(input, 0);
-    const imageCount = readUInt16LE(input, 4);
-    if (reserved !== 0 || imageCount === 0) return false;
-    const imageType = readUInt16LE(input, 2);
-    return imageType === TYPE_ICON;
-  },
-  calculate(input) {
-    const nbImages = readUInt16LE(input, 4);
-    const imageSize = getImageSize$1(input, 0);
-    if (nbImages === 1) return imageSize;
-    const images = [];
-    for (let imageIndex = 0; imageIndex < nbImages; imageIndex += 1) {
-      images.push(getImageSize$1(input, imageIndex));
-    }
-    return {
-      width: imageSize.width,
-      height: imageSize.height,
-      images
-    };
+function codeFrame(src, loc) {
+  if (!loc || loc.line === void 0 || loc.column === void 0) {
+    return "";
   }
-};
-
-const TYPE_CURSOR = 2;
-const CUR = {
-  validate(input) {
-    const reserved = readUInt16LE(input, 0);
-    const imageCount = readUInt16LE(input, 4);
-    if (reserved !== 0 || imageCount === 0) return false;
-    const imageType = readUInt16LE(input, 2);
-    return imageType === TYPE_CURSOR;
-  },
-  calculate: (input) => ICO.calculate(input)
-};
-
-const DDS = {
-  validate: (input) => readUInt32LE(input, 0) === 542327876,
-  calculate: (input) => ({
-    height: readUInt32LE(input, 12),
-    width: readUInt32LE(input, 16)
-  })
-};
-
-const gifRegexp = /^GIF8[79]a/;
-const GIF = {
-  validate: (input) => gifRegexp.test(toUTF8String(input, 0, 6)),
-  calculate: (input) => ({
-    height: readUInt16LE(input, 8),
-    width: readUInt16LE(input, 6)
-  })
-};
-
-const brandMap = {
-  avif: "avif",
-  avis: "avif",
-  // avif-sequence
-  mif1: "heif",
-  msf1: "heif",
-  // heif-sequence
-  heic: "heic",
-  heix: "heic",
-  hevc: "heic",
-  // heic-sequence
-  hevx: "heic"
-  // heic-sequence
-};
-function detectType(input, start, end) {
-  let hasAvif = false;
-  let hasHeic = false;
-  let hasHeif = false;
-  for (let i = start; i <= end; i += 4) {
-    const brand = toUTF8String(input, i, i + 4);
-    if (brand === "avif" || brand === "avis") hasAvif = true;
-    else if (brand === "heic" || brand === "heix" || brand === "hevc" || brand === "hevx") hasHeic = true;
-    else if (brand === "mif1" || brand === "msf1") hasHeif = true;
+  const lines = normalizeLF(src).split("\n").map((ln) => ln.replace(/\t/g, "  "));
+  const visibleLines = [];
+  for (let n = -2; n <= 2; n++) {
+    if (lines[loc.line + n]) visibleLines.push(loc.line + n);
   }
-  if (hasAvif) return "avif";
-  if (hasHeic) return "heic";
-  if (hasHeif) return "heif";
-}
-const HEIF = {
-  validate(input) {
-    const boxType = toUTF8String(input, 4, 8);
-    if (boxType !== "ftyp") return false;
-    const ftypBox = findBox(input, "ftyp", 0);
-    if (!ftypBox) return false;
-    const brand = toUTF8String(input, ftypBox.offset + 8, ftypBox.offset + 12);
-    return brand in brandMap;
-  },
-  calculate(input) {
-    const metaBox = findBox(input, "meta", 0);
-    const iprpBox = metaBox && findBox(input, "iprp", metaBox.offset + 12);
-    const ipcoBox = iprpBox && findBox(input, "ipco", iprpBox.offset + 8);
-    if (!ipcoBox) {
-      throw new TypeError("Invalid HEIF, no ipco box found");
-    }
-    const type = detectType(input, 8, metaBox.offset);
-    const images = [];
-    let currentOffset = ipcoBox.offset + 8;
-    while (currentOffset < ipcoBox.offset + ipcoBox.size) {
-      const ispeBox = findBox(input, "ispe", currentOffset);
-      if (!ispeBox) break;
-      const rawWidth = readUInt32BE(input, ispeBox.offset + 12);
-      const rawHeight = readUInt32BE(input, ispeBox.offset + 16);
-      const clapBox = findBox(input, "clap", currentOffset);
-      let width = rawWidth;
-      let height = rawHeight;
-      if (clapBox && clapBox.offset < ipcoBox.offset + ipcoBox.size) {
-        const cropRight = readUInt32BE(input, clapBox.offset + 12);
-        width = rawWidth - cropRight;
-      }
-      images.push({ height, width });
-      currentOffset = ispeBox.offset + ispeBox.size;
-    }
-    if (images.length === 0) {
-      throw new TypeError("Invalid HEIF, no sizes found");
-    }
-    return {
-      width: images[0].width,
-      height: images[0].height,
-      type,
-      ...images.length > 1 ? { images } : {}
-    };
+  let gutterWidth = 0;
+  for (const lineNo of visibleLines) {
+    let w = `> ${lineNo}`;
+    if (w.length > gutterWidth) gutterWidth = w.length;
   }
-};
-
-const SIZE_HEADER = 4 + 4;
-const FILE_LENGTH_OFFSET = 4;
-const ENTRY_LENGTH_OFFSET = 4;
-const ICON_TYPE_SIZE = {
-  ICON: 32,
-  "ICN#": 32,
-  // m => 16 x 16
-  "icm#": 16,
-  icm4: 16,
-  icm8: 16,
-  // s => 16 x 16
-  "ics#": 16,
-  ics4: 16,
-  ics8: 16,
-  is32: 16,
-  s8mk: 16,
-  icp4: 16,
-  // l => 32 x 32
-  icl4: 32,
-  icl8: 32,
-  il32: 32,
-  l8mk: 32,
-  icp5: 32,
-  ic11: 32,
-  // h => 48 x 48
-  ich4: 48,
-  ich8: 48,
-  ih32: 48,
-  h8mk: 48,
-  // . => 64 x 64
-  icp6: 64,
-  ic12: 32,
-  // t => 128 x 128
-  it32: 128,
-  t8mk: 128,
-  ic07: 128,
-  // . => 256 x 256
-  ic08: 256,
-  ic13: 256,
-  // . => 512 x 512
-  ic09: 512,
-  ic14: 512,
-  // . => 1024 x 1024
-  ic10: 1024
-};
-function readImageHeader(input, imageOffset) {
-  const imageLengthOffset = imageOffset + ENTRY_LENGTH_OFFSET;
-  return [
-    toUTF8String(input, imageOffset, imageLengthOffset),
-    readUInt32BE(input, imageLengthOffset)
-  ];
-}
-function getImageSize(type) {
-  const size = ICON_TYPE_SIZE[type];
-  return { width: size, height: size, type };
-}
-const ICNS = {
-  validate: (input) => toUTF8String(input, 0, 4) === "icns",
-  calculate(input) {
-    const inputLength = input.length;
-    const fileLength = readUInt32BE(input, FILE_LENGTH_OFFSET);
-    let imageOffset = SIZE_HEADER;
-    const images = [];
-    while (imageOffset < fileLength && imageOffset < inputLength) {
-      const imageHeader = readImageHeader(input, imageOffset);
-      const imageSize = getImageSize(imageHeader[0]);
-      images.push(imageSize);
-      imageOffset += imageHeader[1];
-    }
-    if (images.length === 0) {
-      throw new TypeError("Invalid ICNS, no sizes found");
-    }
-    return {
-      width: images[0].width,
-      height: images[0].height,
-      ...images.length > 1 ? { images } : {}
-    };
+  let output = "";
+  for (const lineNo of visibleLines) {
+    const isFocusedLine = lineNo === loc.line - 1;
+    output += isFocusedLine ? "> " : "  ";
+    output += `${lineNo + 1} | ${lines[lineNo]}
+`;
+    if (isFocusedLine)
+      output += `${Array.from({ length: gutterWidth }).join(" ")}  | ${Array.from({
+        length: loc.column
+      }).join(" ")}^
+`;
   }
-};
-
-const J2C = {
-  // TODO: this doesn't seem right. SIZ marker doesn't have to be right after the SOC
-  validate: (input) => readUInt32BE(input, 0) === 4283432785,
-  calculate: (input) => ({
-    height: readUInt32BE(input, 12),
-    width: readUInt32BE(input, 8)
-  })
-};
-
-const JP2 = {
-  validate(input) {
-    const boxType = toUTF8String(input, 4, 8);
-    if (boxType !== "jP  ") return false;
-    const ftypBox = findBox(input, "ftyp", 0);
-    if (!ftypBox) return false;
-    const brand = toUTF8String(input, ftypBox.offset + 8, ftypBox.offset + 12);
-    return brand === "jp2 ";
-  },
-  calculate(input) {
-    const jp2hBox = findBox(input, "jp2h", 0);
-    const ihdrBox = jp2hBox && findBox(input, "ihdr", jp2hBox.offset + 8);
-    if (ihdrBox) {
-      return {
-        height: readUInt32BE(input, ihdrBox.offset + 8),
-        width: readUInt32BE(input, ihdrBox.offset + 12)
-      };
-    }
-    throw new TypeError("Unsupported JPEG 2000 format");
-  }
-};
-
-const EXIF_MARKER = "45786966";
-const APP1_DATA_SIZE_BYTES = 2;
-const EXIF_HEADER_BYTES = 6;
-const TIFF_BYTE_ALIGN_BYTES = 2;
-const BIG_ENDIAN_BYTE_ALIGN = "4d4d";
-const LITTLE_ENDIAN_BYTE_ALIGN = "4949";
-const IDF_ENTRY_BYTES = 12;
-const NUM_DIRECTORY_ENTRIES_BYTES = 2;
-function isEXIF(input) {
-  return toHexString(input, 2, 6) === EXIF_MARKER;
-}
-function extractSize(input, index) {
-  return {
-    height: readUInt16BE(input, index),
-    width: readUInt16BE(input, index + 2)
-  };
-}
-function extractOrientation(exifBlock, isBigEndian) {
-  const idfOffset = 8;
-  const offset = EXIF_HEADER_BYTES + idfOffset;
-  const idfDirectoryEntries = readUInt(exifBlock, 16, offset, isBigEndian);
-  for (let directoryEntryNumber = 0; directoryEntryNumber < idfDirectoryEntries; directoryEntryNumber++) {
-    const start = offset + NUM_DIRECTORY_ENTRIES_BYTES + directoryEntryNumber * IDF_ENTRY_BYTES;
-    const end = start + IDF_ENTRY_BYTES;
-    if (start > exifBlock.length) {
-      return;
-    }
-    const block = exifBlock.slice(start, end);
-    const tagNumber = readUInt(block, 16, 0, isBigEndian);
-    if (tagNumber === 274) {
-      const dataFormat = readUInt(block, 16, 2, isBigEndian);
-      if (dataFormat !== 3) {
-        return;
-      }
-      const numberOfComponents = readUInt(block, 32, 4, isBigEndian);
-      if (numberOfComponents !== 1) {
-        return;
-      }
-      return readUInt(block, 16, 8, isBigEndian);
-    }
-  }
-}
-function validateExifBlock(input, index) {
-  const exifBlock = input.slice(APP1_DATA_SIZE_BYTES, index);
-  const byteAlign = toHexString(
-    exifBlock,
-    EXIF_HEADER_BYTES,
-    EXIF_HEADER_BYTES + TIFF_BYTE_ALIGN_BYTES
-  );
-  const isBigEndian = byteAlign === BIG_ENDIAN_BYTE_ALIGN;
-  const isLittleEndian = byteAlign === LITTLE_ENDIAN_BYTE_ALIGN;
-  if (isBigEndian || isLittleEndian) {
-    return extractOrientation(exifBlock, isBigEndian);
-  }
-}
-function validateInput(input, index) {
-  if (index > input.length) {
-    throw new TypeError("Corrupt JPG, exceeded buffer limits");
-  }
-}
-const JPG = {
-  validate: (input) => toHexString(input, 0, 2) === "ffd8",
-  calculate(_input) {
-    let input = _input.slice(4);
-    let orientation;
-    let next;
-    while (input.length) {
-      const i = readUInt16BE(input, 0);
-      validateInput(input, i);
-      if (input[i] !== 255) {
-        input = input.slice(1);
-        continue;
-      }
-      if (isEXIF(input)) {
-        orientation = validateExifBlock(input, i);
-      }
-      next = input[i + 1];
-      if (next === 192 || next === 193 || next === 194) {
-        const size = extractSize(input, i + 5);
-        if (!orientation) {
-          return size;
-        }
-        return {
-          height: size.height,
-          orientation,
-          width: size.width
-        };
-      }
-      input = input.slice(i + 2);
-    }
-    throw new TypeError("Invalid JPG, no size found");
-  }
-};
-
-class BitReader {
-  constructor(input, endianness) {
-    this.input = input;
-    this.endianness = endianness;
-  }
-  // Skip the first 16 bits (2 bytes) of signature
-  byteOffset = 2;
-  bitOffset = 0;
-  /** Reads a specified number of bits, and move the offset */
-  getBits(length = 1) {
-    let result = 0;
-    let bitsRead = 0;
-    while (bitsRead < length) {
-      if (this.byteOffset >= this.input.length) {
-        throw new Error("Reached end of input");
-      }
-      const currentByte = this.input[this.byteOffset];
-      const bitsLeft = 8 - this.bitOffset;
-      const bitsToRead = Math.min(length - bitsRead, bitsLeft);
-      if (this.endianness === "little-endian") {
-        const mask = (1 << bitsToRead) - 1;
-        const bits = currentByte >> this.bitOffset & mask;
-        result |= bits << bitsRead;
-      } else {
-        const mask = (1 << bitsToRead) - 1 << 8 - this.bitOffset - bitsToRead;
-        const bits = (currentByte & mask) >> 8 - this.bitOffset - bitsToRead;
-        result = result << bitsToRead | bits;
-      }
-      bitsRead += bitsToRead;
-      this.bitOffset += bitsToRead;
-      if (this.bitOffset === 8) {
-        this.byteOffset++;
-        this.bitOffset = 0;
-      }
-    }
-    return result;
-  }
+  return output;
 }
 
-function calculateImageDimension(reader, isSmallImage) {
-  if (isSmallImage) {
-    return 8 * (1 + reader.getBits(5));
+class AstroError extends Error {
+  loc;
+  title;
+  hint;
+  frame;
+  type = "AstroError";
+  constructor(props, options) {
+    const { name, title, message, stack, location, hint, frame } = props;
+    super(message, options);
+    this.title = title;
+    this.name = name;
+    if (message) this.message = message;
+    this.stack = stack ? stack : this.stack;
+    this.loc = location;
+    this.hint = hint;
+    this.frame = frame;
   }
-  const sizeClass = reader.getBits(2);
-  const extraBits = [9, 13, 18, 30][sizeClass];
-  return 1 + reader.getBits(extraBits);
-}
-function calculateImageWidth(reader, isSmallImage, widthMode, height) {
-  if (isSmallImage && widthMode === 0) {
-    return 8 * (1 + reader.getBits(5));
+  setLocation(location) {
+    this.loc = location;
   }
-  if (widthMode === 0) {
-    return calculateImageDimension(reader, false);
+  setName(name) {
+    this.name = name;
   }
-  const aspectRatios = [1, 1.2, 4 / 3, 1.5, 16 / 9, 5 / 4, 2];
-  return Math.floor(height * aspectRatios[widthMode - 1]);
-}
-const JXLStream = {
-  validate: (input) => {
-    return toHexString(input, 0, 2) === "ff0a";
-  },
-  calculate(input) {
-    const reader = new BitReader(input, "little-endian");
-    const isSmallImage = reader.getBits(1) === 1;
-    const height = calculateImageDimension(reader, isSmallImage);
-    const widthMode = reader.getBits(3);
-    const width = calculateImageWidth(reader, isSmallImage, widthMode, height);
-    return { width, height };
+  setMessage(message) {
+    this.message = message;
   }
-};
-
-function extractCodestream(input) {
-  const jxlcBox = findBox(input, "jxlc", 0);
-  if (jxlcBox) {
-    return input.slice(jxlcBox.offset + 8, jxlcBox.offset + jxlcBox.size);
+  setHint(hint) {
+    this.hint = hint;
   }
-  const partialStreams = extractPartialStreams(input);
-  if (partialStreams.length > 0) {
-    return concatenateCodestreams(partialStreams);
+  setFrame(source, location) {
+    this.frame = codeFrame(source, location);
   }
-  return void 0;
-}
-function extractPartialStreams(input) {
-  const partialStreams = [];
-  let offset = 0;
-  while (offset < input.length) {
-    const jxlpBox = findBox(input, "jxlp", offset);
-    if (!jxlpBox) break;
-    partialStreams.push(
-      input.slice(jxlpBox.offset + 12, jxlpBox.offset + jxlpBox.size)
-    );
-    offset = jxlpBox.offset + jxlpBox.size;
-  }
-  return partialStreams;
-}
-function concatenateCodestreams(partialCodestreams) {
-  const totalLength = partialCodestreams.reduce(
-    (acc, curr) => acc + curr.length,
-    0
-  );
-  const codestream = new Uint8Array(totalLength);
-  let position = 0;
-  for (const partial of partialCodestreams) {
-    codestream.set(partial, position);
-    position += partial.length;
-  }
-  return codestream;
-}
-const JXL = {
-  validate: (input) => {
-    const boxType = toUTF8String(input, 4, 8);
-    if (boxType !== "JXL ") return false;
-    const ftypBox = findBox(input, "ftyp", 0);
-    if (!ftypBox) return false;
-    const brand = toUTF8String(input, ftypBox.offset + 8, ftypBox.offset + 12);
-    return brand === "jxl ";
-  },
-  calculate(input) {
-    const codestream = extractCodestream(input);
-    if (codestream) return JXLStream.calculate(codestream);
-    throw new Error("No codestream found in JXL container");
-  }
-};
-
-const KTX = {
-  validate: (input) => {
-    const signature = toUTF8String(input, 1, 7);
-    return ["KTX 11", "KTX 20"].includes(signature);
-  },
-  calculate: (input) => {
-    const type = input[5] === 49 ? "ktx" : "ktx2";
-    const offset = type === "ktx" ? 36 : 20;
-    return {
-      height: readUInt32LE(input, offset + 4),
-      width: readUInt32LE(input, offset),
-      type
-    };
-  }
-};
-
-const pngSignature = "PNG\r\n\n";
-const pngImageHeaderChunkName = "IHDR";
-const pngFriedChunkName = "CgBI";
-const PNG = {
-  validate(input) {
-    if (pngSignature === toUTF8String(input, 1, 8)) {
-      let chunkName = toUTF8String(input, 12, 16);
-      if (chunkName === pngFriedChunkName) {
-        chunkName = toUTF8String(input, 28, 32);
-      }
-      if (chunkName !== pngImageHeaderChunkName) {
-        throw new TypeError("Invalid PNG");
-      }
-      return true;
-    }
-    return false;
-  },
-  calculate(input) {
-    if (toUTF8String(input, 12, 16) === pngFriedChunkName) {
-      return {
-        height: readUInt32BE(input, 36),
-        width: readUInt32BE(input, 32)
-      };
-    }
-    return {
-      height: readUInt32BE(input, 20),
-      width: readUInt32BE(input, 16)
-    };
-  }
-};
-
-const PNMTypes = {
-  P1: "pbm/ascii",
-  P2: "pgm/ascii",
-  P3: "ppm/ascii",
-  P4: "pbm",
-  P5: "pgm",
-  P6: "ppm",
-  P7: "pam",
-  PF: "pfm"
-};
-const handlers = {
-  default: (lines) => {
-    let dimensions = [];
-    while (lines.length > 0) {
-      const line = lines.shift();
-      if (line[0] === "#") {
-        continue;
-      }
-      dimensions = line.split(" ");
-      break;
-    }
-    if (dimensions.length === 2) {
-      return {
-        height: Number.parseInt(dimensions[1], 10),
-        width: Number.parseInt(dimensions[0], 10)
-      };
-    }
-    throw new TypeError("Invalid PNM");
-  },
-  pam: (lines) => {
-    const size = {};
-    while (lines.length > 0) {
-      const line = lines.shift();
-      if (line.length > 16 || line.charCodeAt(0) > 128) {
-        continue;
-      }
-      const [key, value] = line.split(" ");
-      if (key && value) {
-        size[key.toLowerCase()] = Number.parseInt(value, 10);
-      }
-      if (size.height && size.width) {
-        break;
-      }
-    }
-    if (size.height && size.width) {
-      return {
-        height: size.height,
-        width: size.width
-      };
-    }
-    throw new TypeError("Invalid PAM");
-  }
-};
-const PNM = {
-  validate: (input) => toUTF8String(input, 0, 2) in PNMTypes,
-  calculate(input) {
-    const signature = toUTF8String(input, 0, 2);
-    const type = PNMTypes[signature];
-    const lines = toUTF8String(input, 3).split(/[\r\n]+/);
-    const handler = handlers[type] || handlers.default;
-    return handler(lines);
-  }
-};
-
-const PSD = {
-  validate: (input) => toUTF8String(input, 0, 4) === "8BPS",
-  calculate: (input) => ({
-    height: readUInt32BE(input, 14),
-    width: readUInt32BE(input, 18)
-  })
-};
-
-const svgReg = /<svg\s([^>"']|"[^"]*"|'[^']*')*>/;
-const extractorRegExps = {
-  height: /\sheight=(['"])([^%]+?)\1/,
-  root: svgReg,
-  viewbox: /\sviewBox=(['"])(.+?)\1/i,
-  width: /\swidth=(['"])([^%]+?)\1/
-};
-const INCH_CM = 2.54;
-const units = {
-  in: 96,
-  cm: 96 / INCH_CM,
-  em: 16,
-  ex: 8,
-  m: 96 / INCH_CM * 100,
-  mm: 96 / INCH_CM / 10,
-  pc: 96 / 72 / 12,
-  pt: 96 / 72,
-  px: 1
-};
-const unitsReg = new RegExp(
-  `^([0-9.]+(?:e\\d+)?)(${Object.keys(units).join("|")})?$`
-);
-function parseLength(len) {
-  const m = unitsReg.exec(len);
-  if (!m) {
-    return void 0;
-  }
-  return Math.round(Number(m[1]) * (units[m[2]] || 1));
-}
-function parseViewbox(viewbox) {
-  const bounds = viewbox.split(" ");
-  return {
-    height: parseLength(bounds[3]),
-    width: parseLength(bounds[2])
-  };
-}
-function parseAttributes(root) {
-  const width = extractorRegExps.width.exec(root);
-  const height = extractorRegExps.height.exec(root);
-  const viewbox = extractorRegExps.viewbox.exec(root);
-  return {
-    height: height && parseLength(height[2]),
-    viewbox: viewbox && parseViewbox(viewbox[2]),
-    width: width && parseLength(width[2])
-  };
-}
-function calculateByDimensions(attrs) {
-  return {
-    height: attrs.height,
-    width: attrs.width
-  };
-}
-function calculateByViewbox(attrs, viewbox) {
-  const ratio = viewbox.width / viewbox.height;
-  if (attrs.width) {
-    return {
-      height: Math.floor(attrs.width / ratio),
-      width: attrs.width
-    };
-  }
-  if (attrs.height) {
-    return {
-      height: attrs.height,
-      width: Math.floor(attrs.height * ratio)
-    };
-  }
-  return {
-    height: viewbox.height,
-    width: viewbox.width
-  };
-}
-const SVG = {
-  // Scan only the first kilo-byte to speed up the check on larger files
-  validate: (input) => svgReg.test(toUTF8String(input, 0, 1e3)),
-  calculate(input) {
-    const root = extractorRegExps.root.exec(toUTF8String(input));
-    if (root) {
-      const attrs = parseAttributes(root[0]);
-      if (attrs.width && attrs.height) {
-        return calculateByDimensions(attrs);
-      }
-      if (attrs.viewbox) {
-        return calculateByViewbox(attrs, attrs.viewbox);
-      }
-    }
-    throw new TypeError("Invalid SVG");
-  }
-};
-
-const TGA = {
-  validate(input) {
-    return readUInt16LE(input, 0) === 0 && readUInt16LE(input, 4) === 0;
-  },
-  calculate(input) {
-    return {
-      height: readUInt16LE(input, 14),
-      width: readUInt16LE(input, 12)
-    };
-  }
-};
-
-const CONSTANTS = {
-  TAG: {
-    WIDTH: 256,
-    HEIGHT: 257,
-    COMPRESSION: 259
-  },
-  TYPE: {
-    SHORT: 3,
-    LONG: 4,
-    LONG8: 16
-  },
-  ENTRY_SIZE: {
-    STANDARD: 12,
-    BIG: 20
-  },
-  COUNT_SIZE: {
-    STANDARD: 2,
-    BIG: 8
-  }
-};
-function readIFD(input, { isBigEndian, isBigTiff }) {
-  const ifdOffset = isBigTiff ? Number(readUInt64(input, 8, isBigEndian)) : readUInt(input, 32, 4, isBigEndian);
-  const entryCountSize = isBigTiff ? CONSTANTS.COUNT_SIZE.BIG : CONSTANTS.COUNT_SIZE.STANDARD;
-  return input.slice(ifdOffset + entryCountSize);
-}
-function readTagValue(input, type, offset, isBigEndian) {
-  switch (type) {
-    case CONSTANTS.TYPE.SHORT:
-      return readUInt(input, 16, offset, isBigEndian);
-    case CONSTANTS.TYPE.LONG:
-      return readUInt(input, 32, offset, isBigEndian);
-    case CONSTANTS.TYPE.LONG8: {
-      const value = Number(readUInt64(input, offset, isBigEndian));
-      if (value > Number.MAX_SAFE_INTEGER) {
-        throw new TypeError("Value too large");
-      }
-      return value;
-    }
-    default:
-      return 0;
+  static is(err) {
+    return err?.type === "AstroError";
   }
 }
-function nextTag(input, isBigTiff) {
-  const entrySize = isBigTiff ? CONSTANTS.ENTRY_SIZE.BIG : CONSTANTS.ENTRY_SIZE.STANDARD;
-  if (input.length > entrySize) {
-    return input.slice(entrySize);
-  }
-}
-function extractTags(input, { isBigEndian, isBigTiff }) {
-  const tags = {};
-  let temp = input;
-  while (temp?.length) {
-    const code = readUInt(temp, 16, 0, isBigEndian);
-    const type = readUInt(temp, 16, 2, isBigEndian);
-    const length = isBigTiff ? Number(readUInt64(temp, 4, isBigEndian)) : readUInt(temp, 32, 4, isBigEndian);
-    if (code === 0) break;
-    if (length === 1 && (type === CONSTANTS.TYPE.SHORT || type === CONSTANTS.TYPE.LONG || isBigTiff && type === CONSTANTS.TYPE.LONG8)) {
-      const valueOffset = isBigTiff ? 12 : 8;
-      tags[code] = readTagValue(temp, type, valueOffset, isBigEndian);
-    }
-    temp = nextTag(temp, isBigTiff);
-  }
-  return tags;
-}
-function determineFormat(input) {
-  const signature = toUTF8String(input, 0, 2);
-  const version = readUInt(input, 16, 2, signature === "MM");
-  return {
-    isBigEndian: signature === "MM",
-    isBigTiff: version === 43
-  };
-}
-function validateBigTIFFHeader(input, isBigEndian) {
-  const byteSize = readUInt(input, 16, 4, isBigEndian);
-  const reserved = readUInt(input, 16, 6, isBigEndian);
-  if (byteSize !== 8 || reserved !== 0) {
-    throw new TypeError("Invalid BigTIFF header");
-  }
-}
-const signatures = /* @__PURE__ */ new Set([
-  "49492a00",
-  // Little Endian
-  "4d4d002a",
-  // Big Endian
-  "49492b00",
-  // BigTIFF Little Endian
-  "4d4d002b"
-  // BigTIFF Big Endian
-]);
-const TIFF = {
-  validate: (input) => {
-    const signature = toHexString(input, 0, 4);
-    return signatures.has(signature);
-  },
-  calculate(input) {
-    const format = determineFormat(input);
-    if (format.isBigTiff) {
-      validateBigTIFFHeader(input, format.isBigEndian);
-    }
-    const ifdBuffer = readIFD(input, format);
-    const tags = extractTags(ifdBuffer, format);
-    const info = {
-      height: tags[CONSTANTS.TAG.HEIGHT],
-      width: tags[CONSTANTS.TAG.WIDTH],
-      type: format.isBigTiff ? "bigtiff" : "tiff"
-    };
-    if (tags[CONSTANTS.TAG.COMPRESSION]) {
-      info.compression = tags[CONSTANTS.TAG.COMPRESSION];
-    }
-    if (!info.width || !info.height) {
-      throw new TypeError("Invalid Tiff. Missing tags");
-    }
-    return info;
-  }
-};
-
-function calculateExtended(input) {
-  return {
-    height: 1 + readUInt24LE(input, 7),
-    width: 1 + readUInt24LE(input, 4)
-  };
-}
-function calculateLossless(input) {
-  return {
-    height: 1 + ((input[4] & 15) << 10 | input[3] << 2 | (input[2] & 192) >> 6),
-    width: 1 + ((input[2] & 63) << 8 | input[1])
-  };
-}
-function calculateLossy(input) {
-  return {
-    height: readInt16LE(input, 8) & 16383,
-    width: readInt16LE(input, 6) & 16383
-  };
-}
-const WEBP = {
-  validate(input) {
-    const riffHeader = "RIFF" === toUTF8String(input, 0, 4);
-    const webpHeader = "WEBP" === toUTF8String(input, 8, 12);
-    const vp8Header = "VP8" === toUTF8String(input, 12, 15);
-    return riffHeader && webpHeader && vp8Header;
-  },
-  calculate(_input) {
-    const chunkHeader = toUTF8String(_input, 12, 16);
-    const input = _input.slice(20, 30);
-    if (chunkHeader === "VP8X") {
-      const extendedHeader = input[0];
-      const validStart = (extendedHeader & 192) === 0;
-      const validEnd = (extendedHeader & 1) === 0;
-      if (validStart && validEnd) {
-        return calculateExtended(input);
-      }
-      throw new TypeError("Invalid WebP");
-    }
-    if (chunkHeader === "VP8 " && input[0] !== 47) {
-      return calculateLossy(input);
-    }
-    const signature = toHexString(input, 3, 6);
-    if (chunkHeader === "VP8L" && signature !== "9d012a") {
-      return calculateLossless(input);
-    }
-    throw new TypeError("Invalid WebP");
-  }
-};
-
-const typeHandlers = /* @__PURE__ */ new Map([
-  ["bmp", BMP],
-  ["cur", CUR],
-  ["dds", DDS],
-  ["gif", GIF],
-  ["heif", HEIF],
-  ["icns", ICNS],
-  ["ico", ICO],
-  ["j2c", J2C],
-  ["jp2", JP2],
-  ["jpg", JPG],
-  ["jxl", JXL],
-  ["jxl-stream", JXLStream],
-  ["ktx", KTX],
-  ["png", PNG],
-  ["pnm", PNM],
-  ["psd", PSD],
-  ["svg", SVG],
-  ["tga", TGA],
-  ["tiff", TIFF],
-  ["webp", WEBP]
-]);
-Array.from(typeHandlers.keys());
-
-function shouldAppendForwardSlash(trailingSlash, buildFormat) {
-  switch (trailingSlash) {
-    case "always":
-      return true;
-    case "never":
-      return false;
-    case "ignore": {
-      switch (buildFormat) {
-        case "directory":
-          return true;
-        case "preserve":
-        case "file":
-          return false;
-      }
-    }
-  }
-}
-
-const ASTRO_VERSION = "6.1.2";
-const ASTRO_GENERATOR = `Astro v${ASTRO_VERSION}`;
-const REROUTE_DIRECTIVE_HEADER = "X-Astro-Reroute";
-const REWRITE_DIRECTIVE_HEADER_KEY = "X-Astro-Rewrite";
-const REWRITE_DIRECTIVE_HEADER_VALUE = "yes";
-const NOOP_MIDDLEWARE_HEADER = "X-Astro-Noop";
-const ROUTE_TYPE_HEADER = "X-Astro-Route-Type";
-const DEFAULT_404_COMPONENT = "astro-default-404.astro";
-const REDIRECT_STATUS_CODES = [301, 302, 303, 307, 308, 300, 304];
-const REROUTABLE_STATUS_CODES = [404, 500];
-const clientAddressSymbol = /* @__PURE__ */ Symbol.for("astro.clientAddress");
-const originPathnameSymbol = /* @__PURE__ */ Symbol.for("astro.originPathname");
-const pipelineSymbol = /* @__PURE__ */ Symbol.for("astro.pipeline");
-const nodeRequestAbortControllerCleanupSymbol = /* @__PURE__ */ Symbol.for(
-  "astro.nodeRequestAbortControllerCleanup"
-);
-const responseSentSymbol$1 = /* @__PURE__ */ Symbol.for("astro.responseSent");
 
 function computeFallbackRoute(options) {
   const {
@@ -1593,7 +662,7 @@ function createI18nMiddleware(i18n, base, trailingSlash, format) {
       case "redirect": {
         let location = routeDecision.location;
         if (shouldAppendForwardSlash(trailingSlash, format)) {
-          location = appendForwardSlash(location);
+          location = appendForwardSlash$1(location);
         }
         return context.redirect(location, routeDecision.status);
       }
@@ -2058,6 +1127,7 @@ const DELETED_VALUE = "deleted";
 const responseSentSymbol = /* @__PURE__ */ Symbol.for("astro.responseSent");
 const identity = (value) => value;
 class AstroCookie {
+  value;
   constructor(value) {
     this.value = value;
   }
@@ -2296,12 +1366,13 @@ const levels = {
 };
 function log(opts, level, label, message, newLine = true) {
   const logLevel = opts.level;
-  const dest = opts.dest;
+  const dest = opts.destination;
   const event = {
     label,
     level,
     message,
-    newLine
+    newLine,
+    _format: opts._format
   };
   if (!isLogLevelEnabled(logLevel, level)) {
     return;
@@ -2348,9 +1419,12 @@ function getEventPrefix({ level, label }) {
   }
   return s.dim(prefix[0]) + " " + s.blue(prefix.splice(1).join(" "));
 }
-class Logger {
+class AstroLogger {
   options;
   constructor(options) {
+    if (!options._format) {
+      options._format = "default";
+    }
     this.options = options;
   }
   info(label, message, newLine = true) {
@@ -5412,8 +4486,8 @@ function toArrayBuffer(buffer) {
   return copy.buffer;
 }
 
-/* es-module-lexer 2.0.0 */
-var ImportType;!function(A){A[A.Static=1]="Static",A[A.Dynamic=2]="Dynamic",A[A.ImportMeta=3]="ImportMeta",A[A.StaticSourcePhase=4]="StaticSourcePhase",A[A.DynamicSourcePhase=5]="DynamicSourcePhase",A[A.StaticDeferPhase=6]="StaticDeferPhase",A[A.DynamicDeferPhase=7]="DynamicDeferPhase";}(ImportType||(ImportType={}));1===new Uint8Array(new Uint16Array([1]).buffer)[0];const E=()=>{return A="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","undefined"!=typeof Buffer?Buffer.from(A,"base64"):Uint8Array.from(atob(A),(A=>A.charCodeAt(0)));var A;};WebAssembly.compile(E()).then(WebAssembly.instantiate).then((({exports:A})=>{}));
+/* es-module-lexer 2.1.0 */
+var ImportType;!function(A){A[A.Static=1]="Static",A[A.Dynamic=2]="Dynamic",A[A.ImportMeta=3]="ImportMeta",A[A.StaticSourcePhase=4]="StaticSourcePhase",A[A.DynamicSourcePhase=5]="DynamicSourcePhase",A[A.StaticDeferPhase=6]="StaticDeferPhase",A[A.DynamicDeferPhase=7]="DynamicDeferPhase";}(ImportType||(ImportType={}));1===new Uint8Array(new Uint16Array([1]).buffer)[0];const E=()=>{return A="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","undefined"!=typeof Buffer?Buffer.from(A,"base64"):Uint8Array.from(atob(A),(A=>A.charCodeAt(0)));var A;};WebAssembly.compile(E()).then(WebAssembly.instantiate).then((({exports:A})=>{}));
 
 function hasActionPayload(locals) {
   return "_actionPayload" in locals;
@@ -5705,6 +4779,9 @@ async function* streamAsyncIterator(stream) {
 }
 
 const escapeHTML = escape;
+function stringifyForScript(value) {
+  return JSON.stringify(value)?.replace(/</g, "\\u003c");
+}
 class HTMLBytes extends Uint8Array {
 }
 Object.defineProperty(HTMLBytes.prototype, Symbol.toStringTag, {
@@ -5712,13 +4789,12 @@ Object.defineProperty(HTMLBytes.prototype, Symbol.toStringTag, {
     return "HTMLBytes";
   }
 });
+const htmlStringSymbol = /* @__PURE__ */ Symbol.for("astro:html-string");
 class HTMLString extends String {
-  get [Symbol.toStringTag]() {
-    return "HTMLString";
-  }
+  [htmlStringSymbol] = true;
 }
 const markHTMLString = (value) => {
-  if (value instanceof HTMLString) {
+  if (isHTMLString(value)) {
     return value;
   }
   if (typeof value === "string") {
@@ -5727,7 +4803,7 @@ const markHTMLString = (value) => {
   return value;
 };
 function isHTMLString(value) {
-  return value instanceof HTMLString;
+  return !!value?.[htmlStringSymbol];
 }
 function markHTMLBytes(bytes) {
   return new HTMLBytes(bytes);
@@ -6099,9 +5175,9 @@ function createThinHead() {
   };
 }
 
-var astro_island_prebuilt_default = `(()=>{var A=Object.defineProperty;var g=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var d=(i,o,a)=>g(i,typeof o!="symbol"?o+"":o,a);{let i={0:t=>m(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>Number.POSITIVE_INFINITY*t},o=t=>{let[l,e]=t;return l in i?i[l](e):void 0},a=t=>t.map(o),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([l,e])=>[l,o(e)]));class y extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},h=this.querySelectorAll("template[data-astro-template]");for(let r of h){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let p;try{p=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(s+=\` (export \${v})\`),console.error(\`[hydrate] Error parsing props for component \${s}\`,this.getAttribute("props"),r),r}let u;await this.hydrator(this)(this.Component,p,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(\`astro:\${c}\`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[h,{default:p}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),u=this.getAttribute("component-export")||"default";if(!u.includes("."))this.Component=h[u];else{this.Component=h;for(let f of u.split("."))this.Component=this.Component[f]}return this.hydrator=p,this.hydrate},e,this)}catch(n){console.error(\`[astro-island] Error hydrating \${this.getAttribute("component-url")}\`,n)}}attributeChangedCallback(){this.hydrate()}}d(y,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",y)}})();`;
+var astro_island_prebuilt_default = `(()=>{var A=Object.defineProperty;var C=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var l=(i,o,a)=>C(i,typeof o!="symbol"?o+"":o,a);var E=new Set(["__proto__","constructor","prototype"]);{let i={0:t=>y(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>Number.POSITIVE_INFINITY*t},o=t=>{let[h,e]=t;return h in i?i[h](e):void 0},a=t=>t.map(o),y=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([h,e])=>[h,o(e)]));class f extends HTMLElement{constructor(){super(...arguments);l(this,"Component");l(this,"hydrator");l(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},p=this.querySelectorAll("template[data-astro-template]");for(let r of p){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let u;try{u=this.hasAttribute("props")?y(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(s+=\` (export \${v})\`),console.error(\`[hydrate] Error parsing props for component \${s}\`,this.getAttribute("props"),r),r}let d;await this.hydrator(this)(this.Component,u,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});l(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(\`astro:\${c}\`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[p,{default:u}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),d=this.getAttribute("component-export")||"default";if(d.includes(".")){this.Component=p;for(let m of d.split(".")){if(E.has(m)||!this.Component||typeof this.Component!="object"&&typeof this.Component!="function"||!Object.hasOwn(this.Component,m))throw new Error(\`Invalid component export path: \${d}\`);this.Component=this.Component[m]}}else{if(E.has(d))throw new Error(\`Invalid component export path: \${d}\`);this.Component=p[d]}return this.hydrator=u,this.hydrate},e,this)}catch(n){console.error("[astro-island] Error hydrating %s",this.getAttribute("component-url"),n)}}attributeChangedCallback(){this.hydrate()}}l(f,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",f)}})();`;
 
-var astro_island_prebuilt_dev_default = `(()=>{var A=Object.defineProperty;var g=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var l=(i,o,a)=>g(i,typeof o!="symbol"?o+"":o,a);{let i={0:t=>y(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>Number.POSITIVE_INFINITY*t},o=t=>{let[h,e]=t;return h in i?i[h](e):void 0},a=t=>t.map(o),y=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([h,e])=>[h,o(e)]));class f extends HTMLElement{constructor(){super(...arguments);l(this,"Component");l(this,"hydrator");l(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},p=this.querySelectorAll("template[data-astro-template]");for(let r of p){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let u;try{u=this.hasAttribute("props")?y(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(s+=\` (export \${v})\`),console.error(\`[hydrate] Error parsing props for component \${s}\`,this.getAttribute("props"),r),r}let d,m=this.hydrator(this);d=performance.now(),await m(this.Component,u,n,{client:this.getAttribute("client")}),d&&this.setAttribute("client-render-time",(performance.now()-d).toString()),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});l(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(\`astro:\${c}\`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[p,{default:u}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),d=this.getAttribute("component-export")||"default";if(!d.includes("."))this.Component=p[d];else{this.Component=p;for(let m of d.split("."))this.Component=this.Component[m]}return this.hydrator=u,this.hydrate},e,this)}catch(n){console.error(\`[astro-island] Error hydrating \${this.getAttribute("component-url")}\`,n)}}attributeChangedCallback(){this.hydrate()}}l(f,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",f)}})();`;
+var astro_island_prebuilt_dev_default = `(()=>{var A=Object.defineProperty;var C=(a,r,c)=>r in a?A(a,r,{enumerable:!0,configurable:!0,writable:!0,value:c}):a[r]=c;var l=(a,r,c)=>C(a,typeof r!="symbol"?r+"":r,c);var E=new Set(["__proto__","constructor","prototype"]);{let a={0:t=>y(t),1:t=>c(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(c(t)),5:t=>new Set(c(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>Number.POSITIVE_INFINITY*t},r=t=>{let[p,e]=t;return p in a?a[p](e):void 0},c=t=>t.map(r),y=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([p,e])=>[p,r(e)]));class f extends HTMLElement{constructor(){super(...arguments);l(this,"Component");l(this,"hydrator");l(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let d=this.querySelectorAll("astro-slot"),n={},u=this.querySelectorAll("template[data-astro-template]");for(let o of u){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("data-astro-template")||"default"]=o.innerHTML,o.remove())}for(let o of d){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("name")||"default"]=o.innerHTML)}let m;try{m=this.hasAttribute("props")?y(JSON.parse(this.getAttribute("props"))):{}}catch(o){let i=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(i+=\` (export \${v})\`),console.error(\`[hydrate] Error parsing props for component \${i}\`,this.getAttribute("props"),o),o}let s,h=this.hydrator(this);s=performance.now(),await h(this.Component,m,n,{client:this.getAttribute("client")}),s&&this.setAttribute("client-render-time",(performance.now()-s).toString()),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});l(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),d.disconnect(),this.childrenConnectedCallback()},d=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});d.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),d=this.getAttribute("client");if(Astro[d]===void 0){window.addEventListener(\`astro:\${d}\`,()=>this.start(),{once:!0});return}try{await Astro[d](async()=>{let n=this.getAttribute("renderer-url"),[u,{default:m}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),s=this.getAttribute("component-export")||"default";if(s.includes(".")){this.Component=u;for(let h of s.split(".")){if(E.has(h)||!this.Component||typeof this.Component!="object"&&typeof this.Component!="function"||!Object.hasOwn(this.Component,h))throw new Error(\`Invalid component export path: \${s}\`);this.Component=this.Component[h]}}else{if(E.has(s))throw new Error(\`Invalid component export path: \${s}\`);this.Component=u[s]}return this.hydrator=m,this.hydrate},e,this)}catch(n){console.error("[astro-island] Error hydrating %s",this.getAttribute("component-url"),n)}}attributeChangedCallback(){this.hydrate()}}l(f,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",f)}})();`;
 
 const ISLAND_STYLES = "astro-island,astro-slot,astro-static-slot{display:contents}";
 
@@ -6257,10 +5333,7 @@ const toStyleString = (obj) => Object.entries(obj).filter(([_, v]) => typeof v =
 function defineScriptVars(vars) {
   let output = "";
   for (const [key, value] of Object.entries(vars)) {
-    output += `const ${toIdent(key)} = ${JSON.stringify(value)?.replace(
-      /<\/script>/g,
-      "\\x3C/script>"
-    )};
+    output += `const ${toIdent(key)} = ${stringifyForScript(value)};
 `;
   }
   return markHTMLString(output);
@@ -7242,6 +6315,9 @@ function mergeSlotInstructions(target, source) {
   return target;
 }
 function renderSlot(result, slotted, fallback) {
+  if (!slotted && fallback) {
+    return renderSlot(result, fallback);
+  }
   return {
     async render(destination) {
       await renderChild(destination, typeof slotted === "function" ? slotted(result) : slotted);
@@ -7267,7 +6343,7 @@ async function renderSlotToString(result, slotted, fallback) {
       }
     }
   };
-  const renderInstance = renderSlot(result, slotted);
+  const renderInstance = renderSlot(result, slotted, fallback);
   await renderInstance.render(temporaryDestination);
   return markHTMLString(new SlotString(content, instructions));
 }
@@ -7305,13 +6381,6 @@ const internalProps = /* @__PURE__ */ new Set([
 ]);
 function containsServerDirective(props) {
   return "server:component-directive" in props;
-}
-const SCRIPT_RE = /<\/script/giu;
-const COMMENT_RE = /<!--/gu;
-const SCRIPT_REPLACER = "<\\/script";
-const COMMENT_REPLACER = "\\u003C!--";
-function safeJsonStringify(obj) {
-  return JSON.stringify(obj).replace(SCRIPT_RE, SCRIPT_REPLACER).replace(COMMENT_RE, COMMENT_REPLACER);
 }
 function createSearchParams(encryptedComponentExport, encryptedProps, slots) {
   const params = new URLSearchParams();
@@ -7447,7 +6516,7 @@ class ServerIslandComponent {
       );
     }
     const adapterHeaders = this.result.internalFetchHeaders || {};
-    const headersJson = safeJsonStringify(adapterHeaders);
+    const headersJson = stringifyForScript(adapterHeaders);
     const method = useGETRequest ? (
       // GET request
       `const headers = new Headers(${headersJson});
@@ -7455,9 +6524,9 @@ let response = await fetch('${serverIslandUrl}', { headers });`
     ) : (
       // POST request
       `let data = {
-	encryptedComponentExport: ${safeJsonStringify(componentExportEncrypted)},
-	encryptedProps: ${safeJsonStringify(propsEncrypted)},
-	encryptedSlots: ${safeJsonStringify(slotsEncrypted)},
+	encryptedComponentExport: ${stringifyForScript(componentExportEncrypted)},
+	encryptedProps: ${stringifyForScript(propsEncrypted)},
+	encryptedSlots: ${stringifyForScript(slotsEncrypted)},
 };
 const headers = new Headers({ 'Content-Type': 'application/json', ...${headersJson} });
 let response = await fetch('${serverIslandUrl}', {
@@ -8330,12 +7399,12 @@ function sanitizeElementName(tag) {
   if (!unsafe.test(tag)) return tag;
   return tag.trim().split(unsafe)[0].trim();
 }
-async function renderFragmentComponent(result, slots = {}) {
-  const children = await renderSlotToString(result, slots?.default);
+function renderFragmentComponent(result, slots = {}) {
+  const slot = slots?.default;
   return {
     render(destination) {
-      if (children == null) return;
-      destination.write(children);
+      if (slot == null) return;
+      return renderSlot(result, slot).render(destination);
     }
   };
 }
@@ -8369,7 +7438,7 @@ function renderComponent(result, displayName, Component, props, slots = {}) {
     });
   }
   if (isFragmentComponent(Component)) {
-    return renderFragmentComponent(result, slots).catch(handleCancellation);
+    return renderFragmentComponent(result, slots);
   }
   props = normalizeProps(props);
   if (isHTMLComponent(Component)) {
@@ -9512,7 +8581,7 @@ function setOriginPathname(request, pathname, trailingSlash, buildFormat) {
   if (pathname === "/") {
     finalPathname = "/";
   } else if (shouldAppendSlash) {
-    finalPathname = appendForwardSlash(pathname);
+    finalPathname = appendForwardSlash$1(pathname);
   } else {
     finalPathname = removeTrailingForwardSlash(pathname);
   }
@@ -9533,7 +8602,7 @@ function normalizeRewritePathname(urlPathname, base, trailingSlash, buildFormat)
     if (isBasePathRequest) {
       pathname = shouldAppendSlash ? "/" : "";
     } else if (urlPathname.startsWith(base)) {
-      pathname = shouldAppendSlash ? appendForwardSlash(urlPathname) : removeTrailingForwardSlash(urlPathname);
+      pathname = shouldAppendSlash ? appendForwardSlash$1(urlPathname) : removeTrailingForwardSlash(urlPathname);
       pathname = pathname.slice(base.length);
     }
   }
@@ -10436,7 +9505,50 @@ const COMMON_HTML_PATTERNS = [
   "\n"
 ];
 
+const FORBIDDEN_PATH_KEYS = /* @__PURE__ */ new Set(["__proto__", "constructor", "prototype"]);
+
 class Pipeline {
+  internalMiddleware;
+  resolvedMiddleware = void 0;
+  resolvedActions = void 0;
+  resolvedSessionDriver = void 0;
+  resolvedCacheProvider = void 0;
+  compiledCacheRoutes = void 0;
+  nodePool;
+  htmlStringCache;
+  logger;
+  manifest;
+  /**
+   * "development" or "production" only
+   */
+  runtimeMode;
+  renderers;
+  resolve;
+  streaming;
+  /**
+   * Used to provide better error messages for `Astro.clientAddress`
+   */
+  adapterName;
+  clientDirectives;
+  inlinedScripts;
+  compressHTML;
+  i18n;
+  middleware;
+  routeCache;
+  /**
+   * Used for `Astro.site`.
+   */
+  site;
+  /**
+   * Array of built-in, internal, routes.
+   * Used to find the route module
+   */
+  defaultRoutes;
+  actions;
+  sessionDriver;
+  cacheProvider;
+  cacheConfig;
+  serverIslands;
   constructor(logger, manifest, runtimeMode, renderers, resolve, streaming, adapterName = manifest.adapterName, clientDirectives = manifest.clientDirectives, inlinedScripts = manifest.inlinedScripts, compressHTML = manifest.compressHTML, i18n = manifest.i18n, middleware = manifest.middleware, routeCache = new RouteCache(logger, runtimeMode), site = manifest.site ? new URL(manifest.site) : void 0, defaultRoutes = createDefaultRoutes(manifest), actions = manifest.actions, sessionDriver = manifest.sessionDriver, cacheProvider = manifest.cacheProvider, cacheConfig = manifest.cacheConfig, serverIslands = manifest.serverIslandMappings) {
     this.logger = logger;
     this.manifest = manifest;
@@ -10474,14 +9586,6 @@ class Pipeline {
       }
     }
   }
-  internalMiddleware;
-  resolvedMiddleware = void 0;
-  resolvedActions = void 0;
-  resolvedSessionDriver = void 0;
-  resolvedCacheProvider = void 0;
-  compiledCacheRoutes = void 0;
-  nodePool;
-  htmlStringCache;
   /**
    * Resolves the middleware from the manifest, and returns the `onRequest` function. If `onRequest` isn't there,
    * it returns a no-op function
@@ -10562,6 +9666,12 @@ class Pipeline {
       );
     }
     for (const key of pathKeys) {
+      if (FORBIDDEN_PATH_KEYS.has(key)) {
+        throw new AstroError({
+          ...ActionNotFoundError,
+          message: ActionNotFoundError.message(pathKeys.join("."))
+        });
+      }
       if (!Object.hasOwn(server, key)) {
         throw new AstroError({
           ...ActionNotFoundError,
@@ -11963,7 +11073,7 @@ class AstroSession {
     if (this.#toDestroy.size > 0) {
       const cleanupPromises = [...this.#toDestroy].map(
         (sessionId) => storage.removeItem(sessionId).catch((err) => {
-          console.error(`Failed to clean up session ${sessionId}:`, err);
+          console.error("Failed to clean up session %s:", sessionId, err);
         })
       );
       await Promise.all(cleanupPromises);
@@ -12138,6 +11248,26 @@ function validateAndDecodePathname(pathname) {
 }
 
 class RenderContext {
+  pipeline;
+  locals;
+  middleware;
+  actions;
+  serverIslands;
+  // It must be a DECODED pathname
+  pathname;
+  request;
+  routeData;
+  status;
+  clientAddress;
+  cookies;
+  params;
+  url;
+  props;
+  partial;
+  shouldInjectCspMetaTags;
+  session;
+  cache;
+  skipMiddleware;
   constructor(pipeline, locals, middleware, actions, serverIslands, pathname, request, routeData, status, clientAddress, cookies = new AstroCookies(request), params = getParams(routeData, pathname), url = RenderContext.#createNormalizedUrl(request.url), props = {}, partial = void 0, shouldInjectCspMetaTags = pipeline.manifest.shouldInjectCspMetaTags, session = void 0, cache, skipMiddleware = false) {
     this.pipeline = pipeline;
     this.locals = locals;
@@ -13001,8 +12131,8 @@ class BaseApp {
     this.manifestData = { routes: manifest.routes.map((route) => route.routeData) };
     this.baseWithoutTrailingSlash = removeTrailingForwardSlash(manifest.base);
     this.pipeline = this.createPipeline(streaming, manifest, ...args);
-    this.logger = new Logger({
-      dest: consoleLogDestination,
+    this.logger = new AstroLogger({
+      destination: consoleLogDestination,
       level: manifest.logLevel
     });
     this.adapterLogger = new AstroIntegrationLogger(this.logger.options, manifest.adapterName);
@@ -13134,8 +12264,12 @@ class BaseApp {
             pathname = prependForwardSlash$1(
               joinPaths(normalizeTheLocale(locale), this.removeBase(url.pathname))
             );
-            if (url.pathname.endsWith("/")) {
-              pathname = appendForwardSlash(pathname);
+            if (this.manifest.trailingSlash === "always") {
+              pathname = appendForwardSlash$1(pathname);
+            } else if (this.manifest.trailingSlash === "never") {
+              pathname = removeTrailingForwardSlash(pathname);
+            } else if (url.pathname.endsWith("/")) {
+              pathname = appendForwardSlash$1(pathname);
             }
           }
         } catch (e) {
@@ -13151,7 +12285,7 @@ class BaseApp {
   }
   redirectTrailingSlash(pathname) {
     const { trailingSlash } = this.manifest;
-    if (pathname === "/" || isInternalPath(pathname)) {
+    if (pathname === "/" || isInternalPath$1(pathname)) {
       return pathname;
     }
     const path = collapseDuplicateTrailingSlashes(pathname, trailingSlash !== "never");
@@ -13161,8 +12295,8 @@ class BaseApp {
     if (trailingSlash === "ignore") {
       return pathname;
     }
-    if (trailingSlash === "always" && !hasFileExtension(pathname)) {
-      return appendForwardSlash(pathname);
+    if (trailingSlash === "always" && !hasFileExtension$1(pathname)) {
+      return appendForwardSlash$1(pathname);
     }
     if (trailingSlash === "never") {
       return removeTrailingForwardSlash(pathname);
@@ -13600,8 +12734,8 @@ function createModuleScriptElementWithSrc(src, base, assetsPrefix, queryParams) 
 }
 
 function createConsoleLogger(level) {
-  return new Logger({
-    dest: consoleLogDestination,
+  return new AstroLogger({
+    destination: consoleLogDestination,
     level: level ?? "info"
   });
 }
@@ -13741,7 +12875,7 @@ const pageMap = new Map([
     
 ]);
 
-const _manifest = deserializeManifest(({"rootDir":"file:///home/felixicaza/dev/astro-lqip/tests/fixtures/ssr-node-custom-base/","cacheDir":"file:///home/felixicaza/dev/astro-lqip/tests/fixtures/ssr-node-custom-base/node_modules/.astro/","outDir":"file:///home/felixicaza/dev/astro-lqip/tests/fixtures/ssr-node-custom-base/dist/","srcDir":"file:///home/felixicaza/dev/astro-lqip/tests/fixtures/ssr-node-custom-base/src/","publicDir":"file:///home/felixicaza/dev/astro-lqip/tests/fixtures/ssr-node-custom-base/public/","buildClientDir":"file:///home/felixicaza/dev/astro-lqip/tests/fixtures/ssr-node-custom-base/dist/client/","buildServerDir":"file:///home/felixicaza/dev/astro-lqip/tests/fixtures/ssr-node-custom-base/dist/server/","adapterName":"@astrojs/node","assetsDir":"_weird-name1","routes":[{"file":"","links":[],"scripts":[],"styles":[],"routeData":{"type":"page","component":"_server-islands.astro","params":["name"],"segments":[[{"content":"_server-islands","dynamic":false,"spread":false}],[{"content":"name","dynamic":true,"spread":false}]],"pattern":"^\\/_server-islands\\/([^/]+?)\\/?$","prerender":false,"isIndex":false,"fallbackRoutes":[],"route":"/_server-islands/[name]","origin":"internal","distURL":[],"_meta":{"trailingSlash":"ignore"}}},{"file":"","links":[],"scripts":[],"styles":[{"type":"inline","content":"@layer astro-lqip{[data-astro-lqip]{--opacity:1;--z-index:0;isolation:isolate;width:fit-content;height:fit-content;line-height:0;display:inline-block;position:relative;overflow:clip;&:after{content:\"\";pointer-events:none;opacity:var(--opacity);z-index:var(--z-index);background:var(--lqip-background);background-position:50%;background-size:cover;transition:opacity 1s;position:absolute;inset:0}& img{z-index:1;position:relative}@media(scripting:none){--opacity:0;--z-index:1}}[data-astro-lqip-bg]{display:contents}}section[data-astro-cid-j7pv25f6]{background:var(--background)}.custom-background[data-astro-cid-j7pv25f6]{background:var(--custom-background)}section[data-astro-cid-j7pv25f6],.custom-background[data-astro-cid-j7pv25f6]{background-size:cover;background-position:center;width:100%;height:300px}\n"}],"routeData":{"route":"/","isIndex":true,"type":"page","pattern":"^\\/$","segments":[],"params":[],"component":"src/pages/index.astro","pathname":"/","prerender":true,"fallbackRoutes":[],"distURL":[],"origin":"project","_meta":{"trailingSlash":"ignore"}}}],"serverLike":true,"middlewareMode":"classic","base":"/new-base","trailingSlash":"ignore","compressHTML":false,"experimentalQueuedRendering":{"enabled":false,"poolSize":0,"contentCache":false},"componentMetadata":[["/home/felixicaza/dev/astro-lqip/tests/fixtures/ssr-node-custom-base/src/pages/index.astro",{"propagation":"none","containsHead":true}]],"renderers":[],"clientDirectives":[["idle","(()=>{var l=(n,t)=>{let i=async()=>{await(await n())()},e=typeof t.value==\"object\"?t.value:void 0,s={timeout:e==null?void 0:e.timeout};\"requestIdleCallback\"in window?window.requestIdleCallback(i,s):setTimeout(i,s.timeout||200)};(self.Astro||(self.Astro={})).idle=l;window.dispatchEvent(new Event(\"astro:idle\"));})();"],["load","(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event(\"astro:load\"));})();"],["media","(()=>{var n=(a,t)=>{let i=async()=>{await(await a())()};if(t.value){let e=matchMedia(t.value);e.matches?i():e.addEventListener(\"change\",i,{once:!0})}};(self.Astro||(self.Astro={})).media=n;window.dispatchEvent(new Event(\"astro:media\"));})();"],["only","(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event(\"astro:only\"));})();"],["visible","(()=>{var a=(s,i,o)=>{let r=async()=>{await(await s())()},t=typeof i.value==\"object\"?i.value:void 0,c={rootMargin:t==null?void 0:t.rootMargin},n=new IntersectionObserver(e=>{for(let l of e)if(l.isIntersecting){n.disconnect(),r();break}},c);for(let e of o.children)n.observe(e)};(self.Astro||(self.Astro={})).visible=a;window.dispatchEvent(new Event(\"astro:visible\"));})();"]],"entryModules":{"\u0000virtual:astro:actions/noop-entrypoint":"chunks/noop-entrypoint_BOlrdqWF.mjs","\u0000noop-middleware":"virtual_astro_middleware.mjs","\u0000virtual:astro:session-driver":"chunks/_virtual_astro_session-driver_CqFkrO5f.mjs","\u0000virtual:astro:server-island-manifest":"chunks/_virtual_astro_server-island-manifest_CQQ1F5PF.mjs","/home/felixicaza/dev/astro-lqip/node_modules/.pnpm/astro@6.1.2_@types+node@25.5.0_jiti@2.6.1_lightningcss@1.32.0_rollup@4.60.2_typescript@5.9.3_yaml@2.8.3/node_modules/astro/dist/assets/services/sharp.js":"chunks/sharp_BUwmnd5j.mjs","astro/entrypoints/prerender":"prerender-entry.DpIodSjH.mjs","@astrojs/node/server.js":"entry.mjs","virtual:astro:noop":"_weird-name1/_virtual_astro_noop.hkMvWsZl.js","astro:scripts/before-hydration.js":""},"inlinedScripts":[],"assets":["/new-base/_weird-name1/pexels-fabianwiktor-3470482.BFMY_gvF.jpg","/new-base/_weird-name1/pexels-fabianwiktor-3470872.DAdQtAbe.jpg","/new-base/index.html"],"buildFormat":"directory","checkOrigin":true,"actionBodySizeLimit":1048576,"serverIslandBodySizeLimit":1048576,"allowedDomains":[],"key":"jJWyKe/o+jBX2ew9jTQQHAoLa5nxm+p1HtE1tK/xnxA=","sessionConfig":{"driver":"unstorage/drivers/fs-lite","options":{"base":"/home/felixicaza/dev/astro-lqip/tests/fixtures/ssr-node-custom-base/node_modules/.astro/sessions"}},"image":{},"devToolbar":{"enabled":false,"debugInfoOutput":""},"logLevel":"info","shouldInjectCspMetaTags":false}));
+const _manifest = deserializeManifest(({"rootDir":"file:///home/felixicaza/dev/astro-lqip/tests/fixtures/ssr-node-custom-base/","cacheDir":"file:///home/felixicaza/dev/astro-lqip/tests/fixtures/ssr-node-custom-base/node_modules/.astro/","outDir":"file:///home/felixicaza/dev/astro-lqip/tests/fixtures/ssr-node-custom-base/dist/","srcDir":"file:///home/felixicaza/dev/astro-lqip/tests/fixtures/ssr-node-custom-base/src/","publicDir":"file:///home/felixicaza/dev/astro-lqip/tests/fixtures/ssr-node-custom-base/public/","buildClientDir":"file:///home/felixicaza/dev/astro-lqip/tests/fixtures/ssr-node-custom-base/dist/client/","buildServerDir":"file:///home/felixicaza/dev/astro-lqip/tests/fixtures/ssr-node-custom-base/dist/server/","adapterName":"@astrojs/node","assetsDir":"_weird-name1","routes":[{"file":"","links":[],"scripts":[],"styles":[],"routeData":{"type":"page","component":"_server-islands.astro","params":["name"],"segments":[[{"content":"_server-islands","dynamic":false,"spread":false}],[{"content":"name","dynamic":true,"spread":false}]],"pattern":"^\\/_server-islands\\/([^/]+?)\\/?$","prerender":false,"isIndex":false,"fallbackRoutes":[],"route":"/_server-islands/[name]","origin":"internal","distURL":[],"_meta":{"trailingSlash":"ignore"}}},{"file":"","links":[],"scripts":[],"styles":[{"type":"inline","content":"@layer astro-lqip{[data-astro-lqip-bg]{display:contents}[data-astro-lqip]{--opacity:1;--z-index:0;isolation:isolate;width:fit-content;height:fit-content;line-height:0;display:inline-block;position:relative;overflow:clip;&:after{content:\"\";pointer-events:none;opacity:var(--opacity);z-index:var(--z-index);background:var(--lqip-background);background-position:50%;background-size:cover;transition:opacity 1s;position:absolute;inset:0}& img{z-index:1;position:relative}@media(scripting:none){--opacity:0;--z-index:1}}}section[data-astro-cid-j7pv25f6]{background:var(--background)}.custom-background[data-astro-cid-j7pv25f6]{background:var(--custom-background)}section[data-astro-cid-j7pv25f6],.custom-background[data-astro-cid-j7pv25f6]{background-size:cover;background-position:center;width:100%;height:300px}\n"}],"routeData":{"route":"/","isIndex":true,"type":"page","pattern":"^\\/$","segments":[],"params":[],"component":"src/pages/index.astro","pathname":"/","prerender":true,"fallbackRoutes":[],"distURL":[],"origin":"project","_meta":{"trailingSlash":"ignore"}}}],"serverLike":true,"middlewareMode":"classic","base":"/new-base","trailingSlash":"ignore","compressHTML":false,"experimentalQueuedRendering":{"enabled":false,"poolSize":0,"contentCache":false},"componentMetadata":[["/home/felixicaza/dev/astro-lqip/tests/fixtures/ssr-node-custom-base/src/pages/index.astro",{"propagation":"none","containsHead":true}]],"renderers":[],"clientDirectives":[["idle","(()=>{var l=(n,t)=>{let i=async()=>{await(await n())()},e=typeof t.value==\"object\"?t.value:void 0,s={timeout:e==null?void 0:e.timeout};\"requestIdleCallback\"in window?window.requestIdleCallback(i,s):setTimeout(i,s.timeout||200)};(self.Astro||(self.Astro={})).idle=l;window.dispatchEvent(new Event(\"astro:idle\"));})();"],["load","(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event(\"astro:load\"));})();"],["media","(()=>{var n=(a,t)=>{let i=async()=>{await(await a())()};if(t.value){let e=matchMedia(t.value);e.matches?i():e.addEventListener(\"change\",i,{once:!0})}};(self.Astro||(self.Astro={})).media=n;window.dispatchEvent(new Event(\"astro:media\"));})();"],["only","(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event(\"astro:only\"));})();"],["visible","(()=>{var a=(s,i,o)=>{let r=async()=>{await(await s())()},t=typeof i.value==\"object\"?i.value:void 0,c={rootMargin:t==null?void 0:t.rootMargin},n=new IntersectionObserver(e=>{for(let l of e)if(l.isIntersecting){n.disconnect(),r();break}},c);for(let e of o.children)n.observe(e)};(self.Astro||(self.Astro={})).visible=a;window.dispatchEvent(new Event(\"astro:visible\"));})();"]],"entryModules":{"\u0000virtual:astro:actions/noop-entrypoint":"chunks/noop-entrypoint_BOlrdqWF.mjs","\u0000noop-middleware":"virtual_astro_middleware.mjs","\u0000virtual:astro:session-driver":"chunks/_virtual_astro_session-driver_CqFkrO5f.mjs","\u0000virtual:astro:server-island-manifest":"chunks/_virtual_astro_server-island-manifest_CQQ1F5PF.mjs","/home/felixicaza/dev/astro-lqip/node_modules/.pnpm/astro@6.1.9_@types+node@25.6.0_jiti@2.6.1_lightningcss@1.32.0_rollup@4.60.2_typescript@5.9.3_yaml@2.8.3/node_modules/astro/dist/assets/services/sharp.js":"chunks/sharp_C6aRVq5u.mjs","astro/entrypoints/prerender":"prerender-entry.B145R6QK.mjs","@astrojs/node/server.js":"entry.mjs","virtual:astro:noop":"_weird-name1/_virtual_astro_noop.hkMvWsZl.js","astro:scripts/before-hydration.js":""},"inlinedScripts":[],"assets":["/new-base/_weird-name1/pexels-fabianwiktor-3470482.BFMY_gvF.jpg","/new-base/_weird-name1/pexels-fabianwiktor-3470872.DAdQtAbe.jpg","/new-base/index.html"],"buildFormat":"directory","checkOrigin":true,"actionBodySizeLimit":1048576,"serverIslandBodySizeLimit":1048576,"allowedDomains":[],"key":"iyVcfC7EMwxng4sTb646vBJYwmN3xtScMHYDQg1FHtE=","sessionConfig":{"driver":"unstorage/drivers/fs-lite","options":{"base":"/home/felixicaza/dev/astro-lqip/tests/fixtures/ssr-node-custom-base/node_modules/.astro/sessions"}},"image":{},"devToolbar":{"enabled":false,"debugInfoOutput":""},"logLevel":"info","shouldInjectCspMetaTags":false}));
 					const manifestRoutes = _manifest.routes;
 					
 					const manifest = Object.assign(_manifest, {
@@ -13991,7 +13125,8 @@ async function writeResponse(source, destination) {
     destination.on("close", () => {
       reader.cancel().catch((err) => {
         console.error(
-          `There was an uncaught error in the middle of the stream while rendering ${destination.req.url}.`,
+          "There was an uncaught error in the middle of the stream while rendering %s.",
+          destination.req.url,
           err
         );
       });
@@ -14081,6 +13216,19 @@ function getRequestSocket(req) {
     return http2Socket;
   }
   return void 0;
+}
+
+function appendForwardSlash(path) {
+  return path.endsWith("/") ? path : path + "/";
+}
+const INTERNAL_PREFIXES = /* @__PURE__ */ new Set(["/_", "/@", "/.", "//"]);
+const JUST_SLASHES = /^\/{2,}$/;
+function isInternalPath(path) {
+  return INTERNAL_PREFIXES.has(path.slice(0, 2)) && !JUST_SLASHES.test(path);
+}
+const WITH_FILE_EXT = /\/[^/]+\.\w+$/;
+function hasFileExtension(path) {
+  return WITH_FILE_EXT.test(path);
 }
 
 function resolveClientDir(options) {
