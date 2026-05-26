@@ -2,8 +2,7 @@ packages:
    - "docs"
    - tests/fixtures/*
 
-onlyBuiltDependencies:
-   - esbuild
-   - sharp
-   - simple-git-hooks
-   - unrs-resolver
+allowBuilds:
+   esbuild: true
+   sharp: true
+   simple-git-hooks: true
