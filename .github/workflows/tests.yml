@@ -18,7 +18,7 @@ jobs:
       if: github.actor != 'dependabot[bot]' && !startsWith(github.head_ref, 'dependabot/')
       runs-on: ubuntu-latest
       steps:
-         - uses: actions/checkout@v6
+         - uses: actions/checkout@v7
 
          - name: Install pnpm
            uses: pnpm/action-setup@v6
@@ -26,7 +26,7 @@ jobs:
               version: latest
 
          - name: Set node
-           uses: actions/setup-node@v6
+           uses: actions/setup-node@v7
            with:
               node-version: lts/*
 
@@ -53,7 +53,7 @@ jobs:
          fail-fast: false
 
       steps:
-         - uses: actions/checkout@v6
+         - uses: actions/checkout@v7
 
          - name: Install pnpm
            uses: pnpm/action-setup@v6
@@ -61,7 +61,7 @@ jobs:
               version: latest
 
          - name: Set node ${{ matrix.node }}
-           uses: actions/setup-node@v6
+           uses: actions/setup-node@v7
            with:
               node-version: ${{ matrix.node }}
 
