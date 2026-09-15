@@ -3,6 +3,7 @@
   "editor.formatOnSave": false,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
+    "source.fixAll.oxc": "explicit",
     "source.organizeImports": "never"
   },
   "eslint.runtime": "node",
@@ -18,11 +19,14 @@
     { "rule": "*semi", "severity": "off", "fixable": true }
   ],
   "eslint.validate": [
-    "javascript",
-    "typescript",
+    "astro",
     "json",
     "jsonc",
+    "json5",
     "yaml",
     "github-actions-workflow"
-  ]
+  ],
+  "[yaml]": {
+    "editor.tabSize": 3
+  }
 }

@@ -22,8 +22,8 @@
   },
   "license": "MIT",
   "author": "Felix Icaza",
+  "sideEffects": false,
   "type": "module",
-  "types": "./dist/index.d.mts",
   "exports": {
     ".": {
       "types": "./dist/index.d.mts",
@@ -34,11 +34,13 @@
       "import": "./dist/index.mjs"
     }
   },
+  "types": "./dist/index.d.mts",
   "files": [
     "dist"
   ],
-  "sideEffects": false,
   "scripts": {
+    "astro:sync": " pnpm --filter \"./tests/fixtures/**\" astro sync",
+    "astro:typecheck": "pnpm --filter \"./tests/fixtures/**\" astro check",
     "build": "tsdown",
     "build:docs": "pnpm --filter ./docs -r build",
     "build:watch": "tsdown --watch",
@@ -46,12 +48,11 @@
     "dev:docs": "pnpm --filter ./docs -r dev",
     "dev:fixtures": "pnpm --filter \"./tests/fixtures/**\" -r --parallel dev",
     "dev:lib": "tsdown --watch",
-    "lint": "eslint --cache .",
-    "lint:fix": "eslint --cache --fix .",
+    "lint": "oxlint . && eslint . --cache",
+    "lint:fix": "oxlint . --fix --fix-suggestions --fix-dangerously && eslint . --cache --fix",
     "prepare": "simple-git-hooks",
     "prepublishOnly": "pnpm build",
     "release": "bumpp",
-    "sync:types": " pnpm --filter \"./tests/fixtures/**\" astro sync",
     "test": "pnpm test:fixtures",
     "test:fixtures": "pnpm --filter \"./tests/fixtures/**\" -r --workspace-concurrency=1 build",
     "test:fixtures:custom-base": "pnpm --filter \"./tests/fixtures/custom-base\" build",
@@ -65,19 +66,25 @@
     "test:fixtures:preview:ssr:custom-base": "pnpm --filter \"./tests/fixtures/ssr-node-custom-base\" preview",
     "test:fixtures:ssr": "pnpm --filter \"./tests/fixtures/ssr-node\" build",
     "test:fixtures:ssr:custom-base": "pnpm --filter \"./tests/fixtures/ssr-node-custom-base\" build",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "oxlint . --type-aware --type-check"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm nano-staged"
   },
   "nano-staged": {
-    "*": "pnpm lint:fix"
+    "*": [
+      "pnpm lint:fix",
+      "pnpm astro:typecheck",
+      "pnpm typecheck"
+    ]
   },
   "dependencies": {
     "plaiceholder": "3.0.0"
   },
   "devDependencies": {
-    "@eslint/js": "9.39.4",
+    "@astrojs/check": "0.9.10",
+    "@felixicaza/eslint-config": "0.1.4",
+    "@felixicaza/oxlint-config": "0.1.5",
     "@tsdown/css": "0.21.10",
     "@types/node": "25.6.0",
     "@typescript-eslint/parser": "8.59.0",
@@ -85,16 +92,11 @@
     "bumpp": "11.0.1",
     "concurrently": "9.2.1",
     "eslint": "9.39.4",
-    "eslint-plugin-astro": "1.7.0",
-    "eslint-plugin-jsonc": "3.1.2",
-    "eslint-plugin-jsx-a11y": "6.10.2",
-    "eslint-plugin-package-json": "0.91.1",
-    "eslint-plugin-yml": "3.3.1",
-    "globals": "17.5.0",
     "jiti": "2.6.1",
     "lightningcss": "1.32.0",
     "nano-staged": "1.0.2",
-    "neostandard": "0.13.0",
+    "oxlint": "1.82.0",
+    "oxlint-tsgolint": "7.0.2001",
     "simple-git-hooks": "2.13.1",
     "tsdown": "0.21.10"
   },
