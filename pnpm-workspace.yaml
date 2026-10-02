@@ -1,8 +1,15 @@
 packages:
-   - "docs"
+   - docs
    - tests/fixtures/*
 
 allowBuilds:
    esbuild: true
    sharp: true
    simple-git-hooks: true
+
+minimumReleaseAgeExclude:
+   - "@felixicaza/eslint-config"
+   - "@felixicaza/oxlint-config"
+
+publicHoistPattern:
+   - eslint-plugin-jsx-a11y-x
