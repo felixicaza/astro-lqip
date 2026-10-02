@@ -1,13 +1,13 @@
 section {
-  background: var(--background);
+  background: var(--background)
 }
 .custom-background {
-  background: var(--custom-background);
+  background: var(--custom-background)
 }
 section,
 .custom-background {
-  background-size: cover;
+  inline-size: 100%;
+  block-size: 300px;
   background-position: center;
-  width: 100%;
-  height: 300px;
+  background-size: cover
 }

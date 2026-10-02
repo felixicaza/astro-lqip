@@ -53,7 +53,7 @@ import volcanoSunsetImage from '../assets/pexels-fabianwiktor-3470482.jpg'
     </div>
     <div>
       <p>Background component with custom CSS variable</p>
-      <Background src="/src/assets/pexels-fabianwiktor-3470482.jpg" cssVariable="--custom-background">
+      <Background cssVariable="--custom-background" src="/src/assets/pexels-fabianwiktor-3470482.jpg">
         <section class="custom-background">
           <p>Optimized background</p>
         </section>
@@ -61,7 +61,7 @@ import volcanoSunsetImage from '../assets/pexels-fabianwiktor-3470482.jpg'
     </div>
     <div>
       <p>Background component in AVIF format</p>
-      <Background src="/src/assets/pexels-fabianwiktor-3470482.jpg" format="avif">
+      <Background format="avif" src="/src/assets/pexels-fabianwiktor-3470482.jpg">
         <section>
           <p>Optimized background</p>
         </section>
@@ -69,7 +69,7 @@ import volcanoSunsetImage from '../assets/pexels-fabianwiktor-3470482.jpg'
     </div>
     <div>
       <p>Background component with lqip color</p>
-      <Background src="/src/assets/pexels-fabianwiktor-3470482.jpg" lqip="color">
+      <Background lqip="color" src="/src/assets/pexels-fabianwiktor-3470482.jpg">
         <section>
           <p>Optimized background</p>
         </section>
@@ -77,7 +77,7 @@ import volcanoSunsetImage from '../assets/pexels-fabianwiktor-3470482.jpg'
     </div>
     <div>
       <p>Background component in multiple formats</p>
-      <Background src="/src/assets/pexels-fabianwiktor-3470482.jpg" format={['avif', 'webp', 'jpeg']}>
+      <Background format={['avif', 'webp', 'jpeg']} src="/src/assets/pexels-fabianwiktor-3470482.jpg">
         <section>
           <p>Optimized background</p>
         </section>
@@ -85,7 +85,7 @@ import volcanoSunsetImage from '../assets/pexels-fabianwiktor-3470482.jpg'
     </div>
     <div>
       <p>Background component with custom width and height</p>
-      <Background src="/src/assets/pexels-fabianwiktor-3470482.jpg" width={720} height={720}>
+      <Background height={720} src="/src/assets/pexels-fabianwiktor-3470482.jpg" width={720}>
         <section>
           <p>Optimized background</p>
         </section>
@@ -93,7 +93,7 @@ import volcanoSunsetImage from '../assets/pexels-fabianwiktor-3470482.jpg'
     </div>
     <div>
       <p>Background component with several props</p>
-      <Background src="/src/assets/pexels-fabianwiktor-3470482.jpg" format="avif" width={720} height={720} widths={[100, 1200, 1536]} quality={80} fit="cover">
+      <Background fit="cover" format="avif" height={720} quality={80} src="/src/assets/pexels-fabianwiktor-3470482.jpg" width={720} widths={[100, 1200, 1536]}>
         <section>
           <p>Optimized background</p>
         </section>
@@ -101,7 +101,7 @@ import volcanoSunsetImage from '../assets/pexels-fabianwiktor-3470482.jpg'
     </div>
     <div>
       <p>Background component with lqip false</p>
-      <Background src="/src/assets/pexels-fabianwiktor-3470482.jpg" lqip={false}>
+      <Background lqip={false} src="/src/assets/pexels-fabianwiktor-3470482.jpg">
         <section>
           <p>Background without LQIP</p>
         </section>
@@ -109,33 +109,33 @@ import volcanoSunsetImage from '../assets/pexels-fabianwiktor-3470482.jpg'
     </div>
     <div>
       <p>Image and Picture components ImageMetadata import</p>
-      <Image width={450} height={450} src={volcanoImage} alt="A beautiful volcano" />
-      <Picture width={450} height={450} src={volcanoImage} alt="A beautiful volcano in the sunset" />
+      <Image alt="A beautiful volcano" height={450} src={volcanoImage} width={450} />
+      <Picture alt="A beautiful volcano in the sunset" height={450} src={volcanoImage} width={450} />
     </div>
     <div>
       <p>Image and Picture components relative path import</p>
-      <Image width={450} height={450} src="../assets/pexels-fabianwiktor-3470872.jpg" alt="A beautiful volcano" />
-      <Picture width={450} height={450} src="../assets/pexels-fabianwiktor-3470872.jpg" alt="A beautiful volcano in the sunset" />
+      <Image alt="A beautiful volcano" height={450} src="../assets/pexels-fabianwiktor-3470872.jpg" width={450} />
+      <Picture alt="A beautiful volcano in the sunset" height={450} src="../assets/pexels-fabianwiktor-3470872.jpg" width={450} />
     </div>
     <div>
       <p>Image and Picture components absolute path import</p>
-      <Image width={450} height={450} src="/src/assets/pexels-fabianwiktor-3470872.jpg" alt="A beautiful volcano" />
-      <Picture width={450} height={450} src="/src/assets/pexels-fabianwiktor-3470872.jpg" alt="A beautiful volcano in the sunset" />
+      <Image alt="A beautiful volcano" height={450} src="/src/assets/pexels-fabianwiktor-3470872.jpg" width={450} />
+      <Picture alt="A beautiful volcano in the sunset" height={450} src="/src/assets/pexels-fabianwiktor-3470872.jpg" width={450} />
     </div>
     <div>
       <p>Image and Picture components import with alias</p>
-      <Image width={450} height={450} src="@/assets/pexels-fabianwiktor-3470872.jpg" alt="A beautiful volcano" />
-      <Picture width={450} height={450} src="@/assets/pexels-fabianwiktor-3470872.jpg" alt="A beautiful volcano in the sunset" />
+      <Image alt="A beautiful volcano" height={450} src="@/assets/pexels-fabianwiktor-3470872.jpg" width={450} />
+      <Picture alt="A beautiful volcano in the sunset" height={450} src="@/assets/pexels-fabianwiktor-3470872.jpg" width={450} />
     </div>
     <div>
       <p>Image and Picture components with remote images</p>
-      <Image width={450} height={450} src="https://images.pexels.com/photos/994605/pexels-photo-994605.jpeg" alt="A beautiful volcano" />
-      <Picture width={450} height={450} src="https://images.pexels.com/photos/994605/pexels-photo-994605.jpeg" alt="A beautiful volcano in the sunset" />
+      <Image alt="A beautiful volcano" height={450} src="https://images.pexels.com/photos/994605/pexels-photo-994605.jpeg" width={450} />
+      <Picture alt="A beautiful volcano in the sunset" height={450} src="https://images.pexels.com/photos/994605/pexels-photo-994605.jpeg" width={450} />
     </div>
     <div>
       <p>Image and Picture components with lqip false</p>
-      <Image width={450} height={450} src={volcanoImage} alt="Volcano no LQIP" lqip={false} />
-      <Picture width={450} height={450} src={volcanoImage} alt="Volcano no LQIP in the sunset" lqip={false} />
+      <Image alt="Volcano no LQIP" height={450} lqip={false} src={volcanoImage} width={450} />
+      <Picture alt="Volcano no LQIP in the sunset" height={450} lqip={false} src={volcanoImage} width={450} />
     </div>
   </body>
 </html>

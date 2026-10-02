@@ -1,16 +1,17 @@
+import type { ImageMetadata } from 'astro'
+import type { ImagePath, ImportModule, ResolvedImage, ResolvedImageSource } from '../types/index.ts'
+
 import { createHash } from 'node:crypto'
-import { existsSync } from 'node:fs'
-import { copyFile, mkdir, readFile, readdir, stat } from 'node:fs/promises'
+import { constants } from 'node:fs'
+import { access, copyFile, mkdir, readFile, readdir, stat } from 'node:fs/promises'
 import { basename, dirname, extname, join, relative, resolve as resolvePath, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { getPlaiceholder } from 'plaiceholder'
 
-import type { ImagePath, ImportModule, ResolvedImage } from '../types'
+import { PREFIX } from '../constants/index.ts'
 
-import { PREFIX } from '../constants'
-
-type RuntimePathConfig = {
+interface RuntimePathConfig {
   basePath: string
   assetsDir: string
 }
@@ -21,6 +22,10 @@ const PUBLIC_DIR = join(PROJECT_ROOT, 'public')
 const DIST_DIR = join(PROJECT_ROOT, 'dist')
 const IS_DEV = import.meta.env?.MODE === 'development'
 
+const IS_REMOTE_URL_REGEX = /^https?:\/\//
+const IS_FILE_REGEX = /^file:\/\//
+const FILENAME_REGEX = /^[A-Za-z]:/
+const BUILD_SOURCE_REGEX = /build\s*:\s*{([\s\S]*?)}/
 const STACK_PATH_REGEX = /(file:\/\/[^\s)]+|\/[^\s)]+|[A-Za-z]:[^\s)]+):\d+:\d+/
 const IGNORED_STACK_SEGMENTS = [
   `${sep}node_modules${sep}`,
@@ -36,6 +41,16 @@ const ASTRO_CONFIG_CANDIDATES = [
   'astro.config.mjs',
   'astro.config.cjs'
 ]
+const ASTRO_IMAGE_FORMATS = [
+  'avif',
+  'png',
+  'webp',
+  'jpeg',
+  'jpg',
+  'svg',
+  'tiff',
+  'gif'
+] as const satisfies readonly ImageMetadata['format'][]
 
 const fileLookupCache = new Map<string, string | null>()
 const stagedAssetCache = new Map<string, string | null>()
@@ -53,20 +68,17 @@ function warnFiles(filePath: string | undefined) {
   }
 }
 
-function isObject(v: unknown): v is Record<string, unknown> {
-  return typeof v === 'object' && v !== null
-}
-
-function isPromise(v: unknown): v is Promise<unknown> {
-  return isObject(v) && typeof (v as { then?: unknown }).then === 'function'
-}
-
-function hasSrc(v: unknown): v is ResolvedImage {
-  return isObject(v) && typeof (v as Record<string, unknown>).src === 'string'
-}
-
 function isRemoteUrl(v: string) {
-  return /^https?:\/\//.test(v)
+  return IS_REMOTE_URL_REGEX.test(v)
+}
+
+async function fileExists(path: string) {
+  try {
+    await access(path)
+    return true
+  } catch {
+    return false
+  }
 }
 
 function stripQueryAndHash(path: string) {
@@ -105,19 +117,19 @@ function extractPathFromStackLine(line: string) {
   try {
     return fileURLToPath(raw)
   } catch {
-    return raw.replace(/^file:\/\//, '')
+    return raw.replace(IS_FILE_REGEX, '')
   }
 }
 
 function isUserFilePath(candidate: string) {
   if (!candidate) return false
-  if (!candidate.startsWith('/') && !/^[A-Za-z]:/.test(candidate)) return false
+  if (!candidate.startsWith('/') && !FILENAME_REGEX.test(candidate)) return false
   if (!candidate.startsWith(PROJECT_ROOT)) return false
   return !IGNORED_STACK_SEGMENTS.some((s) => candidate.includes(s))
 }
 
 function getCallerDirectory() {
-  const stack = new Error().stack
+  const stack = new Error('error').stack
   if (!stack) return null
   for (const line of stack.split('\n').slice(2)) {
     const file = extractPathFromStackLine(line)
@@ -132,72 +144,86 @@ function ensureInsideProject(candidate: string) {
   return candidate
 }
 
+function addCandidate(out: Set<string>, candidate: string | null | undefined) {
+  if (candidate) {
+    out.add(candidate)
+  }
+}
+
+function collectCallerRelativeCandidate(normalized: string, callerDir: string | null, out: Set<string>) {
+  if (!callerDir || !isRelativeSpecifier(normalized)) return
+
+  addCandidate(out, ensureInsideProject(resolvePath(callerDir, normalized)))
+}
+
+function collectRelativeDirectoryCandidates(normalized: string, out: Set<string>) {
+  if (!isRelativeSpecifier(normalized)) return
+
+  const trimmed = stripLeadingRelativeSegments(normalized)
+  if (!trimmed) return
+
+  addCandidate(out, ensureInsideProject(join(SRC_DIR, trimmed)))
+  addCandidate(out, ensureInsideProject(join(PUBLIC_DIR, trimmed)))
+}
+
+function collectExplicitDirectoryCandidates(normalized: string, out: Set<string>) {
+  if (normalized.startsWith('/src/')) {
+    addCandidate(out, join(PROJECT_ROOT, normalized.slice(1)))
+  } else if (normalized.startsWith('src/')) {
+    addCandidate(out, join(PROJECT_ROOT, normalized))
+  }
+
+  if (normalized.startsWith('/public/')) {
+    addCandidate(out, join(PROJECT_ROOT, normalized.slice(1)))
+  } else if (normalized.startsWith('public/')) {
+    addCandidate(out, join(PROJECT_ROOT, normalized))
+  }
+}
+
+function collectNonAbsoluteCandidates(normalized: string, out: Set<string>) {
+  if (normalized.startsWith('/')) {
+    const noLeading = normalized.slice(1)
+
+    if (noLeading) {
+      addCandidate(out, ensureInsideProject(join(PROJECT_ROOT, noLeading)))
+    }
+
+    return
+  }
+
+  addCandidate(out, ensureInsideProject(join(SRC_DIR, normalized)))
+  addCandidate(out, ensureInsideProject(join(PROJECT_ROOT, normalized)))
+}
+
 function collectFsCandidates(specifier: string, callerDir: string | null) {
   const normalized = normalizeSpecifier(specifier)
   const out = new Set<string>()
-  const noLeading = normalized.startsWith('/') ? normalized.slice(1) : normalized
 
-  if (callerDir && isRelativeSpecifier(normalized)) {
-    const resolved = ensureInsideProject(resolvePath(callerDir, normalized))
-    if (resolved) out.add(resolved)
-  }
+  collectCallerRelativeCandidate(normalized, callerDir, out)
+  collectRelativeDirectoryCandidates(normalized, out)
+  collectExplicitDirectoryCandidates(normalized, out)
+  collectNonAbsoluteCandidates(normalized, out)
 
-  if (isRelativeSpecifier(normalized)) {
-    const trimmed = stripLeadingRelativeSegments(normalized)
-    if (trimmed) {
-      const srcCandidate = ensureInsideProject(join(SRC_DIR, trimmed))
-      if (srcCandidate) out.add(srcCandidate)
-
-      const publicCandidate = ensureInsideProject(join(PUBLIC_DIR, trimmed))
-      if (publicCandidate) out.add(publicCandidate)
-    }
-  }
-
-  if (normalized.startsWith('/src/')) out.add(join(PROJECT_ROOT, normalized.slice(1)))
-  else if (normalized.startsWith('src/')) out.add(join(PROJECT_ROOT, normalized))
-
-  if (normalized.startsWith('/public/')) out.add(join(PROJECT_ROOT, normalized.slice(1)))
-  else if (normalized.startsWith('public/')) out.add(join(PROJECT_ROOT, normalized))
-
-  if (!normalized.startsWith('/')) {
-    const srcCandidate = ensureInsideProject(join(SRC_DIR, normalized))
-    if (srcCandidate) out.add(srcCandidate)
-
-    const rootCandidate = ensureInsideProject(join(PROJECT_ROOT, normalized))
-    if (rootCandidate) out.add(rootCandidate)
-  } else if (noLeading) {
-    const rootCandidate = ensureInsideProject(join(PROJECT_ROOT, noLeading))
-    if (rootCandidate) out.add(rootCandidate)
-  }
-
-  return Array.from(out)
+  return [...out]
 }
 
 async function walkSrcForFile(target: string) {
   if (!target) return null
 
-  const key = SRC_DIR + '::' + target
+  const key = `${SRC_DIR}::${target}`
   if (fileLookupCache.has(key)) return fileLookupCache.get(key) ?? null
 
   async function walk(dir: string): Promise<string | undefined> {
     let entries
-    try {
-      entries = await readdir(dir, { withFileTypes: true })
-    } catch {
-      return
-    }
+    try { entries = await readdir(dir, { withFileTypes: true }) } catch { return }
 
-    for (const entry of entries) {
-      const full = join(dir, entry.name)
+    const directories = entries.filter(entry => entry.isDirectory() && !DIRS_IGNORED_IN_WALK.has(entry.name))
 
-      if (entry.isDirectory()) {
-        if (DIRS_IGNORED_IN_WALK.has(entry.name)) continue
-        const found = await walk(full)
-        if (found) return found
-      } else if (entry.name === target) {
-        return full
-      }
-    }
+    const file = entries.find(entry => !entry.isDirectory() && entry.name === target)
+    if (file) return join(dir, file.name)
+
+    const results = await Promise.all(directories.map(entry => walk(join(dir, entry.name))))
+    return results.find(Boolean)
   }
 
   const found = await walk(SRC_DIR)
@@ -205,10 +231,9 @@ async function walkSrcForFile(target: string) {
   return found ?? null
 }
 
-function normalizeFormat(format: string | number | symbol | undefined, filePath: string) {
-  if (format != null) return String(format).toLowerCase()
-  const ext = extname(filePath).replace('.', '')
-  return ext ? ext.toLowerCase() : undefined
+function normalizeFormat(format: string | number | symbol | undefined, filePath: string): ImageMetadata['format'] | undefined {
+  const candidate = format == null ? extname(filePath).slice(1).toLowerCase() : String(format).toLowerCase()
+  return ASTRO_IMAGE_FORMATS.find((supportedFormat) => supportedFormat === candidate)
 }
 
 function toDevSrc(filePath: string, width: number, height: number, format: string) {
@@ -231,7 +256,7 @@ function normalizeAssetsDir(input?: string) {
 
 function parseSimpleStringAssignment(source: string, key: string) {
   const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-  const regex = new RegExp(escapedKey + '\\s*:\\s*[\'"]([^\'"]+)[\'"]')
+  const regex = new RegExp(`${escapedKey}\\s*:\\s*['"]([^'"]+)['"]`)
   const m = source.match(regex)
   return m?.[1]
 }
@@ -241,40 +266,38 @@ function parseBasePathFromConfig(source: string) {
 }
 
 function parseAssetsDirFromConfig(source: string) {
-  const buildBlock = source.match(/build\s*:\s*{([\s\S]*?)}/)
+  const buildBlock = source.match(BUILD_SOURCE_REGEX)
   if (!buildBlock?.[1]) return undefined
   return parseSimpleStringAssignment(buildBlock[1], 'assets')
 }
 
 async function resolveRuntimePathConfig(): Promise<RuntimePathConfig> {
-  for (const relPath of ASTRO_CONFIG_CANDIDATES) {
-    const absPath = join(PROJECT_ROOT, relPath)
-    if (!existsSync(absPath)) continue
+  const resolve = async(index: number): Promise<RuntimePathConfig> => {
+    if (index >= ASTRO_CONFIG_CANDIDATES.length) return { basePath: '', assetsDir: '_astro' }
+
+    const relPath = ASTRO_CONFIG_CANDIDATES[index]
 
     try {
-      const source = await readFile(absPath, 'utf-8')
+      const source = await readFile(join(PROJECT_ROOT, relPath), 'utf-8')
       const basePath = normalizeBasePath(parseBasePathFromConfig(source))
       const assetsDir = normalizeAssetsDir(parseAssetsDirFromConfig(source))
+
       return { basePath, assetsDir }
     } catch {
-      continue
+      return resolve(index + 1)
     }
   }
 
-  return { basePath: '', assetsDir: '_astro' }
+  return resolve(0)
 }
 
 function getRuntimePathConfig() {
-  if (!runtimePathConfigPromise) {
-    runtimePathConfigPromise = resolveRuntimePathConfig()
-  }
+  runtimePathConfigPromise ||= resolveRuntimePathConfig()
   return runtimePathConfigPromise
 }
 
 function getPublicAssetPrefix(config: RuntimePathConfig) {
-  return config.basePath
-    ? `${config.basePath}/${config.assetsDir}`
-    : `/${config.assetsDir}`
+  return config.basePath ? `${config.basePath}/${config.assetsDir}` : `/${config.assetsDir}`
 }
 
 function getPublicAssetPath(fileName: string, config: RuntimePathConfig) {
@@ -285,21 +308,20 @@ function getStageAssetSegments(config: RuntimePathConfig) {
   return [config.assetsDir]
 }
 
-function isSsrBuildLayoutPresent() {
-  return (
-    existsSync(join(DIST_DIR, 'server'))
-    || existsSync(join(DIST_DIR, 'client'))
-    || existsSync(join(DIST_DIR, 'server', '.prerender'))
-  )
+async function isSsrBuildLayoutPresent() {
+  const paths = [
+    join(DIST_DIR, 'server'),
+    join(DIST_DIR, 'client'),
+    join(DIST_DIR, 'server', '.prerender')
+  ]
+
+  const results = await Promise.all(paths.map(fileExists))
+  return results.some(Boolean)
 }
 
-function getBuildStageDirs(config: RuntimePathConfig) {
+async function getBuildStageDirs(config: RuntimePathConfig) {
   const segments = getStageAssetSegments(config)
-
-  if (isSsrBuildLayoutPresent()) {
-    return [join(DIST_DIR, 'server', '.prerender', ...segments)]
-  }
-
+  if (await isSsrBuildLayoutPresent()) return [join(DIST_DIR, 'server', '.prerender', ...segments)]
   return [join(DIST_DIR, ...segments)]
 }
 
@@ -314,21 +336,27 @@ async function ensureBuildAssetPublicPath(sourceFilePath: string) {
     const digestInput = `${sourceFilePath}:${String(st.size)}:${String(st.mtimeMs)}`
     const digest = createHash('sha256').update(digestInput).digest('hex').slice(0, 8)
     const fileName = `${sourceBase}.${digest}${ext}`
+    const buildStageDirs = await getBuildStageDirs(runtimeConfig)
 
-    for (const dir of getBuildStageDirs(runtimeConfig)) {
-      await mkdir(dir, { recursive: true })
-      const targetAbs = join(dir, fileName)
+    await Promise.all(
+      buildStageDirs.map(async(dir) => {
+        await mkdir(dir, { recursive: true })
+        const targetAbs = join(dir, fileName)
 
-      if (!existsSync(targetAbs)) {
-        await copyFile(sourceFilePath, targetAbs)
-      }
-    }
+        try {
+          await copyFile(sourceFilePath, targetAbs, constants.COPYFILE_EXCL)
+        } catch(error) {
+          if (error instanceof Error && 'code' in error && error.code === 'EEXIST') return
+          throw error
+        }
+      })
+    )
 
     const publicPath = getPublicAssetPath(fileName, runtimeConfig)
     stagedAssetCache.set(sourceFilePath, publicPath)
     return publicPath
-  } catch (err) {
-    console.warn(`${PREFIX} Failed to stage build asset for "${sourceFilePath}".`, err)
+  } catch(error) {
+    console.warn(`${PREFIX} Failed to stage build asset for "${sourceFilePath}".`, error)
     stagedAssetCache.set(sourceFilePath, null)
     return null
   }
@@ -348,10 +376,7 @@ async function createMetadataFromFile(filePath: string) {
       return null
     }
 
-    const src = IS_DEV
-      ? toDevSrc(filePath, width, height, format)
-      : await ensureBuildAssetPublicPath(filePath)
-
+    const src = IS_DEV ? toDevSrc(filePath, width, height, format) : await ensureBuildAssetPublicPath(filePath)
     if (!src) return null
 
     const imageMeta: ResolvedImage & { width: number, height: number, format: string } = {
@@ -369,8 +394,8 @@ async function createMetadataFromFile(filePath: string) {
     })
 
     return imageMeta
-  } catch (err) {
-    console.warn(`${PREFIX} Failed to derive metadata for "${filePath}".`, err)
+  } catch(error) {
+    console.warn(`${PREFIX} Failed to derive metadata for "${filePath}".`, error)
     return null
   }
 }
@@ -378,61 +403,79 @@ async function createMetadataFromFile(filePath: string) {
 async function resolveFromFileSystem(specifier: string, callerDir: string | null) {
   const candidates = collectFsCandidates(specifier, callerDir)
 
-  for (const candidate of candidates) {
-    if (!candidate || !existsSync(candidate)) continue
+  async function resolveCandidate(index: number): Promise<ResolvedImage | null> {
+    if (index >= candidates.length) return null
+    const candidate = candidates[index]
+    if (!candidate) return resolveCandidate(index + 1)
     const metadata = await createMetadataFromFile(candidate)
-    if (!metadata) continue
+    if (!metadata) return resolveCandidate(index + 1)
+
     warnFiles(candidate)
-    return metadata as ResolvedImage
+    return metadata
   }
+
+  const resolved = await resolveCandidate(0)
+  if (resolved) return resolved
 
   const fileName = normalizeSpecifier(specifier).split('/').pop()
   if (!fileName) return null
 
   const fallback = await walkSrcForFile(fileName)
-  if (!fallback || !existsSync(fallback)) return null
+  if (!fallback) return null
 
   const metadata = await createMetadataFromFile(fallback)
   if (!metadata) return null
 
   warnFiles(fallback)
-  return metadata as ResolvedImage
+  return metadata
+}
+
+async function resolvePromiseImagePath(path: Promise<ImportModule>) {
+  const { default: resolved } = await path
+  warnFiles(resolved.src)
+  return resolved
+}
+
+function resolveObjectImagePath(path: ResolvedImage) {
+  warnFiles(path.src)
+  return path
+}
+
+async function resolveStringImagePath(path: string) {
+  if (isRemoteUrl(path)) return path
+
+  const spec = normalizeSpecifier(path)
+  const callerDir = isRelativeSpecifier(spec) ? getCallerDirectory() : null
+
+  const fsMatch = await resolveFromFileSystem(spec, callerDir)
+  return fsMatch ?? null
 }
 
 export async function resolveImagePath(path: ImagePath) {
   if (path == null) return null
+  if (path instanceof Promise) return resolvePromiseImagePath(path)
+  // oxlint-disable-next-line anti-slop/no-runtime-typeof
+  if (typeof path === 'string') return resolveStringImagePath(path)
+  return resolveObjectImagePath(path)
+}
 
-  if (isPromise(path)) {
-    const mod = await (path as Promise<ImportModule>)
-    const resolved = (mod.default ?? mod) as unknown
-    if (hasSrc(resolved)) {
-      warnFiles((resolved as ResolvedImage).src)
-      return resolved
+export async function resolveLqipImageSource(path: ImagePath): Promise<ResolvedImageSource | null> {
+  const resolved = await resolveImagePath(path)
+
+  if (!resolved) return null
+
+  // oxlint-disable-next-line anti-slop/no-runtime-typeof
+  if (typeof resolved === 'string') {
+    return {
+      kind: 'remote',
+      astroSrc: resolved,
+      lqipInput: { src: resolved }
     }
-    if (typeof resolved === 'string') {
-      warnFiles(resolved)
-      return resolved
-    }
-    return null
   }
 
-  if (isObject(path)) {
-    const obj = path as Record<string, unknown>
-    const objSrc = typeof obj.src === 'string' ? obj.src : undefined
-    warnFiles(objSrc)
-    return hasSrc(obj) ? (obj as ResolvedImage) : null
+  return {
+    kind: 'local',
+    astroSrc: resolved,
+    lqipInput: resolved
   }
-
-  if (typeof path === 'string') {
-    if (isRemoteUrl(path)) return path
-    const spec = normalizeSpecifier(path)
-    const callerDir = isRelativeSpecifier(spec) ? getCallerDirectory() : null
-
-    const fsMatch = await resolveFromFileSystem(spec, callerDir)
-    if (fsMatch) return fsMatch
-
-    return null
-  }
-
-  return null
 }

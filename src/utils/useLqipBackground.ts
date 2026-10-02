@@ -1,18 +1,18 @@
 import type { ImageMetadata } from 'astro'
-import type { ImageTransform } from '../types'
+import type { ImageTransform, ResolvedImage } from '../types/index.ts'
 
 import { getImage, inferRemoteSize } from 'astro:assets'
 
-import { resolveImagePath } from './resolveImagePath'
-import { getLqip } from './getLqip'
-import { PREFIX } from '../constants'
+import { resolveLqipImageSource } from './resolveImagePath.ts'
+import { getLqip } from './getLqip.ts'
+import { PREFIX } from '../constants/index.ts'
 
-type SourceEntry = {
+interface SourceEntry {
   url: string
   width?: number
 }
 
-type FormatSourceSet = {
+interface FormatSourceSet {
   format: string
   mimeType: string
   fallbackSrc: string
@@ -21,13 +21,13 @@ type FormatSourceSet = {
 
 type FormatSelector = (formatSource: FormatSourceSet) => SourceEntry | undefined
 
-type BuildResponsiveBackgroundStyleOptions = {
+interface BuildResponsiveBackgroundStyleOptions {
   referenceSources: SourceEntry[]
   baseVariable: string
   createValue: (selector?: FormatSelector) => string
 }
 
-type CreateBackgroundValueOptions = {
+interface CreateBackgroundValueOptions {
   formatSources: FormatSourceSet[]
   optimizedImages: Awaited<ReturnType<typeof getImage>>[]
   isFormatArray: boolean
@@ -35,109 +35,14 @@ type CreateBackgroundValueOptions = {
   layer?: string
 }
 
-export type UseLqipBackgroundOptions = ImageTransform & {
-  cssVariable?: string
-  lqip?: 'base64' | 'color' | false
-  isDevelopment: boolean
+interface ResolvedBackgroundSource {
+  resolvedSrc: string | ResolvedImage
+  lqipInput: { src: string }
+  width?: number
+  height?: number
 }
 
-export async function useLqipBackground({
-  src,
-  cssVariable = '--background',
-  format = 'webp',
-  widths,
-  width,
-  height,
-  quality,
-  fit,
-  lqip = 'base64',
-  isDevelopment
-}: UseLqipBackgroundOptions) {
-  let normalizedWidth = width
-  let normalizedHeight = height
-
-  const resolvedSrc = await resolveImagePath(src)
-  if (!resolvedSrc) {
-    throw new Error(`${PREFIX} Could not resolve background image in "${src}"`)
-  }
-
-  const remoteBackgroundUrl = typeof resolvedSrc === 'string' && isRemoteSource(resolvedSrc) ? resolvedSrc : null
-  if (remoteBackgroundUrl && (!normalizedWidth || !normalizedHeight)) {
-    try {
-      const { width: inferredWidth, height: inferredHeight } = await inferRemoteSize(remoteBackgroundUrl)
-      normalizedWidth ??= inferredWidth
-      normalizedHeight ??= inferredHeight
-    } catch (error) {
-      console.warn(`${PREFIX} Failed to infer remote background size for "${remoteBackgroundUrl}".`, error)
-    }
-
-    if (!normalizedWidth || !normalizedHeight) {
-      throw new Error(
-        `${PREFIX} Remote background images require width and height. Provide both props or ensure the URL is reachable in your Astro config 'image.domains'.`
-      )
-    }
-  }
-
-  const imageInput: string | ImageMetadata = typeof resolvedSrc === 'string' ? resolvedSrc : (resolvedSrc as ImageMetadata)
-
-  let lqipLayer: string | undefined
-  if (lqip !== false) {
-    const lqipSize = 8
-    const lqipInput = typeof resolvedSrc === 'string' ? { src: resolvedSrc } : resolvedSrc
-    const rawLqipValue = await getLqip(lqipInput, lqip, lqipSize, isDevelopment)
-    lqipLayer = formatLqipLayer(lqip, typeof rawLqipValue === 'string' ? rawLqipValue : undefined)
-  }
-
-  const formatValues = Array.isArray(format) ? format : [format]
-  const normalizedFormats = sortFormats(
-    formatValues.filter((value): value is string => typeof value === 'string' && value.trim().length > 0)
-  )
-  const targetFormats = normalizedFormats.length ? normalizedFormats : ['webp']
-  const isFormatArray = Array.isArray(format)
-
-  const sharedImageOptions = {
-    src: imageInput,
-    widths,
-    width: normalizedWidth,
-    height: normalizedHeight,
-    quality,
-    fit
-  }
-
-  const optimizedImages = await Promise.all(
-    targetFormats.map((currentFormat) => getImage({ ...sharedImageOptions, format: currentFormat }))
-  )
-
-  const formatSources: FormatSourceSet[] = optimizedImages.map((optimizedImage, index) => ({
-    format: targetFormats[index],
-    mimeType: mimeTypeFromFormat(targetFormats[index]),
-    fallbackSrc: optimizedImage.src,
-    sources: parseSrcSetAttribute(optimizedImage.srcSet?.attribute)
-  }))
-
-  const baseVariable = normalizeCssVariableName(cssVariable)
-  const referenceSources = formatSources[0]?.sources ?? []
-  const hasWidths = Array.isArray(widths) && widths.length > 0
-
-  const createValue = (selector?: FormatSelector) =>
-    createBackgroundValue({
-      formatSources,
-      optimizedImages,
-      isFormatArray,
-      selector,
-      layer: lqip === false ? undefined : lqipLayer
-    })
-
-  const backgroundStyle = hasWidths
-    ? buildResponsiveBackgroundStyle({
-      referenceSources,
-      baseVariable,
-      createValue
-    })
-    : `${baseVariable}: ${createValue()}`
-
-  return { style: backgroundStyle, resolvedSrc }
-}
+const WIDTH_REGEX = /(?<value>\d+(?:\.\d+)?)(?<unit>[wx])/i
 
 function normalizeCssVariableName(variable: string) {
   const trimmed = variable.trim()
@@ -152,28 +57,84 @@ function normalizeFormatValue(value: string) {
 function sortFormats(values: string[]) {
   const formatPriority = ['avif', 'webp', 'png', 'jpeg', 'jpg', 'svg']
   const seen = new Set<string>()
-  const unique = values
-    .map((value) => normalizeFormatValue(value))
-    .filter((value) => {
-      if (!value || seen.has(value)) return false
-      seen.add(value)
-      return true
-    })
+
+  const unique = values.reduce<string[]>((formats, value) => {
+    const normalized = normalizeFormatValue(value)
+
+    if (!normalized || seen.has(normalized)) return formats
+
+    seen.add(normalized)
+    formats.push(normalized)
+    return formats
+  }, [])
 
   return unique.sort((a, b) => {
     const priorityA = formatPriority.indexOf(a)
     const priorityB = formatPriority.indexOf(b)
     const normalizedA = priorityA === -1 ? Number.MAX_SAFE_INTEGER : priorityA
     const normalizedB = priorityB === -1 ? Number.MAX_SAFE_INTEGER : priorityB
-    if (normalizedA === normalizedB) {
-      return a.localeCompare(b)
-    }
+
+    if (normalizedA === normalizedB) return a.localeCompare(b)
+
     return normalizedA - normalizedB
   })
 }
 
-function isRemoteSource(value: unknown): value is string {
-  return typeof value === 'string' && /^https?:\/\//.test(value)
+function getTargetFormats(format: UseLqipBackgroundOptions['format']) {
+  let formatValues: string[]
+
+  if (format === undefined) {
+    formatValues = []
+  } else if (Array.isArray(format)) {
+    formatValues = format
+  } else {
+    formatValues = [format]
+  }
+
+  const normalizedFormats = sortFormats(formatValues)
+
+  return {
+    formats: normalizedFormats.length ? normalizedFormats : ['webp'],
+    isFormatArray: Array.isArray(format)
+  }
+}
+
+async function resolveBackgroundSource(
+  src: UseLqipBackgroundOptions['src'],
+  width?: number,
+  height?: number
+): Promise<ResolvedBackgroundSource> {
+  let normalizedWidth = width
+  let normalizedHeight = height
+
+  const source = await resolveLqipImageSource(src)
+  if (!source) throw new Error(`${PREFIX} Could not resolve background image`)
+
+  const resolvedSrc = source.astroSrc
+  const remoteBackgroundUrl = source.kind === 'remote' ? source.astroSrc : undefined
+
+  if (remoteBackgroundUrl && (!normalizedWidth || !normalizedHeight)) {
+    try {
+      const inferredSize = await inferRemoteSize(remoteBackgroundUrl)
+      normalizedWidth ??= inferredSize.width
+      normalizedHeight ??= inferredSize.height
+    } catch(error) {
+      console.warn(`${PREFIX} Failed to infer remote background size for "${remoteBackgroundUrl}".`, error)
+    }
+
+    if (!normalizedWidth || !normalizedHeight) {
+      throw new Error(
+        `${PREFIX} Remote background images require 'width' and 'height'. Provide both props or ensure the URL is reachable in your Astro config 'image.domains'.`
+      )
+    }
+  }
+
+  return {
+    resolvedSrc,
+    lqipInput: source.lqipInput,
+    width: normalizedWidth,
+    height: normalizedHeight
+  }
 }
 
 function mimeTypeFromFormat(value: string) {
@@ -203,46 +164,37 @@ function parseSrcSetAttribute(attribute?: string): SourceEntry[] {
     .filter(Boolean)
     .map((entry) => {
       const lastSpaceIndex = entry.lastIndexOf(' ')
-      if (lastSpaceIndex === -1) {
-        return { url: entry } satisfies SourceEntry
-      }
+      if (lastSpaceIndex === -1) return { url: entry } satisfies SourceEntry
 
       const url = entry.slice(0, lastSpaceIndex)
       const descriptor = entry.slice(lastSpaceIndex + 1)
-      const widthMatch = descriptor.match(/(?<value>\d+(?:\.\d+)?)(?<unit>[wx])/i)
-      const width
-        = widthMatch?.groups?.unit?.toLowerCase() === 'w' ? Number.parseFloat(widthMatch.groups.value) : undefined
+      const widthMatch = descriptor.match(WIDTH_REGEX)
+      const width = widthMatch?.groups?.unit?.toLowerCase() === 'w' ? Number(widthMatch.groups.value) : undefined
 
       return { url, width }
     })
 
   const unique = new Map(entries.map((entry) => [entry.url, entry]))
-  return Array.from(unique.values()).sort((a, b) => (a.width ?? 0) - (b.width ?? 0))
+  return [...unique.values()].sort((a, b) => (a.width ?? 0) - (b.width ?? 0))
 }
 
 function buildResponsiveBackgroundStyle({ referenceSources, baseVariable, createValue }: BuildResponsiveBackgroundStyleOptions) {
-  if (!referenceSources.length) {
-    return `${baseVariable}: ${createValue()}`
-  }
+  if (!referenceSources.length) return `${baseVariable}: ${createValue()}`
 
-  const declarations = [
-    `${baseVariable}: ${createValue((formatSource) => formatSource.sources[formatSource.sources.length - 1])}`
-  ]
+  const declarations = [`${baseVariable}: ${createValue((formatSource) => formatSource.sources.at(-1))}`]
 
   const buckets = [
-    { suffix: '-small', match: (width?: number) => typeof width === 'number' && width < 768 },
-    { suffix: '-medium', match: (width?: number) => typeof width === 'number' && width >= 768 && width <= 1200 },
-    { suffix: '-large', match: (width?: number) => typeof width === 'number' && width > 1200 && width <= 1920 },
-    { suffix: '-xlarge', match: (width?: number) => typeof width === 'number' && width > 1920 }
+    { suffix: '-small', match: (width?: number) => width !== undefined && width < 768 },
+    { suffix: '-medium', match: (width?: number) => width !== undefined && width >= 768 && width <= 1200 },
+    { suffix: '-large', match: (width?: number) => width !== undefined && width > 1200 && width <= 1920 },
+    { suffix: '-xlarge', match: (width?: number) => width !== undefined && width > 1920 }
   ] as const
 
   for (const bucket of buckets) {
-    const referenceMatch = [...referenceSources].reverse().find((source) => bucket.match(source.width))
-    if (!referenceMatch || typeof referenceMatch.width !== 'number') continue
+    const referenceMatch = referenceSources.toReversed().find((source) => bucket.match(source.width))
+    if (!referenceMatch || referenceMatch.width === undefined) continue
 
-    const value = createValue((formatSource) =>
-      formatSource.sources.find((source) => source.width === referenceMatch.width)
-    )
+    const value = createValue((formatSource) => formatSource.sources.find((source) => source.width === referenceMatch.width))
     declarations.push(`${baseVariable}${bucket.suffix}: ${value}`)
   }
 
@@ -250,13 +202,11 @@ function buildResponsiveBackgroundStyle({ referenceSources, baseVariable, create
 }
 
 function selectSourceOrFallback(formatSource: FormatSourceSet, selector?: FormatSelector) {
-  return selector?.(formatSource) ?? formatSource.sources[formatSource.sources.length - 1] ?? { url: formatSource.fallbackSrc }
+  return selector?.(formatSource) ?? formatSource.sources.at(-1) ?? { url: formatSource.fallbackSrc }
 }
 
 function appendLqipLayer(baseValue: string, layer?: string) {
-  if (baseValue && layer) {
-    return `${baseValue}, ${layer}`
-  }
+  if (baseValue && layer) return `${baseValue}, ${layer}`
   return baseValue || layer || ''
 }
 
@@ -291,8 +241,132 @@ function createBackgroundValue({
 
 function formatLqipLayer(lqipType?: string, value?: string) {
   if (!lqipType || !value) return undefined
-  if (lqipType === 'color') {
-    return `linear-gradient(${value}, ${value})`
-  }
+  if (lqipType === 'color') return `linear-gradient(${value}, ${value})`
   return `url("${value}")`
+}
+
+async function getLqipLayer(
+  lqipInput: { src: string },
+  lqip: NonNullable<UseLqipBackgroundOptions['lqip']>,
+  isDevelopment: boolean
+) {
+  if (lqip === false) return undefined
+
+  const lqipSize = 8
+  const rawLqipValue = await getLqip(lqipInput, lqip, lqipSize, isDevelopment)
+  // oxlint-disable-next-line anti-slop/no-runtime-typeof
+  const value = typeof rawLqipValue === 'string' ? rawLqipValue : undefined
+
+  return formatLqipLayer(lqip, value)
+}
+
+async function optimizeBackgroundImages({
+  resolvedSrc,
+  formats,
+  width,
+  height,
+  widths,
+  quality,
+  fit
+}: {
+  resolvedSrc: string | ResolvedImage
+  formats: string[]
+  width?: number
+  height?: number
+  widths?: number[]
+  quality?: ImageTransform['quality']
+  fit?: ImageTransform['fit']
+}) {
+  const imageInput: string | ImageMetadata = resolvedSrc
+  const imageOptions = { src: imageInput, widths, width, height, quality, fit }
+  return Promise.all(formats.map((currentFormat) => getImage({ ...imageOptions, format: currentFormat })))
+}
+
+function createFormatSources(optimizedImages: Awaited<ReturnType<typeof getImage>>[], formats: string[]): FormatSourceSet[] {
+  return optimizedImages.map((optimizedImage, index) => ({
+    format: formats[index],
+    mimeType: mimeTypeFromFormat(formats[index]),
+    fallbackSrc: optimizedImage.src,
+    sources: parseSrcSetAttribute(optimizedImage.srcSet?.attribute)
+  }))
+}
+
+function createBackgroundStyle({
+  cssVariable,
+  widths,
+  lqip,
+  lqipLayer,
+  formatSources,
+  optimizedImages,
+  isFormatArray
+}: {
+  cssVariable: string
+  widths?: number[]
+  lqip: UseLqipBackgroundOptions['lqip']
+  lqipLayer?: string
+  formatSources: FormatSourceSet[]
+  optimizedImages: Awaited<ReturnType<typeof getImage>>[]
+  isFormatArray: boolean
+}) {
+  const baseVariable = normalizeCssVariableName(cssVariable)
+  const referenceSources = formatSources[0]?.sources ?? []
+  const createValue = (selector?: FormatSelector) =>
+    createBackgroundValue({
+      formatSources,
+      optimizedImages,
+      isFormatArray,
+      selector,
+      layer: lqip === false ? undefined : lqipLayer
+    })
+
+  if (!Array.isArray(widths) || widths.length === 0) return `${baseVariable}: ${createValue()}`
+
+  return buildResponsiveBackgroundStyle({ referenceSources, baseVariable, createValue })
+}
+
+export async function useLqipBackground({
+  src,
+  cssVariable = '--background',
+  format = 'webp',
+  widths,
+  width,
+  height,
+  quality,
+  fit,
+  lqip = 'base64',
+  isDevelopment
+}: UseLqipBackgroundOptions) {
+  const { resolvedSrc, lqipInput, width: normalizedWidth, height: normalizedHeight } = await resolveBackgroundSource(src, width, height)
+
+  const lqipLayer = await getLqipLayer(lqipInput, lqip, isDevelopment)
+  const { formats, isFormatArray } = getTargetFormats(format)
+
+  const optimizedImages = await optimizeBackgroundImages({
+    resolvedSrc,
+    formats,
+    widths,
+    width: normalizedWidth,
+    height: normalizedHeight,
+    quality,
+    fit
+  })
+
+  const formatSources = createFormatSources(optimizedImages, formats)
+  const style = createBackgroundStyle({
+    cssVariable,
+    widths,
+    lqip,
+    lqipLayer,
+    formatSources,
+    optimizedImages,
+    isFormatArray
+  })
+
+  return { style, resolvedSrc }
+}
+
+export type UseLqipBackgroundOptions = ImageTransform & {
+  cssVariable?: string
+  lqip?: 'base64' | 'color' | false
+  isDevelopment: boolean
 }

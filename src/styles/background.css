@@ -1,5 +1,5 @@
 @layer astro-lqip {
   [data-astro-lqip-bg] {
-    display: contents;
+    display: contents
   }
 }

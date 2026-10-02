@@ -1,3 +1,5 @@
-type StylePrimitive = string | number | undefined
-export type StyleMap<TExtra = never> = Record<string, StylePrimitive | TExtra>
-export type StyleInput<TExtra = never> = StyleMap<TExtra> | string
+import type { HTMLAttributes } from 'astro/types'
+
+export type StylePrimitive = string | number | null | undefined
+export type StyleMap = Extract<NonNullable<HTMLAttributes<'div'>['style']>, object>
+export type StyleInput = StyleMap | string

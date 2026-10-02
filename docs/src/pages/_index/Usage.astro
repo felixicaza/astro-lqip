@@ -1,4 +1,6 @@
 ---
+/* eslint-disable astro/no-unused-css-selector */
+
 import AlertBlock from '@components/AlertBlock.astro'
 import { Code } from 'astro:components'
 
@@ -112,7 +114,7 @@ import { Image, Picture, Background } from 'astro-lqip/components';
       or
       <code>&lt;Picture&gt;</code>
       component by
-      <a href="https://npmx.dev/package/astro-lqip" target="_blank" rel="noopener noreferrer">astro-lqip</a>
+      <a href="https://npmx.dev/package/astro-lqip" rel="noopener noreferrer" target="_blank">astro-lqip</a>
       {' '}
       or import the
       <code>&lt;Background&gt;</code>
@@ -127,7 +129,7 @@ import { Image, Picture, Background } from 'astro-lqip/components';
     <Code code={importingBackground} lang="diff" />
     <p>Example:</p>
     <Code class="example" code={example} lang="astro" />
-    <AlertBlock type="tip" label="Tip">
+    <AlertBlock label="Tip" type="tip">
       <p>
         Since version
         <code>1.6.0</code>

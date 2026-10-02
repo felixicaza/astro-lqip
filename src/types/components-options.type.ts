@@ -1,11 +1,12 @@
-import type { LqipType } from './lqip.type'
-import type { StyleMap } from './style.type'
+import type { LqipType } from './lqip.type.ts'
+import type { StyleMap } from './style.type.ts'
+import type { ImagePath } from './image-path.type.ts'
 
-export type ComponentsOptions = {
-  src: string | object
-  lqip: LqipType
-  lqipSize: number
-  styleProps: StyleMap
-  forbiddenVars: string[]
+export interface ComponentsOptions {
+  src: ImagePath
+  lqip?: LqipType
+  lqipSize?: number
+  styleProps?: StyleMap
+  forbiddenVars?: string[]
   isDevelopment: boolean | undefined
 }
