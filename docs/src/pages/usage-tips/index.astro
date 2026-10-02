@@ -22,7 +22,7 @@ const posts = (await getCollection('usageTips')).sort((a, b) => {
         posts.map(({ data, id }) => {
           const { title } = data
           return (
-            <TipsCard title={title} slug={id} />
+            <TipsCard slug={id} title={title} />
           )
         })
       }

@@ -1,4 +1,11 @@
-export type ImagePath = string | { src: string } | Promise<{ default: { src: string } }>
-export type ResolvedImage = { src: string, width?: number, height?: number, [k: string]: unknown }
-export type ImportModule = Record<string, unknown> & { default?: unknown }
+import type { ImageMetadata } from 'astro'
+
+export type ResolvedImage = ImageMetadata
+
+export type ResolvedImageSource =
+  | { kind: 'remote'; astroSrc: string; lqipInput: { src: string } }
+  | { kind: 'local'; astroSrc: ResolvedImage; lqipInput: ResolvedImage }
+
+export interface ImportModule { default: ResolvedImage }
+export type ImagePath = string | ResolvedImage | Promise<ImportModule>
 export type GlobMap = Record<string, () => Promise<ImportModule>>

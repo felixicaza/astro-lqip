@@ -20,11 +20,12 @@
   ],
   "eslint.validate": [
     "astro",
+    "css",
+    "github-actions-workflow",
     "json",
-    "jsonc",
     "json5",
-    "yaml",
-    "github-actions-workflow"
+    "jsonc",
+    "yaml"
   ],
   "[yaml]": {
     "editor.tabSize": 3

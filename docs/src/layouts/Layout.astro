@@ -12,29 +12,29 @@ const { title, isFullHeight = includesTipPage } = Astro.props as Props
 ---
 
 <!doctype html>
-<html lang="en" class:list={{ 'is-full-height': isFullHeight }}>
+<html class:list={{ 'is-full-height': isFullHeight }} lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
+    <meta content="width=device-width" name="viewport" />
+    <meta content={Astro.generator} name="generator" />
     <title>{title}</title>
-    <meta name="description" content="Native extended Astro component for generating low quality image placeholders (LQIP)." />
-    <link rel="icon" type="image/png" href="/favicons/favicon-96x96.png" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="/favicons/favicon.svg" />
-    <link rel="shortcut icon" href="/favicons/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
-    <meta name="apple-mobile-web-app-title" content="Astro LQIP" />
-    <link rel="manifest" href="/favicons/site.webmanifest" />
-    <meta property="og:title" content="Astro LQIP" />
-    <meta property="og:description" content="Native extended Astro component for generating low quality image placeholders (LQIP)." />
-    <meta property="og:image" content={new URL('/og/og.png', Astro.url)} />
-    <meta property="og:url" content={Astro.url.href} />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Astro LQIP" />
-    <meta name="twitter:description" content="Native extended Astro component for generating low quality image placeholders (LQIP)." />
-    <meta name="twitter:image" content={new URL('og/og.png', Astro.url)} />
-    <meta property="twitter:url" content={Astro.url.href} />
+    <meta content="Native extended Astro component for generating low quality image placeholders (LQIP)." name="description" />
+    <link href="/favicons/favicon-96x96.png" rel="icon" sizes="96x96" type="image/png" />
+    <link href="/favicons/favicon.svg" rel="icon" type="image/svg+xml" />
+    <link href="/favicons/favicon.ico" rel="shortcut icon" />
+    <link href="/favicons/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180" />
+    <meta content="Astro LQIP" name="apple-mobile-web-app-title" />
+    <link href="/favicons/site.webmanifest" rel="manifest" />
+    <meta content="Astro LQIP" property="og:title" />
+    <meta content="Native extended Astro component for generating low quality image placeholders (LQIP)." property="og:description" />
+    <meta content={new URL('/og/og.png', Astro.url)} property="og:image" />
+    <meta content={Astro.url.href} property="og:url" />
+    <meta content="website" property="og:type" />
+    <meta content="summary_large_image" name="twitter:card" />
+    <meta content="Astro LQIP" name="twitter:title" />
+    <meta content="Native extended Astro component for generating low quality image placeholders (LQIP)." name="twitter:description" />
+    <meta content={new URL('og/og.png', Astro.url)} name="twitter:image" />
+    <meta content={Astro.url.href} property="twitter:url" />
   </head>
   <body>
     <slot />

@@ -1,11 +1,11 @@
-import type { ComponentsOptions, GetSVGReturn, ImagePath, SVGNode } from '../types'
+import type { ComponentsOptions, GetSVGReturn, SVGNode } from '../types/index.ts'
 
-import { PREFIX } from '../constants'
+import { PREFIX } from '../constants/index.ts'
 
-import { resolveImagePath } from './resolveImagePath'
-import { renderSVGNode } from './renderSVGNode'
-import { getLqipStyle } from './getLqipStyle'
-import { getLqip } from './getLqip'
+import { resolveLqipImageSource } from './resolveImagePath.ts'
+import { renderSVGNode } from './renderSvgNode.ts'
+import { getLqipStyle } from './getLqipStyle.ts'
+import { getLqip } from './getLqip.ts'
 
 export async function useLqipImage({
   src,
@@ -16,32 +16,35 @@ export async function useLqipImage({
   isDevelopment
 }: ComponentsOptions) {
   // resolve any kind of src (string, alias, import result, dynamic import)
-  const resolved = await resolveImagePath(src as unknown as ImagePath)
+  const resolvedSource = await resolveLqipImageSource(src)
   // resolved may be an object (module-like), { src: '...' } or null
-  const resolvedSrc = resolved ?? null
+  const resolvedSrc = resolvedSource?.astroSrc ?? null
 
   if (lqip === false) {
     return { lqipImage: undefined, svgHTML: '', lqipStyle: {}, combinedStyle: { ...styleProps }, resolvedSrc }
   }
 
   let lqipImage: string | GetSVGReturn | undefined
-  if (resolvedSrc) {
-    const lqipInput = typeof resolvedSrc === 'string' ? { src: resolvedSrc } : resolvedSrc
-    lqipImage = await getLqip(lqipInput, lqip, lqipSize, isDevelopment)
+  if (resolvedSource) {
+    switch (resolvedSource.kind) {
+      case 'remote':
+      case 'local':
+        lqipImage = await getLqip(resolvedSource.lqipInput, lqip, lqipSize, isDevelopment)
+        break
+    }
   }
 
   let svgHTML = ''
   if (lqip === 'svg' && Array.isArray(lqipImage)) {
-    svgHTML = renderSVGNode(lqipImage as unknown as SVGNode)
+  // SAFETY: getLqip generates GetSVGReturn when lqip is 'svg'
+    svgHTML = renderSVGNode(lqipImage as GetSVGReturn)
   }
 
   const lqipStyle = getLqipStyle(lqip, lqipImage, svgHTML)
 
   for (const key of Object.keys(styleProps)) {
     if (forbiddenVars.includes(key)) {
-      console.warn(
-        `${PREFIX} The CSS variable “${key}” should not be passed in style because it can override the functionality of LQIP.`
-      )
+      console.warn(`${PREFIX} The CSS variable “${key}” should not be passed in style because it can override the LQIP functionality.`)
     }
   }
 

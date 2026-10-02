@@ -24,7 +24,7 @@ const title = tip.data.title
 const isFullHeight = tip.data.isFullHeight ?? false
 ---
 
-<Layout title={`${title} | Astro LQIP`} isFullHeight={isFullHeight}>
+<Layout isFullHeight={isFullHeight} title={`${title} | Astro LQIP`}>
   <Navbar />
   <article class="container">
     <Content />

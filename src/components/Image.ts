@@ -15,18 +15,18 @@ import '../styles/lqip.css'
 export type ImageProps = (LocalImageProps | RemoteImageProps) & LqipProps & {
   /**
    * HTML attributes applied to the wrapper div rendered around the image
-   * when LQIP is enabled.
+   * when LQIP is enabled
    */
   parentAttributes?: HTMLAttributes<'div'>
 }
 
 export const Image = createComponent({
   // @ts-expect-error using renderComponent when LQIP is disabled, and renderTemplate when LQIP is enabled
-  factory: async (result: SSRResult, rawProps: ImageProps) => {
+  factory: async(result: SSRResult, rawProps: ImageProps) => {
     const { class: className, lqip = 'base64', lqipSize = 4, parentAttributes = {}, ...props } = rawProps
 
     if (lqip === false) {
-      const resolvedSrc = await resolveImagePath(props.src as never)
+      const resolvedSrc = await resolveImagePath(props.src)
 
       return renderComponent(result, 'Image', AstroImage, {
         ...props,
@@ -39,7 +39,7 @@ export const Image = createComponent({
       src: props.src,
       lqip,
       lqipSize,
-      styleProps: (parentAttributes.style ?? {}) as StyleMap,
+      styleProps: parentAttributes.style ?? {},
       forbiddenVars: [],
       isDevelopment: import.meta.env.MODE === 'development'
     })
@@ -53,14 +53,12 @@ export const Image = createComponent({
 
     return renderTemplate`
       <div ${spreadAttributes(wrapperAttributes)}>
-        ${renderComponent(result, 'Image', AstroImage,
-          {
+        ${renderComponent(result, 'Image', AstroImage, {
             ...props,
             class: className,
             src: resolvedSrc ?? props.src,
-            onload: `parentElement.style.setProperty("--z-index", 1);parentElement.style.setProperty("--opacity", 0);`
-          }
-        )}
+            onload: 'parentElement.style.setProperty("--z-index", 1);parentElement.style.setProperty("--opacity", 0);'
+          })}
       </div>
     `
   }

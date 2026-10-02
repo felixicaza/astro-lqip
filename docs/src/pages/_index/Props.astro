@@ -84,7 +84,7 @@ import backgroundImage from '/src/assets/images/background-image.png';
       and
       <code>&lt;Picture&gt;</code>
       components support all the props of the
-      <a href="https://docs.astro.build/en/reference/modules/astro-assets/" target="_blank" rel="noopener noreferrer">
+      <a href="https://docs.astro.build/en/reference/modules/astro-assets/" rel="noopener noreferrer" target="_blank">
         native Astro components
       </a>
       but adds a couple of props for LQIP management:
@@ -123,7 +123,7 @@ import backgroundImage from '/src/assets/images/background-image.png';
         . (default is 4)
       </li>
     </ul>
-    <AlertBlock type="warning" label="Warning">
+    <AlertBlock label="Warning" type="warning">
       <p>
         A high value for
         <code>lqipSize</code>
@@ -135,7 +135,7 @@ import backgroundImage from '/src/assets/images/background-image.png';
     <p>Example:</p>
     <Code code={example} lang="astro" />
   </section>
-  <AlertBlock type="tip" label="Tip">
+  <AlertBlock label="Tip" type="tip">
     <p>
       For the
       <code>&lt;Image&gt;</code>
@@ -311,7 +311,7 @@ import backgroundImage from '/src/assets/images/background-image.png';
     <p>Example with responsive background:</p>
     <Code code={exampleBackgroundResponsive} lang="astro" />
   </section>
-  <AlertBlock type="note" label="Note">
+  <AlertBlock label="Note" type="note">
     <p>
       The
       {' '}

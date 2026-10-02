@@ -1,10 +1,8 @@
-import type { GetSVGReturn } from './plaiceholder.type'
-import type { StyleInput } from './style.type'
-
-export type StyleAttrs = StyleInput<GetSVGReturn>
+import type { StyleInput } from './style.type.ts'
 
 type SVGNodeAttrs = {
   style?: StyleAttrs
 } & Record<string, string | number>
 
+export type StyleAttrs = StyleInput
 export type SVGNode = [string, SVGNodeAttrs, SVGNode[]]

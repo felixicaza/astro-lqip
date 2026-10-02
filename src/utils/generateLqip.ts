@@ -1,15 +1,15 @@
 import { readFile } from 'node:fs/promises'
 
-import type { GetSVGReturn, LqipType } from '../types'
-
-import { PREFIX } from '../constants'
+import type { GetSVGReturn, LqipType } from '../types/index.ts'
 
 import { getPlaiceholder } from 'plaiceholder'
 
+import { PREFIX } from '../constants/index.ts'
+
+const FILENAME_REGEX = /^\/[A-Za-z]:\//
+
 function normalizeFsPath(path: string) {
-  if (process.platform === 'win32' && /^\/[A-Za-z]:\//.test(path)) {
-    return path.slice(1)
-  }
+  if (process.platform === 'win32' && FILENAME_REGEX.test(path)) return path.slice(1)
   return path
 }
 
@@ -29,24 +29,16 @@ async function readIfExists(path: string): Promise<Buffer | undefined> {
 
 function normalizeLqipSize(size: number, fallback = 4) {
   const numeric = Number(size)
-
   if (!Number.isFinite(numeric)) return fallback
-
   return Math.min(64, Math.max(4, Math.round(numeric)))
 }
 
-export async function generateLqip(
-  imagePath: string,
-  lqipType: LqipType,
-  lqipSize: number,
-  isDevelopment: boolean | undefined
-) {
+export async function generateLqip(imagePath: string, lqipType: LqipType, lqipSize: number, isDevelopment: boolean | undefined) {
   try {
     const normalizedPath = normalizeFsPath(imagePath)
     const normalizedSize = normalizeLqipSize(lqipSize)
 
     const buffer = await readIfExists(normalizedPath)
-
     if (!buffer) {
       console.warn(`${PREFIX} image not found for:`, imagePath)
       return undefined
@@ -60,9 +52,7 @@ export async function generateLqip(
         lqipValue = plaiceholderResult.color?.hex
         break
       case 'css':
-        lqipValue = typeof plaiceholderResult.css === 'object' && plaiceholderResult.css.backgroundImage
-          ? plaiceholderResult.css.backgroundImage
-          : String(plaiceholderResult.css)
+        lqipValue = plaiceholderResult.css.backgroundImage
         break
       case 'svg':
         lqipValue = plaiceholderResult.svg
@@ -74,14 +64,14 @@ export async function generateLqip(
     }
 
     if (isDevelopment) {
-      console.log(`${PREFIX} LQIP (${lqipType}) successfully generated!`)
+      console.info(`${PREFIX} LQIP (${lqipType}) successfully generated!`)
     } else {
-      console.log(`${PREFIX} LQIP (${lqipType}) successfully generated for:`, imagePath)
+      console.info(`${PREFIX} LQIP (${lqipType}) successfully generated for:`, imagePath)
     }
 
     return lqipValue
-  } catch (err) {
-    console.error(`${PREFIX} Error generating LQIP (${lqipType}) in:`, imagePath, '\n', err)
+  } catch(error) {
+    console.error(`${PREFIX} Error generating LQIP (${lqipType}) in:`, imagePath, '\n', error)
     return undefined
   }
 }

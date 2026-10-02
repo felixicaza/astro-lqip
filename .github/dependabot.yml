@@ -1,27 +1,27 @@
 version: 2
 updates:
-   - package-ecosystem: "npm"
-     directory: "/"
+   - package-ecosystem: npm
+     directory: /
      schedule:
-        interval: "weekly"
-        day: "thursday"
+        interval: weekly
+        day: thursday
         time: "00:00"
-        timezone: "America/Costa_Rica"
+        timezone: America/Costa_Rica
      labels:
-        - "dependencies"
+        - dependencies
      groups:
         dependencies:
            patterns:
               - "*"
-   - package-ecosystem: "github-actions"
-     directory: "/"
+   - package-ecosystem: github-actions
+     directory: /
      schedule:
-        interval: "weekly"
-        day: "thursday"
+        interval: weekly
+        day: thursday
         time: "00:00"
-        timezone: "America/Costa_Rica"
+        timezone: America/Costa_Rica
      labels:
-        - "actions"
+        - actions
      groups:
         dependencies:
            patterns:

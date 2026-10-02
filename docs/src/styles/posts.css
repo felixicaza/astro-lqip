@@ -3,34 +3,34 @@
 @layer posts {
   .is-full-height nav,
   .is-full-height article {
-    width: 100%;
+    inline-size: 100%
   }
 
   .is-full-height article {
-    height: 100%;
+    block-size: 100%
   }
 
   h2 {
+    margin-block-start: 44px;
     font-size: 1.62rem;
     color: inherit;
-    margin-top: 44px;
 
     & code {
-      background: #262435;
       padding: 3px 5px;
       font-size: 1.42rem;
-      border-radius: 2px;
-      border-bottom: 1px solid #bcb5f3;
+      background: #262435;
+      border-block-end: 1px solid #bcb5f3;
+      border-radius: 2px
     }
   }
 
   h3 {
-    font-size: 1.38rem;
-    color: inherit;
     margin-block: 36px 0px;
+    font-size: 1.38rem;
+    color: inherit
   }
 
   p {
-    line-height: 1.55;
+    line-height: 1.55
   }
 }
