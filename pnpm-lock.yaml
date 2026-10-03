@@ -8,9 +8,9 @@ importers:
 
   .:
     dependencies:
-      plaiceholder:
-        specifier: 3.0.0
-        version: 3.0.0(sharp@0.35.5(@types/node@26.6.3))
+      previewly:
+        specifier: 0.1.0
+        version: 0.1.0(@napi-rs/image@1.15.0)
     devDependencies:
       '@astrojs/check':
         specifier: 0.9.10
@@ -31,7 +31,7 @@ importers:
         specifier: 8.71.0
         version: 8.71.0(eslint@10.11.0(jiti@2.7.0))(typescript@6.0.3)
       astro:
-        specifier: ^7.3.5
+        specifier: 7.3.5
         version: 7.3.5(@types/node@26.6.3)(jiti@2.7.0)(yaml@2.9.1)
       bumpp:
         specifier: 12.3.0
@@ -881,6 +881,86 @@ packages:
     resolution: {integrity: sha512-6QEf6yqFbETdwGITKq57aYoPfX/3K8XFNwsAlx0C1M7o8cb79sv1M3w+tWuWvIcSbNqrLF7OD7YpZMVVz335hQ==}
     engines: {node: '>=20.0.0'}
 
+  '@napi-rs/image-android-arm64@1.15.0':
+    resolution: {integrity: sha512-BhW7Zyk0Y17FNWcrc+7bwK8Yo9gdt/OsB5AsK3yvu+z3pCvVtztjuANNfdwcC2KHolJkJWeu42ZfC0qwBYB57A==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [android]
+
+  '@napi-rs/image-darwin-arm64@1.15.0':
+    resolution: {integrity: sha512-HHUDoMil1WONvbFs97FBtO2G0C6Xjzo7G4Ioywn/wmEgFFgWdlNO0n1ARp3WsnssH4j89rDEVHfkpjrwNa96OQ==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@napi-rs/image-darwin-x64@1.15.0':
+    resolution: {integrity: sha512-CIEDQYJEjk81TIM2tpWj1T6R9RkzZU7rVwBw/6+El/tcER+v9HF4oZIp+YLUMT3G5kVXqoNtda8mRcTs9CUwMw==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [darwin]
+
+  '@napi-rs/image-freebsd-x64@1.15.0':
+    resolution: {integrity: sha512-ztYxPGsPEpw8Odc2d9w6+gLkEe1Ocifjae938DFFKytYztRcFenFIq+6Ha6fsnr/4LtZHH70GnBwB0lhM8dwtQ==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [freebsd]
+
+  '@napi-rs/image-linux-arm-gnueabihf@1.15.0':
+    resolution: {integrity: sha512-Pgnt8ekNnYmDX/dB2n+o3WABojL2u9vrceoSa85VFa1zs5fMy+k6z1UCjDgDwpQOSmq2AotTABedvL8vqZKDJA==}
+    engines: {node: '>= 10'}
+    cpu: [arm]
+    os: [linux]
+
+  '@napi-rs/image-linux-arm64-gnu@1.15.0':
+    resolution: {integrity: sha512-/4XHp1GbXNfVmMQYmyUAErMBXaAxGF3JZnv+Q73P9jhEwfOvgl3CUTCZwZEivScIbVjdxrcQnlWw9xSzZXsx3w==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [linux]
+    libc: [glibc]
+
+  '@napi-rs/image-linux-arm64-musl@1.15.0':
+    resolution: {integrity: sha512-jjqW0eg09OY2rYZl07tHNKKXqwwHNgeuwQyU2/1OX34qFoc1nfmITaud2WAuaAjmVnxbYpigs0JQiAHYTs0koA==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [linux]
+    libc: [musl]
+
+  '@napi-rs/image-linux-x64-gnu@1.15.0':
+    resolution: {integrity: sha512-IiayUG47OTY89iPLiN/wtnIwqOqtHbO1W/h5aZdSzfQa7Ke0NlNuUsE4qkbLIkInYyd7gWSs1GiX8+VpewIhZw==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [linux]
+    libc: [glibc]
+
+  '@napi-rs/image-linux-x64-musl@1.15.0':
+    resolution: {integrity: sha512-EqHJBpf+LXB47Andl5IWaP2Tdavb3ehH3a9/cLkBAZ3mW07h1PTnhNHtWbxP/O2RkBCr87gi92OVA+1J2KSJKg==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [linux]
+    libc: [musl]
+
+  '@napi-rs/image-win32-arm64-msvc@1.15.0':
+    resolution: {integrity: sha512-n34XcQjrMAQZ8/O2uK/E+rqVo+G0h4Y6eDMvJduZWVL7c9fpcfiSWaUDdaw+6lz3RugauJ97ectCDk5LTlXnjg==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [win32]
+
+  '@napi-rs/image-win32-ia32-msvc@1.15.0':
+    resolution: {integrity: sha512-SOs9Mc5/7cMMu3vXl97SwvlG2l4jcACcLTcPotl6N3u/Vi8N6Qc6rnxqol2L5KRzLkmULgs3nNx/OqFEvpPpsg==}
+    engines: {node: '>= 10'}
+    cpu: [ia32]
+    os: [win32]
+
+  '@napi-rs/image-win32-x64-msvc@1.15.0':
+    resolution: {integrity: sha512-3S4O+oJnLZ3MmWYhGLPwqlNoNLu2GP2ZIXlJrTXDvCqxq9Qpb4lh4ymAUKvztxkQn6CsPLUa4j2XR5GydFBrwg==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [win32]
+
+  '@napi-rs/image@1.15.0':
+    resolution: {integrity: sha512-WtMwFCgKDPcWLKH3Ooy8pCTMmjwC3NNlBicb5Qaqx0PafOjbRQ/zx5ZEWlxnjTFfMWIW3ptskuX8wt4NXJvvVg==}
+    engines: {node: '>= 10'}
+
   '@napi-rs/wasm-runtime@1.2.4':
     resolution: {integrity: sha512-AJxoUD2/15ESHbvpcyjU274nsAPLuOtPHCk0vKJM5pj//Fg/B1FXNWjPnXTT9PymCYYiHo4zPj0ZomXBKhoy7g==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=23.5.0}
@@ -1401,32 +1481,32 @@ packages:
     peerDependencies:
       eslint: ^10.0.0
 
-  '@shikijs/core@4.4.3':
-    resolution: {integrity: sha512-QCR4q2ZO/ILJEuwiBMel4wdcTDb1JGwfjKTxPDF6x8ixOaluPrVqIn06C99AcRPhmYlBR56d/Fb+GN58GzExpg==}
+  '@shikijs/core@4.5.0':
+    resolution: {integrity: sha512-6CIgwq+bt2JZ3OSjb/nBkkwEf/CfpHcbam+Mg5Pllco7HAGRQ2/EFhZrrJtbyNTgKwknfVS+llsXGygiDGwJWw==}
     engines: {node: '>=20'}
 
-  '@shikijs/engine-javascript@4.4.3':
-    resolution: {integrity: sha512-FbOjFJp9VLdo1Wevs10BBtVxiTWwNLqZh5Gkhjgda/ioL15YOgeSl9n+6XMa3qRlPQzfhFNe641SrynFHYG0nQ==}
+  '@shikijs/engine-javascript@4.5.0':
+    resolution: {integrity: sha512-Ed6UdEj84LyYkwnxM5CvSMWAD+id9ExTYri0/+x41U9zrgNifPSS9lZm0JqBP0VfYI8yr8tY5nbNq9+p9R0kFA==}
     engines: {node: '>=20'}
 
-  '@shikijs/engine-oniguruma@4.4.3':
-    resolution: {integrity: sha512-EcOQkxdxGQrc1Row/cC2c96/v1dbZqGnEVu1qTuT/MJmp6+cXCvQussowVmCv5Tqr3KuY3c7IbM6HTW3LJ1k9w==}
+  '@shikijs/engine-oniguruma@4.5.0':
+    resolution: {integrity: sha512-dKVmbJecVdB9recl8a/CU4jdpNXyjJQrIcesIkpS70s5HS02ohpnCSpMUbotPnEUzbAcLQ+S4hwZYbkBBiTcJw==}
     engines: {node: '>=20'}
 
-  '@shikijs/langs@4.4.3':
-    resolution: {integrity: sha512-ePic0yfAJGOF83D5wBHK/00EjK65oahBYxFk5epgq33WRv7X9UuxLEV8PtR0szC0z8dl7INIpIodB99JRFlR+A==}
+  '@shikijs/langs@4.5.0':
+    resolution: {integrity: sha512-wwBTqwduXSz0X4v9Qa2EWeFaYJEw1clCncWjoRNQRbVDu3SPRTRWucnouYapKj3b8Q+sk/41Vbc4B5c8nuYzLA==}
     engines: {node: '>=20'}
 
-  '@shikijs/primitive@4.4.3':
-    resolution: {integrity: sha512-m0wBeLDQDeIxRdUmrCPdQqfuUamDwRL5isCfYbguKD6NiaKpVbsv+3J81DyIKgNW5h4WAIIr8T4EkgQrBBxvaQ==}
+  '@shikijs/primitive@4.5.0':
+    resolution: {integrity: sha512-UM7ShlA8oz0OWxLLO8BmO9Ip6fVqdkt8yF0EH7nOCqHfrx1eEAzF0ZUVK7L+I8NEgeu1PEWSRlxaiPPeCb4iDg==}
     engines: {node: '>=20'}
 
-  '@shikijs/themes@4.4.3':
-    resolution: {integrity: sha512-w8UHjeUnIR965KMWJHUPXOc2mNJUnK3vpVLYLvw5IYU2mnTTJ89E24OrJDBNiJDQ0qzb0tc4l7mrIXx5cFeIyw==}
+  '@shikijs/themes@4.5.0':
+    resolution: {integrity: sha512-zGb87H3UBbpuI4yoh5UguB1XbU+2BDU3kflM7UfZ+Cy2hWo9lBtqjSVK20gmLY6ukYl040hAypGXMgud9vul8Q==}
     engines: {node: '>=20'}
 
-  '@shikijs/types@4.4.3':
-    resolution: {integrity: sha512-UEJxmRR++MAGR6hugn0vgVS2W/6lWAts84FFSrnlH9sP0LNol7E5+NQ792pH8liWUhyMyjhTgSUH3k7iD7tc5g==}
+  '@shikijs/types@4.5.0':
+    resolution: {integrity: sha512-drtPrtD8N0DENyD2cyt6Ajy+IWsiCLgMxODwLTpvH1UsN6a9jf90tNTPjqwHvA+0Lzu9e0txk8DjfqH1p9UJRw==}
     engines: {node: '>=20'}
 
   '@shikijs/vscode-textmate@10.0.2':
@@ -2166,8 +2246,8 @@ packages:
     resolution: {integrity: sha512-XxwI8EOhVQgWp6iDL+3b0r86f4d6AX6zSU55HfB4ydCEuXLXc5FcYeOu+nnGftS4TEju/11rt4KJPTMgbfmv4A==}
     engines: {node: '>=10.13.0'}
 
-  globals@17.12.0:
-    resolution: {integrity: sha512-cezEd/DTyyht9cvSSURyygXPfy04GtWO/5e6ZPvH7fCtjKz9PYOmuawphw1Ctd1f6C+5JypXfGD7ahNMXvevBA==}
+  globals@17.13.0:
+    resolution: {integrity: sha512-RwMTC61u7hrG3ZJMkZQOK4JLJrKS8QtoTii63EmWvFXHqycY9FObBJQCbsLxSO8kjKhWE5kV1GC+Vb1g3RI0Zg==}
     engines: {node: '>=18'}
 
   h3@1.15.11:
@@ -2633,11 +2713,6 @@ packages:
     resolution: {integrity: sha512-qcJu88Q2IWqJsDD529JKMdwGm/dvInW4HvQnRwiH9JtihJvzGOscDtHE3x1pBKeUOTysQ8kVmLnJ2kJu7yhcGA==}
     engines: {node: '>=12'}
 
-  plaiceholder@3.0.0:
-    resolution: {integrity: sha512-jwHxxHPnr1BwRzPCeZgEK2BMsEy2327sWynw3qb6XC/oGgGDUTPtR8pFxFQmNArhMBwhkUbUr5OPhhIJpCa8eQ==}
-    peerDependencies:
-      sharp: '>= 0.30.6'
-
   pnpm-workspace-yaml@1.9.1:
     resolution: {integrity: sha512-Xj/T2X6DNAWbtk/9UQ0/TJRswltiHZevmcMjqoL7WrpJi67lu3qaslU4+I+zJ8wtwqmuvAE0KkB8rbv2ZdogBg==}
 
@@ -2678,6 +2753,16 @@ packages:
     resolution: {integrity: sha512-Z/CJHIkdujO/OtN7nXUii0Rf3VT5SRuhjBA82Xvu2XhBUgX3nhP67T0LHceBdQLex7OOFGTox+Q5Yg8Jk2Qivg==}
     engines: {node: '>=14'}
     hasBin: true
+
+  previewly@0.1.0:
+    resolution: {integrity: sha512-MZMgLi99kkaOzkoSG3R819jmLP2LoUBKWLolna7hYdHvmNTyymzNR2sQYzz8iSxgAPSsBMGTgLqdKtBMBFJzdw==}
+    engines: {node: '>=22.23.3'}
+    peerDependencies:
+      '@napi-rs/image': ^1.15.0
+      '@napi-rs/image-wasm32-wasi': ^1.15.0
+    peerDependenciesMeta:
+      '@napi-rs/image-wasm32-wasi':
+        optional: true
 
   prismjs@1.30.0:
     resolution: {integrity: sha512-DEvV2ZF2r2/63V+tK8hQvrR2ZGn10srHbXviTlcv7Kpzw8jWiNTqbVgjO3IY8RxrrOUF8VPMQQFysYYYv0YZxw==}
@@ -2824,8 +2909,8 @@ packages:
     resolution: {integrity: sha512-Iov+JwFv/2HcTpcwNMKd8+IWNb8tboQJNQTkAY/LLVK7gGH9jy+LGkVqPxfekHl+yMmiqXszdGWXgkfml7hjqA==}
     engines: {node: '>= 0.4'}
 
-  shiki@4.4.3:
-    resolution: {integrity: sha512-Mb/GvXPHBAXdgGIcnfU5L3ldpn1XcxrGkPHwqgRx17/I2XRfqlFKk2vGkHWINn1kdXvzJZeuO3is6I9KLPFm0g==}
+  shiki@4.5.0:
+    resolution: {integrity: sha512-OcRW72ngQvc+MSVWBRIovC/BTW589iUE/Vxav7VeM4RcY9MUjqB+IR6ILG1k9nuW6LiG/nct9uma4/MBtnZbmQ==}
     engines: {node: '>=20'}
 
   simple-git-hooks@2.14.0:
@@ -3128,8 +3213,8 @@ packages:
   vfile@6.0.3:
     resolution: {integrity: sha512-KzIbH/9tXat2u30jf+smMwFCsno4wHVdNmzFyL+T/L3UGqqk6JKfVqOFOZEpZSHADH1k40ab6NUIXZq422ov3Q==}
 
-  vite@8.3.1:
-    resolution: {integrity: sha512-/bvH9E9tmCXRGp2uXY3WbOldqpTwFkbha/8ANaEQ6VkxhH60KyqLwgZq6lG2y+4uT55x9+9eUHMpQ7uGnOCKjA==}
+  vite@8.3.2:
+    resolution: {integrity: sha512-SQr1x6W5vVSbROg7vsyXIaxK9b0G7zsT68acdWWRmnBUsgDieLCRG+Rep9WdZgcposvv/GSnr4GUUBqB3vXq6w==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
@@ -3426,7 +3511,7 @@ snapshots:
       js-yaml: 4.3.2
       picomatch: 4.0.7
       retext-smartypants: 6.2.0
-      shiki: 4.4.3
+      shiki: 4.5.0
       smol-toml: 1.9.0
       unified: 11.0.5
 
@@ -4010,6 +4095,57 @@ snapshots:
       tinyglobby: 0.2.17
       yaml: 2.9.1
 
+  '@napi-rs/image-android-arm64@1.15.0':
+    optional: true
+
+  '@napi-rs/image-darwin-arm64@1.15.0':
+    optional: true
+
+  '@napi-rs/image-darwin-x64@1.15.0':
+    optional: true
+
+  '@napi-rs/image-freebsd-x64@1.15.0':
+    optional: true
+
+  '@napi-rs/image-linux-arm-gnueabihf@1.15.0':
+    optional: true
+
+  '@napi-rs/image-linux-arm64-gnu@1.15.0':
+    optional: true
+
+  '@napi-rs/image-linux-arm64-musl@1.15.0':
+    optional: true
+
+  '@napi-rs/image-linux-x64-gnu@1.15.0':
+    optional: true
+
+  '@napi-rs/image-linux-x64-musl@1.15.0':
+    optional: true
+
+  '@napi-rs/image-win32-arm64-msvc@1.15.0':
+    optional: true
+
+  '@napi-rs/image-win32-ia32-msvc@1.15.0':
+    optional: true
+
+  '@napi-rs/image-win32-x64-msvc@1.15.0':
+    optional: true
+
+  '@napi-rs/image@1.15.0':
+    optionalDependencies:
+      '@napi-rs/image-android-arm64': 1.15.0
+      '@napi-rs/image-darwin-arm64': 1.15.0
+      '@napi-rs/image-darwin-x64': 1.15.0
+      '@napi-rs/image-freebsd-x64': 1.15.0
+      '@napi-rs/image-linux-arm-gnueabihf': 1.15.0
+      '@napi-rs/image-linux-arm64-gnu': 1.15.0
+      '@napi-rs/image-linux-arm64-musl': 1.15.0
+      '@napi-rs/image-linux-x64-gnu': 1.15.0
+      '@napi-rs/image-linux-x64-musl': 1.15.0
+      '@napi-rs/image-win32-arm64-msvc': 1.15.0
+      '@napi-rs/image-win32-ia32-msvc': 1.15.0
+      '@napi-rs/image-win32-x64-msvc': 1.15.0
+
   '@napi-rs/wasm-runtime@1.2.4(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)':
     dependencies:
       '@emnapi/core': 1.10.0
@@ -4300,40 +4436,40 @@ snapshots:
       - supports-color
       - typescript-eslint
 
-  '@shikijs/core@4.4.3':
+  '@shikijs/core@4.5.0':
     dependencies:
-      '@shikijs/primitive': 4.4.3
-      '@shikijs/types': 4.4.3
+      '@shikijs/primitive': 4.5.0
+      '@shikijs/types': 4.5.0
       '@shikijs/vscode-textmate': 10.0.2
       '@types/hast': 3.0.5
       hast-util-to-html: 9.0.5
 
-  '@shikijs/engine-javascript@4.4.3':
+  '@shikijs/engine-javascript@4.5.0':
     dependencies:
-      '@shikijs/types': 4.4.3
+      '@shikijs/types': 4.5.0
       '@shikijs/vscode-textmate': 10.0.2
       oniguruma-to-es: 4.3.6
 
-  '@shikijs/engine-oniguruma@4.4.3':
+  '@shikijs/engine-oniguruma@4.5.0':
     dependencies:
-      '@shikijs/types': 4.4.3
+      '@shikijs/types': 4.5.0
       '@shikijs/vscode-textmate': 10.0.2
 
-  '@shikijs/langs@4.4.3':
+  '@shikijs/langs@4.5.0':
     dependencies:
-      '@shikijs/types': 4.4.3
+      '@shikijs/types': 4.5.0
 
-  '@shikijs/primitive@4.4.3':
+  '@shikijs/primitive@4.5.0':
     dependencies:
-      '@shikijs/types': 4.4.3
+      '@shikijs/types': 4.5.0
       '@shikijs/vscode-textmate': 10.0.2
       '@types/hast': 3.0.5
 
-  '@shikijs/themes@4.4.3':
+  '@shikijs/themes@4.5.0':
     dependencies:
-      '@shikijs/types': 4.4.3
+      '@shikijs/types': 4.5.0
 
-  '@shikijs/types@4.4.3':
+  '@shikijs/types@4.5.0':
     dependencies:
       '@shikijs/vscode-textmate': 10.0.2
       '@types/hast': 3.0.5
@@ -4625,7 +4761,7 @@ snapshots:
       package-manager-detector: 1.8.0
       piccolore: 0.1.3
       picomatch: 4.0.7
-      shiki: 4.4.3
+      shiki: 4.5.0
       smol-toml: 1.9.0
       svgo: 4.1.0
       tinyclip: 1.0.3
@@ -4635,8 +4771,8 @@ snapshots:
       unifont: 0.7.5
       unstorage: 1.17.5
       verkit: 0.4.1
-      vite: 8.3.1(@types/node@26.6.3)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)
-      vitefu: 1.1.3(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
+      vite: 8.3.2(@types/node@26.6.3)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)
+      vitefu: 1.1.3(vite@8.3.2(@types/node@26.6.3)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
       xxhash-wasm: 1.1.0
       yargs-parser: 22.0.0
       zod: 4.6.5
@@ -4929,7 +5065,7 @@ snapshots:
       astro-eslint-parser: 3.2.0
       eslint: 10.11.0(jiti@2.7.0)
       espree: 11.2.0
-      globals: 17.12.0
+      globals: 17.13.0
       postcss: 8.5.28
       postcss-selector-parser: 7.1.6
       synckit: 0.11.13
@@ -5202,7 +5338,7 @@ snapshots:
     dependencies:
       is-glob: 4.0.3
 
-  globals@17.12.0: {}
+  globals@17.13.0: {}
 
   h3@1.15.11:
     dependencies:
@@ -5658,10 +5794,6 @@ snapshots:
 
   picomatch@4.0.7: {}
 
-  plaiceholder@3.0.0(sharp@0.35.5(@types/node@26.6.3)):
-    dependencies:
-      sharp: 0.35.5(@types/node@26.6.3)
-
   pnpm-workspace-yaml@1.9.1:
     dependencies:
       yaml: 2.9.1
@@ -5690,6 +5822,10 @@ snapshots:
   prelude-ls@1.2.1: {}
 
   prettier@3.9.9: {}
+
+  previewly@0.1.0(@napi-rs/image@1.15.0):
+    dependencies:
+      '@napi-rs/image': 1.15.0
 
   prismjs@1.30.0: {}
 
@@ -5887,14 +6023,14 @@ snapshots:
 
   shell-quote@1.9.0: {}
 
-  shiki@4.4.3:
+  shiki@4.5.0:
     dependencies:
-      '@shikijs/core': 4.4.3
-      '@shikijs/engine-javascript': 4.4.3
-      '@shikijs/engine-oniguruma': 4.4.3
-      '@shikijs/langs': 4.4.3
-      '@shikijs/themes': 4.4.3
-      '@shikijs/types': 4.4.3
+      '@shikijs/core': 4.5.0
+      '@shikijs/engine-javascript': 4.5.0
+      '@shikijs/engine-oniguruma': 4.5.0
+      '@shikijs/langs': 4.5.0
+      '@shikijs/themes': 4.5.0
+      '@shikijs/types': 4.5.0
       '@shikijs/vscode-textmate': 10.0.2
       '@types/hast': 3.0.5
 
@@ -6153,7 +6289,7 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.3
 
-  vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1):
+  vite@8.3.2(@types/node@26.6.3)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1):
     dependencies:
       lightningcss: 1.33.0
       picomatch: 4.0.7
@@ -6167,9 +6303,9 @@ snapshots:
       jiti: 2.7.0
       yaml: 2.9.1
 
-  vitefu@1.1.3(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)):
+  vitefu@1.1.3(vite@8.3.2(@types/node@26.6.3)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)):
     optionalDependencies:
-      vite: 8.3.1(@types/node@26.6.3)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)
+      vite: 8.3.2(@types/node@26.6.3)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)
 
   volar-service-css@0.0.71(@volar/language-service@2.4.28):
     dependencies:
