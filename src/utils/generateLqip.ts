@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises'
 
 import type { GetSVGReturn, LqipType } from '../types/index.ts'
 
-import { getPlaiceholder } from 'plaiceholder'
+import { getPreviewly } from 'previewly'
 
 import { PREFIX } from '../constants/index.ts'
 
@@ -44,22 +44,22 @@ export async function generateLqip(imagePath: string, lqipType: LqipType, lqipSi
       return undefined
     }
 
-    const plaiceholderResult = await getPlaiceholder(buffer, { size: normalizedSize })
+    const previewlyResult = await getPreviewly(buffer, { size: normalizedSize })
     let lqipValue: string | GetSVGReturn | undefined
 
     switch (lqipType) {
       case 'color':
-        lqipValue = plaiceholderResult.color?.hex
+        lqipValue = previewlyResult.color?.hex
         break
       case 'css':
-        lqipValue = plaiceholderResult.css.backgroundImage
+        lqipValue = previewlyResult.css.backgroundImage
         break
       case 'svg':
-        lqipValue = plaiceholderResult.svg
+        lqipValue = previewlyResult.svg
         break
       case 'base64':
       default:
-        lqipValue = plaiceholderResult.base64
+        lqipValue = previewlyResult.base64
         break
     }
 

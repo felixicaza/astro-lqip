@@ -79,7 +79,7 @@
     ]
   },
   "dependencies": {
-    "plaiceholder": "3.0.0"
+    "previewly": "0.1.0"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",
@@ -88,7 +88,7 @@
     "@tsdown/css": "0.21.10",
     "@types/node": "26.6.3",
     "@typescript-eslint/parser": "8.71.0",
-    "astro": "^7.3.5",
+    "astro": "7.3.5",
     "bumpp": "12.3.0",
     "concurrently": "10.0.5",
     "eslint": "10.11.0",

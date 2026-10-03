@@ -7,7 +7,7 @@ import { access, copyFile, mkdir, readFile, readdir, stat } from 'node:fs/promis
 import { basename, dirname, extname, join, relative, resolve as resolvePath, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { getPlaiceholder } from 'plaiceholder'
+import { getPreviewly } from 'previewly'
 
 import { PREFIX } from '../constants/index.ts'
 
@@ -365,11 +365,11 @@ async function ensureBuildAssetPublicPath(sourceFilePath: string) {
 async function createMetadataFromFile(filePath: string) {
   try {
     const buffer = await readFile(filePath)
-    const placeholderResult = await getPlaiceholder(buffer, { size: 4 })
-    const metadata = placeholderResult.metadata
-    const width = metadata?.width ?? 0
-    const height = metadata?.height ?? 0
-    const format = normalizeFormat(metadata?.format, filePath)
+    const previewlyResult = await getPreviewly(buffer, { size: 4 })
+    const metadata = previewlyResult.metadata
+    const width = metadata?.originalWidth ?? 0
+    const height = metadata?.originalHeight ?? 0
+    const format = normalizeFormat(metadata?.originalFormat, filePath)
 
     if (!width || !height || !format) {
       console.warn(`${PREFIX} Missing metadata for "${filePath}".`)
