@@ -36,6 +36,9 @@ jobs:
          - name: Build
            run: pnpm build
 
+         - name: Sync Astro types
+           run: pnpm -r exec astro sync
+
          - name: Lint
            run: pnpm lint
 
