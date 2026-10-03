@@ -100,9 +100,9 @@
     "tsdown": "0.21.10"
   },
   "peerDependencies": {
-    "astro": ">=3.3.0"
+    "astro": ">=6.0.0"
   },
   "engines": {
-    "node": ">=18.14.1"
+    "node": ">=22.23.3"
   }
 }
