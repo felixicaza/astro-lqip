@@ -2,14 +2,27 @@ packages:
    - docs
    - tests/fixtures/*
 
-allowBuilds:
-   esbuild: true
-   sharp: true
-   simple-git-hooks: true
-
 minimumReleaseAgeExclude:
    - "@felixicaza/eslint-config"
    - "@felixicaza/oxlint-config"
 
+allowBuilds:
+   esbuild: true
+   simple-git-hooks: true
+
+saveExact: true
+blockExoticSubdeps: true
+autoInstallPeers: false
+minimumReleaseAge: 2880
+trustPolicy: no-downgrade
+strictPeerDependencies: true
+strictDepBuilds: true
+dedupePeers: true
+shellEmulator: true
+color: always
+
 publicHoistPattern:
    - eslint-plugin-jsx-a11y-x
+
+trustPolicyExclude:
+   - chokidar@4.0.3
