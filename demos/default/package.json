@@ -1,15 +1,17 @@
 {
-  "name": "default",
+  "name": "astro-lqip-demo-default",
   "version": "0.0.0",
   "private": true,
-  "description": "astro-lqip default configs test",
-  "author": "Felix Icaza",
+  "description": "astro-lqip default configs demo",
+  "license": "MIT",
+  "author": "Felix Icaza <contacto@felixicaza.com>",
   "type": "module",
   "scripts": {
-    "astro": "astro",
+    "astro:sync": "astro sync",
+    "astro:typecheck": "astro check",
     "build": "astro build",
-    "dev": "astro dev",
-    "preview": "astro preview"
+    "dev": "astro dev --port 4322",
+    "preview": "astro preview --port 4322"
   },
   "dependencies": {
     "astro": "7.3.5",
