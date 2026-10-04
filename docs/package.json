@@ -1,14 +1,15 @@
 {
-  "name": "docs",
+  "name": "astro-lqip-docs",
   "version": "0.0.0",
   "private": true,
   "description": "Docs project for Astro LQIP",
   "type": "module",
   "scripts": {
-    "astro": "astro",
+    "astro:sync": "astro sync",
+    "astro:typecheck": "astro check",
     "build": "astro build",
-    "dev": "astro dev",
-    "preview": "astro preview"
+    "dev": "astro dev --port 4321",
+    "preview": "astro preview --port 4321"
   },
   "dependencies": {
     "astro": "7.3.5",

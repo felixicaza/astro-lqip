@@ -1,15 +1,17 @@
 {
-  "name": "ssr-node",
+  "name": "astro-lqip-demo-ssr-node",
   "version": "0.0.0",
   "private": true,
-  "description": "astro-lqip ssr with node adapter configs test",
-  "author": "Felix Icaza",
+  "description": "astro-lqip ssr with node adapter configs demo",
+  "license": "MIT",
+  "author": "Felix Icaza <contacto@felixicaza.com>",
   "type": "module",
   "scripts": {
-    "astro": "astro",
+    "astro:sync": "astro sync",
+    "astro:typecheck": "astro check",
     "build": "astro build",
-    "dev": "astro dev",
-    "preview": "astro preview"
+    "dev": "astro dev --port 4325",
+    "preview": "astro preview --port 4325"
   },
   "dependencies": {
     "@astrojs/node": "11.1.6",

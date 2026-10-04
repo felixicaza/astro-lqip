@@ -49,7 +49,6 @@
     "previewly": "0.1.0"
   },
   "devDependencies": {
-    "@napi-rs/image": "1.15.0",
     "astro": "7.3.5"
   },
   "peerDependencies": {
