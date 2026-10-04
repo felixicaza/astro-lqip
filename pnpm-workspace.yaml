@@ -1,6 +1,7 @@
 packages:
+   - demos/*
    - docs
-   - tests/fixtures/*
+   - packages/*
 
 minimumReleaseAgeExclude:
    - "@felixicaza/eslint-config"

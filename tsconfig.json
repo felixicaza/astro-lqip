@@ -1,8 +1,17 @@
 {
-  "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
-    "types": ["astro/client"],
-    "allowImportingTsExtensions": true
-  },
-  "include": ["src"]
+    "target": "ESNext",
+    "lib": ["ESNext"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "verbatimModuleSyntax": true,
+    "skipLibCheck": true,
+    "allowImportingTsExtensions": true,
+    "types": ["node"]
+  }
 }

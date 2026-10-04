@@ -11,4 +11,5 @@ temp
 cache
 .eslintcache
 .astro
-/dist/
+/dist
+/packages/*/dist/
