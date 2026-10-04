@@ -1,0 +1,61 @@
+{
+  "name": "astro-lqip",
+  "version": "2.0.0",
+  "description": "🖼️ Native extended Astro components for generating low-quality image placeholders (LQIP), compatible with `<Image>`, `<Picture>` and CSS background images.",
+  "keywords": [
+    "astro",
+    "astro-component",
+    "astro-integration",
+    "image",
+    "picture",
+    "css",
+    "background",
+    "lqip",
+    "placeholder"
+  ],
+  "homepage": "https://astro-lqip.web.app",
+  "bugs": {
+    "url": "https://github.com/felixicaza/astro-lqip/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/felixicaza/astro-lqip.git"
+  },
+  "license": "MIT",
+  "author": "Felix Icaza <contacto@felixicaza.com>",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    },
+    "./components": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "prepublishOnly": "pnpm build",
+    "start": "tsx src/index.ts",
+    "start:watch": "tsx watch src/index.ts"
+  },
+  "dependencies": {
+    "previewly": "0.1.0"
+  },
+  "devDependencies": {
+    "@napi-rs/image": "1.15.0",
+    "astro": "7.3.5"
+  },
+  "peerDependencies": {
+    "astro": ">=6.0.0"
+  },
+  "engines": {
+    "node": ">=22.23.3"
+  }
+}

@@ -166,10 +166,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      previewly:
-        specifier: 0.1.0
-        version: 0.1.0(@napi-rs/image@1.15.0)
     devDependencies:
       '@astrojs/check':
         specifier: 0.9.10
@@ -180,21 +176,15 @@ importers:
       '@felixicaza/oxlint-config':
         specifier: 1.0.0
         version: 1.0.0(@emnapi/core@1.11.3)(@emnapi/runtime@1.11.3)(diff@9.0.0)(eslint@10.11.0)(estree-walker@3.0.3)(oxc-parser@0.106.0)(oxlint@1.86.0)(supports-color@10.2.2)(typescript@6.0.3)
-      '@napi-rs/image':
-        specifier: 1.15.0
-        version: 1.15.0
       '@tsdown/css':
         specifier: 0.21.10
-        version: 0.21.10(jiti@2.7.0)(postcss@8.5.28)(tsdown@0.21.10)(yaml@2.9.1)
+        version: 0.21.10(jiti@2.7.0)(postcss@8.5.28)(tsdown@0.21.10)(tsx@4.23.15)(yaml@2.9.1)
       '@types/node':
         specifier: 26.6.3
         version: 26.6.3
       '@typescript-eslint/parser':
         specifier: 8.71.0
         version: 8.71.0(eslint@10.11.0)(supports-color@10.2.2)(typescript@6.0.3)
-      astro:
-        specifier: 7.3.5
-        version: 7.3.5(@types/node@26.6.3)(jiti@2.7.0)(yaml@2.9.1)
       bumpp:
         specifier: 12.3.0
         version: 12.3.0
@@ -222,90 +212,106 @@ importers:
       tsdown:
         specifier: 0.21.10
         version: 0.21.10(@tsdown/css@0.21.10)(synckit@0.11.13)(typescript@6.0.3)
+      tsx:
+        specifier: 4.23.15
+        version: 4.23.15
       typescript:
         specifier: 6.0.3
         version: 6.0.3
 
-  docs:
+  demos/custom-base:
     dependencies:
       astro:
         specifier: 7.3.5
-        version: 7.3.5(@types/node@26.6.3)(jiti@2.7.0)(yaml@2.9.1)
+        version: 7.3.5(@types/node@26.6.3)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1)
       astro-lqip:
         specifier: workspace:*
-        version: link:..
+        version: link:../../packages/astro-lqip
       sharp:
         specifier: 0.35.5
         version: 0.35.5(@types/node@26.6.3)
 
-  tests/fixtures/custom-base:
+  demos/default:
     dependencies:
       astro:
         specifier: 7.3.5
-        version: 7.3.5(@types/node@26.6.3)(jiti@2.7.0)(yaml@2.9.1)
+        version: 7.3.5(@types/node@26.6.3)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1)
       astro-lqip:
         specifier: workspace:*
-        version: link:../../..
+        version: link:../../packages/astro-lqip
       sharp:
         specifier: 0.35.5
         version: 0.35.5(@types/node@26.6.3)
 
-  tests/fixtures/default:
-    dependencies:
-      astro:
-        specifier: 7.3.5
-        version: 7.3.5(@types/node@26.6.3)(jiti@2.7.0)(yaml@2.9.1)
-      astro-lqip:
-        specifier: workspace:*
-        version: link:../../..
-      sharp:
-        specifier: 0.35.5
-        version: 0.35.5(@types/node@26.6.3)
-
-  tests/fixtures/mdx:
+  demos/mdx:
     dependencies:
       '@astrojs/mdx':
         specifier: 8.0.2
         version: 8.0.2(astro@7.3.5)
       astro:
         specifier: 7.3.5
-        version: 7.3.5(@types/node@26.6.3)(jiti@2.7.0)(yaml@2.9.1)
+        version: 7.3.5(@types/node@26.6.3)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1)
       astro-lqip:
         specifier: workspace:*
-        version: link:../../..
+        version: link:../../packages/astro-lqip
       sharp:
         specifier: 0.35.5
         version: 0.35.5(@types/node@26.6.3)
 
-  tests/fixtures/ssr-node:
+  demos/ssr-node:
     dependencies:
       '@astrojs/node':
         specifier: 11.1.6
         version: 11.1.6(astro@7.3.5)(supports-color@10.2.2)
       astro:
         specifier: 7.3.5
-        version: 7.3.5(@types/node@26.6.3)(jiti@2.7.0)(yaml@2.9.1)
+        version: 7.3.5(@types/node@26.6.3)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1)
       astro-lqip:
         specifier: workspace:*
-        version: link:../../..
+        version: link:../../packages/astro-lqip
       sharp:
         specifier: 0.35.5
         version: 0.35.5(@types/node@26.6.3)
 
-  tests/fixtures/ssr-node-custom-base:
+  demos/ssr-node-custom-base:
     dependencies:
       '@astrojs/node':
         specifier: 11.1.6
         version: 11.1.6(astro@7.3.5)(supports-color@10.2.2)
       astro:
         specifier: 7.3.5
-        version: 7.3.5(@types/node@26.6.3)(jiti@2.7.0)(yaml@2.9.1)
+        version: 7.3.5(@types/node@26.6.3)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1)
       astro-lqip:
         specifier: workspace:*
-        version: link:../../..
+        version: link:../../packages/astro-lqip
       sharp:
         specifier: 0.35.5
         version: 0.35.5(@types/node@26.6.3)
+
+  docs:
+    dependencies:
+      astro:
+        specifier: 7.3.5
+        version: 7.3.5(@types/node@26.6.3)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1)
+      astro-lqip:
+        specifier: workspace:*
+        version: link:../packages/astro-lqip
+      sharp:
+        specifier: 0.35.5
+        version: 0.35.5(@types/node@26.6.3)
+
+  packages/astro-lqip:
+    dependencies:
+      previewly:
+        specifier: 0.1.0
+        version: 0.1.0(@napi-rs/image@1.15.0)
+    devDependencies:
+      '@napi-rs/image':
+        specifier: 1.15.0
+        version: 1.15.0
+      astro:
+        specifier: 7.3.5
+        version: 7.3.5(@types/node@26.6.3)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1)
 
 packages:
 
@@ -3235,6 +3241,11 @@ packages:
   tslib@2.8.1:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
 
+  tsx@4.23.15:
+    resolution: {integrity: sha512-Yiex1Ovn8z2xPpOWckIiysV1SSyRMY9BkLF++q0yKiDxCqRhosKfMg3janKkiLBwZ5c/YryloKwGZcrEmtwxKw==}
+    engines: {node: '>=18.0.0'}
+    hasBin: true
+
   type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
     engines: {node: '>= 0.8.0'}
@@ -3736,13 +3747,13 @@ snapshots:
     dependencies:
       '@astrojs/internal-helpers': 0.11.0
       '@astrojs/markdown-satteri': 0.4.2
-      astro: 7.3.5(@types/node@26.6.3)(jiti@2.7.0)(yaml@2.9.1)
+      astro: 7.3.5(@types/node@26.6.3)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1)
       es-module-lexer: 2.3.2
 
   '@astrojs/node@11.1.6(astro@7.3.5)(supports-color@10.2.2)':
     dependencies:
       '@astrojs/internal-helpers': 0.11.0
-      astro: 7.3.5(@types/node@26.6.3)(jiti@2.7.0)(yaml@2.9.1)
+      astro: 7.3.5(@types/node@26.6.3)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1)
       send: 1.2.1(supports-color@10.2.2)
       server-destroy: 1.0.1
     transitivePeerDependencies:
@@ -4673,10 +4684,10 @@ snapshots:
       estraverse: 5.3.0
       picomatch: 4.0.7
 
-  '@tsdown/css@0.21.10(jiti@2.7.0)(postcss@8.5.28)(tsdown@0.21.10)(yaml@2.9.1)':
+  '@tsdown/css@0.21.10(jiti@2.7.0)(postcss@8.5.28)(tsdown@0.21.10)(tsx@4.23.15)(yaml@2.9.1)':
     dependencies:
       lightningcss: 1.33.0
-      postcss-load-config: 6.0.1(jiti@2.7.0)(postcss@8.5.28)(yaml@2.9.1)
+      postcss-load-config: 6.0.1(jiti@2.7.0)(postcss@8.5.28)(tsx@4.23.15)(yaml@2.9.1)
       rolldown: 1.0.0-rc.17
       tsdown: 0.21.10(@tsdown/css@0.21.10)(synckit@0.11.13)(typescript@6.0.3)
     optionalDependencies:
@@ -4912,7 +4923,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  astro@7.3.5(@types/node@26.6.3)(jiti@2.7.0)(yaml@2.9.1):
+  astro@7.3.5(@types/node@26.6.3)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1):
     dependencies:
       '@astrojs/compiler-rs': 0.5.1
       '@astrojs/internal-helpers': 0.11.0
@@ -4962,7 +4973,7 @@ snapshots:
       unifont: 0.7.5
       unstorage: 1.17.5
       verkit: 0.4.1
-      vite: 8.3.2(@types/node@26.6.3)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)
+      vite: 8.3.2(@types/node@26.6.3)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1)
       vitefu: 1.1.3(vite@8.3.2)
       xxhash-wasm: 1.1.0
       yargs-parser: 22.0.0
@@ -5991,12 +6002,13 @@ snapshots:
     dependencies:
       yaml: 2.9.1
 
-  postcss-load-config@6.0.1(jiti@2.7.0)(postcss@8.5.28)(yaml@2.9.1):
+  postcss-load-config@6.0.1(jiti@2.7.0)(postcss@8.5.28)(tsx@4.23.15)(yaml@2.9.1):
     dependencies:
       lilconfig: 3.1.3
     optionalDependencies:
       jiti: 2.7.0
       postcss: 8.5.28
+      tsx: 4.23.15
       yaml: 2.9.1
 
   postcss-selector-parser@7.1.6:
@@ -6353,7 +6365,7 @@ snapshots:
       unconfig-core: 7.5.0
       unrun: 0.2.39(synckit@0.11.13)
     optionalDependencies:
-      '@tsdown/css': 0.21.10(jiti@2.7.0)(postcss@8.5.28)(tsdown@0.21.10)(yaml@2.9.1)
+      '@tsdown/css': 0.21.10(jiti@2.7.0)(postcss@8.5.28)(tsdown@0.21.10)(tsx@4.23.15)(yaml@2.9.1)
       typescript: 6.0.3
     transitivePeerDependencies:
       - '@ts-macro/tsc'
@@ -6363,6 +6375,12 @@ snapshots:
       - vue-tsc
 
   tslib@2.8.1: {}
+
+  tsx@4.23.15:
+    dependencies:
+      esbuild: 0.28.2
+    optionalDependencies:
+      fsevents: 2.3.3
 
   type-check@0.4.0:
     dependencies:
@@ -6482,7 +6500,7 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.3
 
-  vite@8.3.2(@types/node@26.6.3)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1):
+  vite@8.3.2(@types/node@26.6.3)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1):
     dependencies:
       lightningcss: 1.33.0
       picomatch: 4.0.7
@@ -6494,11 +6512,12 @@ snapshots:
       esbuild: 0.28.2
       fsevents: 2.3.3
       jiti: 2.7.0
+      tsx: 4.23.15
       yaml: 2.9.1
 
   vitefu@1.1.3(vite@8.3.2):
     optionalDependencies:
-      vite: 8.3.2(@types/node@26.6.3)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)
+      vite: 8.3.2(@types/node@26.6.3)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1)
 
   volar-service-css@0.0.71(@volar/language-service@2.4.28):
     dependencies:

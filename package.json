@@ -1,46 +1,14 @@
 {
-  "name": "astro-lqip",
-  "version": "2.0.0",
-  "description": "🖼️ Native extended Astro components for generating low-quality image placeholders (LQIP), compatible with `<Image>`, `<Picture>` and CSS background images.",
-  "keywords": [
-    "astro",
-    "astro-component",
-    "astro-integration",
-    "image",
-    "picture",
-    "css",
-    "background",
-    "lqip"
-  ],
-  "homepage": "https://astro-lqip.web.app",
-  "bugs": {
-    "url": "https://github.com/felixicaza/astro-lqip/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/felixicaza/astro-lqip.git"
-  },
+  "name": "@felixicaza/astro-lqip",
+  "version": "0.0.0",
+  "private": true,
+  "description": "The astro-lqip monorepo",
   "license": "MIT",
-  "author": "Felix Icaza",
-  "sideEffects": false,
+  "author": "Felix Icaza <contacto@felixicaza.com>",
   "type": "module",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.mts",
-      "import": "./dist/index.mjs"
-    },
-    "./components": {
-      "types": "./dist/index.d.mts",
-      "import": "./dist/index.mjs"
-    }
-  },
-  "types": "./dist/index.d.mts",
-  "files": [
-    "dist"
-  ],
   "scripts": {
-    "astro:sync": " pnpm --filter \"./tests/fixtures/**\" astro sync",
-    "astro:typecheck": "pnpm --filter \"./tests/fixtures/**\" astro check",
+    "astro:sync": " pnpm --filter \"./demos/**\" astro sync",
+    "astro:typecheck": "pnpm --filter \"./demos/**\" astro check",
     "build": "tsdown",
     "build:docs": "pnpm --filter ./docs -r build",
     "build:watch": "tsdown --watch",
@@ -52,7 +20,7 @@
     "lint:fix": "oxlint . --fix --fix-suggestions --fix-dangerously && eslint --flag unstable_native_nodejs_ts_config . --cache --fix",
     "prepare": "simple-git-hooks",
     "prepublishOnly": "pnpm build",
-    "release": "bumpp",
+    "release": "bumpp packages/astro-lqip/package.json",
     "test": "pnpm test:fixtures",
     "test:fixtures": "pnpm --filter \"./tests/fixtures/**\" -r --workspace-concurrency=1 build",
     "test:fixtures:custom-base": "pnpm --filter \"./tests/fixtures/custom-base\" build",
@@ -78,18 +46,13 @@
       "pnpm typecheck"
     ]
   },
-  "dependencies": {
-    "previewly": "0.1.0"
-  },
   "devDependencies": {
     "@astrojs/check": "0.9.10",
     "@felixicaza/eslint-config": "1.0.1",
     "@felixicaza/oxlint-config": "1.0.0",
-    "@napi-rs/image": "1.15.0",
     "@tsdown/css": "0.21.10",
     "@types/node": "26.6.3",
     "@typescript-eslint/parser": "8.71.0",
-    "astro": "7.3.5",
     "bumpp": "12.3.0",
     "concurrently": "10.0.5",
     "eslint": "10.11.0",
@@ -99,13 +62,8 @@
     "oxlint-tsgolint": "7.0.2003",
     "simple-git-hooks": "2.14.0",
     "tsdown": "0.21.10",
+    "tsx": "4.23.15",
     "typescript": "6.0.3"
-  },
-  "peerDependencies": {
-    "astro": ">=6.0.0"
-  },
-  "engines": {
-    "node": ">=22.23.3"
   },
   "devEngines": {
     "packageManager": {
