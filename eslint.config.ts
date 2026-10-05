@@ -2,6 +2,7 @@ import { felixicaza } from '@felixicaza/eslint-config'
 
 export default felixicaza(
   {
+    pnpm: true,
     packageJson: {
       publishable: true
     }
