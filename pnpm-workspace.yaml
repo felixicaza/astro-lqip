@@ -27,3 +27,46 @@ publicHoistPattern:
 
 trustPolicyExclude:
    - chokidar@4.0.3
+
+catalogs:
+   astro:
+      "@astrojs/mdx": 8.0.2
+      "@astrojs/node": 11.1.6
+      astro: 7.3.5
+
+   build:
+      "@tsdown/css": 0.21.10
+      lightningcss: 1.33.0
+      tsdown: 0.21.10
+
+   lib:
+      astro-lqip: workspace:*
+
+   lint:
+      "@astrojs/check": 0.9.10
+      "@felixicaza/eslint-config": 1.0.1
+      "@felixicaza/oxlint-config": 1.0.0
+      "@typescript-eslint/parser": 8.71.0
+      eslint: 10.12.0
+      oxlint: 1.86.0
+      oxlint-tsgolint: 7.0.2003
+
+   precommit:
+      nano-staged: 1.0.2
+      simple-git-hooks: 2.14.0
+
+   releasing:
+      bumpp: 12.3.0
+
+   tooling:
+      tsx: 4.23.15
+      turbo: 2.11.7
+
+   runtime:
+      "@napi-rs/image": 1.15.0
+      previewly: 0.1.0
+      sharp: 0.35.5
+
+   types:
+      "@types/node": 26.6.4
+      typescript: 6.0.3

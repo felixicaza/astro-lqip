@@ -14,9 +14,10 @@
     "preview": "astro preview --port 4325"
   },
   "dependencies": {
-    "@astrojs/node": "11.1.6",
-    "astro": "7.3.5",
-    "astro-lqip": "workspace:*",
-    "sharp": "0.35.5"
+    "@astrojs/check": "catalog:lint",
+    "@astrojs/node": "catalog:astro",
+    "astro": "catalog:astro",
+    "astro-lqip": "catalog:lib",
+    "sharp": "catalog:runtime"
   }
 }
