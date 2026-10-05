@@ -400,13 +400,13 @@ importers:
 
   packages/astro-lqip:
     dependencies:
+      '@napi-rs/image':
+        specifier: catalog:runtime
+        version: 1.15.0
       previewly:
         specifier: catalog:runtime
         version: 0.1.0(@napi-rs/image@1.15.0)
     devDependencies:
-      '@napi-rs/image':
-        specifier: catalog:runtime
-        version: 1.15.0
       astro:
         specifier: catalog:astro
         version: 7.3.5(@types/node@26.6.4)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1)

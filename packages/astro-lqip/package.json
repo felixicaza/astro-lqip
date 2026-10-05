@@ -46,10 +46,10 @@
     "start:watch": "tsx watch src/index.ts"
   },
   "dependencies": {
+    "@napi-rs/image": "catalog:runtime",
     "previewly": "catalog:runtime"
   },
   "devDependencies": {
-    "@napi-rs/image": "catalog:runtime",
     "astro": "catalog:astro"
   },
   "peerDependencies": {
