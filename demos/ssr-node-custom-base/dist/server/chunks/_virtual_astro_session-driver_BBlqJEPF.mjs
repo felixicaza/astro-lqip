@@ -1,6 +1,6 @@
 import { existsSync, promises } from "node:fs";
 import { dirname, join, resolve } from "node:path";
-//#region ../../../node_modules/.pnpm/unstorage@1.17.5/node_modules/unstorage/drivers/utils/index.mjs
+//#region ../../node_modules/.pnpm/unstorage@1.17.5/node_modules/unstorage/drivers/utils/index.mjs
 function defineDriver(factory) {
 	return factory;
 }
@@ -14,7 +14,7 @@ function createRequiredError(driver, name) {
 	return createError(driver, `Missing required option \`${name}\`.`);
 }
 //#endregion
-//#region ../../../node_modules/.pnpm/unstorage@1.17.5/node_modules/unstorage/drivers/utils/node-fs.mjs
+//#region ../../node_modules/.pnpm/unstorage@1.17.5/node_modules/unstorage/drivers/utils/node-fs.mjs
 function ignoreNotfound(err) {
 	return err.code === "ENOENT" || err.code === "EISDIR" ? null : err;
 }
@@ -63,7 +63,7 @@ async function rmRecursive(dir) {
 	}));
 }
 //#endregion
-//#region ../../../node_modules/.pnpm/unstorage@1.17.5/node_modules/unstorage/drivers/fs-lite.mjs
+//#region ../../node_modules/.pnpm/unstorage@1.17.5/node_modules/unstorage/drivers/fs-lite.mjs
 var PATH_TRAVERSE_RE = /\.\.:|\.\.$/;
 var DRIVER_NAME = "fs-lite";
 //#endregion

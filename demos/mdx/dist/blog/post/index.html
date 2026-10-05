@@ -1,97 +1,105 @@
 <!DOCTYPE html>
-<h1 id="hello-world">Hello World!</h1>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>astro-lqip mdx content collections configs demo</title>
+  <style>section{background:var(--background)}.custom-background{background:var(--custom-background)}section,.custom-background{background-position:50%;background-size:cover;block-size:300px;inline-size:100%}
+</style><style>@layer astro-lqip{[data-astro-lqip-bg]{display:contents}[data-astro-lqip]{--opacity:1;--z-index:0;isolation:isolate;block-size:fit-content;inline-size:fit-content;line-height:0;display:inline-block;position:relative;overflow:clip;&:after{z-index:var(--z-index);pointer-events:none;content:"";background:var(--lqip-background);opacity:var(--opacity);background-position:50%;background-size:cover;transition:opacity 1s;position:absolute;inset:0}& img{z-index:1;position:relative}@media (scripting:none){--opacity:0;--z-index:1}}}
+</style></head>
+  <body>
+    <h1 id="hello-world">Hello World!</h1>
 <p>This is a test post using Astro and MDX!</p>
 <p>Background component ImageMetadata import</p>
-<div  style="--background: url('/_astro/pexels-fabianwiktor-3470482.BFMY_gvF_1F4QHk.webp'), url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAoUlEQVR4nAGWAGn/ACcYKD0oOVA0R0cvQzwrPjsrQCYfMxYRJQCrd3C7goK+hIe1e4GzeYGgbXeGXGNuS04A/9a2/+jL/+vO/9S1y4GAn3Fz2pyLvolyALuCfbaCgaV3fIpiaT0pPCQZLBMPIQACGABVPEJSO0U+LjwmIC4YFSMHChgCAhQBABIADgkXGhMdJR4lLiQsJyAmGRcdCwsVAAAQuTUv59dzTuoAAAAASUVORK5CYII=&quot;)" data-astro-lqip-bg><section><p>Optimized background</p></section></div>
+<div  style="--background: url('/_astro/pexels-fabianwiktor-3470482.BFMY_gvF_1F4QHk.webp'), url(&quot;data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAAAwAgCdASoIAAYAAMASJYwCdH8GJ/gefZJMYAD+zgf5X/9nBjf+uwPfTnrRz0O8ZcUQkNs//O49LxWwDPmquIXEoh1UNAmtATpYVjWPgHstfdov/nzQ9DbX+gXAAA==&quot;)" data-astro-lqip-bg><section><p>Optimized background</p></section></div>
 <p>Background component relative path import</p>
-<div  style="--background: url('/_astro/pexels-fabianwiktor-3470482.375fe532_13mu5H.webp'), url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAoUlEQVR4nAGWAGn/ACcYKD0oOVA0R0cvQzwrPjsrQCYfMxYRJQCrd3C7goK+hIe1e4GzeYGgbXeGXGNuS04A/9a2/+jL/+vO/9S1y4GAn3Fz2pyLvolyALuCfbaCgaV3fIpiaT0pPCQZLBMPIQACGABVPEJSO0U+LjwmIC4YFSMHChgCAhQBABIADgkXGhMdJR4lLiQsJyAmGRcdCwsVAAAQuTUv59dzTuoAAAAASUVORK5CYII=&quot;)" data-astro-lqip-bg><section><p>Optimized background</p></section></div>
+<div  style="--background: url('/_astro/pexels-fabianwiktor-3470482.a8413140_Z2dhCJT.webp'), url(&quot;data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAAAwAgCdASoIAAYAAMASJYwCdH8GJ/gefZJMYAD+zgf5X/9nBjf+uwPfTnrRz0O8ZcUQkNs//O49LxWwDPmquIXEoh1UNAmtATpYVjWPgHstfdov/nzQ9DbX+gXAAA==&quot;)" data-astro-lqip-bg><section><p>Optimized background</p></section></div>
 <p>Background component absolute path import</p>
-<div  style="--background: url('/_astro/pexels-fabianwiktor-3470482.375fe532_13mu5H.webp'), url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAoUlEQVR4nAGWAGn/ACcYKD0oOVA0R0cvQzwrPjsrQCYfMxYRJQCrd3C7goK+hIe1e4GzeYGgbXeGXGNuS04A/9a2/+jL/+vO/9S1y4GAn3Fz2pyLvolyALuCfbaCgaV3fIpiaT0pPCQZLBMPIQACGABVPEJSO0U+LjwmIC4YFSMHChgCAhQBABIADgkXGhMdJR4lLiQsJyAmGRcdCwsVAAAQuTUv59dzTuoAAAAASUVORK5CYII=&quot;)" data-astro-lqip-bg><section><p>Optimized background</p></section></div>
+<div  style="--background: url('/_astro/pexels-fabianwiktor-3470482.a8413140_Z2dhCJT.webp'), url(&quot;data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAAAwAgCdASoIAAYAAMASJYwCdH8GJ/gefZJMYAD+zgf5X/9nBjf+uwPfTnrRz0O8ZcUQkNs//O49LxWwDPmquIXEoh1UNAmtATpYVjWPgHstfdov/nzQ9DbX+gXAAA==&quot;)" data-astro-lqip-bg><section><p>Optimized background</p></section></div>
 <p>Background component alias path import</p>
-<div  style="--background: url('/_astro/pexels-fabianwiktor-3470482.375fe532_13mu5H.webp'), url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAoUlEQVR4nAGWAGn/ACcYKD0oOVA0R0cvQzwrPjsrQCYfMxYRJQCrd3C7goK+hIe1e4GzeYGgbXeGXGNuS04A/9a2/+jL/+vO/9S1y4GAn3Fz2pyLvolyALuCfbaCgaV3fIpiaT0pPCQZLBMPIQACGABVPEJSO0U+LjwmIC4YFSMHChgCAhQBABIADgkXGhMdJR4lLiQsJyAmGRcdCwsVAAAQuTUv59dzTuoAAAAASUVORK5CYII=&quot;)" data-astro-lqip-bg><section><p>Optimized background</p></section></div>
+<div  style="--background: url('/_astro/pexels-fabianwiktor-3470482.a8413140_Z2dhCJT.webp'), url(&quot;data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAAAwAgCdASoIAAYAAMASJYwCdH8GJ/gefZJMYAD+zgf5X/9nBjf+uwPfTnrRz0O8ZcUQkNs//O49LxWwDPmquIXEoh1UNAmtATpYVjWPgHstfdov/nzQ9DbX+gXAAA==&quot;)" data-astro-lqip-bg><section><p>Optimized background</p></section></div>
 <p>Background component with remote image</p>
-<div  style="--background: url('/_astro/pexels-photo-994605_Z1VYcqL.webp'), url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAoUlEQVR4nAGWAGn/AEFQT1mbsgCDpgBmiQBsiXabqgBphQBceACGgHrX2eGEtMkAjq0AbpIAYIIZgJm5wcYARUEybXFt+Pf8y9jjjb/QrMvW//fvraqvABgPAG9jXdXOysvKyMG8uZqioHiMjlFwdAA9NCtaS0FSQDSUemqynpKHeW96b2NGQzoABAEAMCgkRTYwY0k6fWJWgWliiG5jb1tSyV9Dm52iDpYAAAAASUVORK5CYII=&quot;)" data-astro-lqip-bg><section><p>Optimized background</p></section></div>
+<div  style="--background: url('/_astro/pexels-photo-994605_Z1VYcqL.webp'), url(&quot;data:image/webp;base64,UklGRooAAABXRUJQVlA4IH4AAABwAgCdASoIAAYAAMASJQBOiZABdQBZu34uyBgAAP71Y+nJ31f/NF/wtf3MLrqv2/LH8GjQb7ryY5cdvzSQfT33a8x4m/3AiS1CMtY2/bWGAuAqTFqzH8zuP4B449CH5yfr9D+eAn7r/J3H/Hv/7X97hXJQ/zfZySfGKxbgAAA=&quot;)" data-astro-lqip-bg><section><p>Optimized background</p></section></div>
 <p>Background component with custom CSS variable</p>
-<div  style="--custom-background: url('/_astro/pexels-fabianwiktor-3470482.375fe532_13mu5H.webp'), url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAoUlEQVR4nAGWAGn/ACcYKD0oOVA0R0cvQzwrPjsrQCYfMxYRJQCrd3C7goK+hIe1e4GzeYGgbXeGXGNuS04A/9a2/+jL/+vO/9S1y4GAn3Fz2pyLvolyALuCfbaCgaV3fIpiaT0pPCQZLBMPIQACGABVPEJSO0U+LjwmIC4YFSMHChgCAhQBABIADgkXGhMdJR4lLiQsJyAmGRcdCwsVAAAQuTUv59dzTuoAAAAASUVORK5CYII=&quot;)" data-astro-lqip-bg><section class="custom-background"><p>Optimized background</p></section></div>
+<div  style="--custom-background: url('/_astro/pexels-fabianwiktor-3470482.a8413140_Z2dhCJT.webp'), url(&quot;data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAAAwAgCdASoIAAYAAMASJYwCdH8GJ/gefZJMYAD+zgf5X/9nBjf+uwPfTnrRz0O8ZcUQkNs//O49LxWwDPmquIXEoh1UNAmtATpYVjWPgHstfdov/nzQ9DbX+gXAAA==&quot;)" data-astro-lqip-bg><section class="custom-background"><p>Optimized background</p></section></div>
 <p>Background component in AVIF format</p>
-<div  style="--background: url('/_astro/pexels-fabianwiktor-3470482.375fe532_rYK6b.avif'), url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAoUlEQVR4nAGWAGn/ACcYKD0oOVA0R0cvQzwrPjsrQCYfMxYRJQCrd3C7goK+hIe1e4GzeYGgbXeGXGNuS04A/9a2/+jL/+vO/9S1y4GAn3Fz2pyLvolyALuCfbaCgaV3fIpiaT0pPCQZLBMPIQACGABVPEJSO0U+LjwmIC4YFSMHChgCAhQBABIADgkXGhMdJR4lLiQsJyAmGRcdCwsVAAAQuTUv59dzTuoAAAAASUVORK5CYII=&quot;)" data-astro-lqip-bg><section><p>Optimized background</p></section></div>
+<div  style="--background: url('/_astro/pexels-fabianwiktor-3470482.a8413140_2gwL4v.avif'), url(&quot;data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAAAwAgCdASoIAAYAAMASJYwCdH8GJ/gefZJMYAD+zgf5X/9nBjf+uwPfTnrRz0O8ZcUQkNs//O49LxWwDPmquIXEoh1UNAmtATpYVjWPgHstfdov/nzQ9DbX+gXAAA==&quot;)" data-astro-lqip-bg><section><p>Optimized background</p></section></div>
 <p>Background component with lqip color</p>
-<div  style="--background: url('/_astro/pexels-fabianwiktor-3470482.375fe532_13mu5H.webp'), linear-gradient(#282838, #282838)" data-astro-lqip-bg><section><p>Optimized background</p></section></div>
+<div  style="--background: url('/_astro/pexels-fabianwiktor-3470482.a8413140_Z2dhCJT.webp'), linear-gradient(#61474c, #61474c)" data-astro-lqip-bg><section><p>Optimized background</p></section></div>
 <p>Background component in multiple formats</p>
-<div  style="--background: image-set(url('/_astro/pexels-fabianwiktor-3470482.375fe532_rYK6b.avif') type('image/avif'), url('/_astro/pexels-fabianwiktor-3470482.375fe532_13mu5H.webp') type('image/webp'), url('/_astro/pexels-fabianwiktor-3470482.375fe532_Z1yee7u.jpeg') type('image/jpeg')), url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAoUlEQVR4nAGWAGn/ACcYKD0oOVA0R0cvQzwrPjsrQCYfMxYRJQCrd3C7goK+hIe1e4GzeYGgbXeGXGNuS04A/9a2/+jL/+vO/9S1y4GAn3Fz2pyLvolyALuCfbaCgaV3fIpiaT0pPCQZLBMPIQACGABVPEJSO0U+LjwmIC4YFSMHChgCAhQBABIADgkXGhMdJR4lLiQsJyAmGRcdCwsVAAAQuTUv59dzTuoAAAAASUVORK5CYII=&quot;)" data-astro-lqip-bg><section><p>Optimized background</p></section></div>
+<div  style="--background: image-set(url('/_astro/pexels-fabianwiktor-3470482.a8413140_2gwL4v.avif') type('image/avif'), url('/_astro/pexels-fabianwiktor-3470482.a8413140_Z2dhCJT.webp') type('image/webp'), url('/_astro/pexels-fabianwiktor-3470482.a8413140_fiLPP.jpeg') type('image/jpeg')), url(&quot;data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAAAwAgCdASoIAAYAAMASJYwCdH8GJ/gefZJMYAD+zgf5X/9nBjf+uwPfTnrRz0O8ZcUQkNs//O49LxWwDPmquIXEoh1UNAmtATpYVjWPgHstfdov/nzQ9DbX+gXAAA==&quot;)" data-astro-lqip-bg><section><p>Optimized background</p></section></div>
 <p>Background component with custom width and height</p>
-<div  style="--background: url('/_astro/pexels-fabianwiktor-3470482.375fe532_ZzFgkA.webp'), url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAoUlEQVR4nAGWAGn/ACcYKD0oOVA0R0cvQzwrPjsrQCYfMxYRJQCrd3C7goK+hIe1e4GzeYGgbXeGXGNuS04A/9a2/+jL/+vO/9S1y4GAn3Fz2pyLvolyALuCfbaCgaV3fIpiaT0pPCQZLBMPIQACGABVPEJSO0U+LjwmIC4YFSMHChgCAhQBABIADgkXGhMdJR4lLiQsJyAmGRcdCwsVAAAQuTUv59dzTuoAAAAASUVORK5CYII=&quot;)" data-astro-lqip-bg><section><p>Optimized background</p></section></div>
+<div  style="--background: url('/_astro/pexels-fabianwiktor-3470482.a8413140_rUAyh.webp'), url(&quot;data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAAAwAgCdASoIAAYAAMASJYwCdH8GJ/gefZJMYAD+zgf5X/9nBjf+uwPfTnrRz0O8ZcUQkNs//O49LxWwDPmquIXEoh1UNAmtATpYVjWPgHstfdov/nzQ9DbX+gXAAA==&quot;)" data-astro-lqip-bg><section><p>Optimized background</p></section></div>
 <p>Background component with several props</p>
-<div  style="--background: url('/_astro/pexels-fabianwiktor-3470482.375fe532_Z9R8W7.avif'), url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAoUlEQVR4nAGWAGn/ACcYKD0oOVA0R0cvQzwrPjsrQCYfMxYRJQCrd3C7goK+hIe1e4GzeYGgbXeGXGNuS04A/9a2/+jL/+vO/9S1y4GAn3Fz2pyLvolyALuCfbaCgaV3fIpiaT0pPCQZLBMPIQACGABVPEJSO0U+LjwmIC4YFSMHChgCAhQBABIADgkXGhMdJR4lLiQsJyAmGRcdCwsVAAAQuTUv59dzTuoAAAAASUVORK5CYII=&quot;); --background-small: url('/_astro/pexels-fabianwiktor-3470482.375fe532_1XG3Ug.avif'), url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAoUlEQVR4nAGWAGn/ACcYKD0oOVA0R0cvQzwrPjsrQCYfMxYRJQCrd3C7goK+hIe1e4GzeYGgbXeGXGNuS04A/9a2/+jL/+vO/9S1y4GAn3Fz2pyLvolyALuCfbaCgaV3fIpiaT0pPCQZLBMPIQACGABVPEJSO0U+LjwmIC4YFSMHChgCAhQBABIADgkXGhMdJR4lLiQsJyAmGRcdCwsVAAAQuTUv59dzTuoAAAAASUVORK5CYII=&quot;); --background-medium: url('/_astro/pexels-fabianwiktor-3470482.375fe532_ZVfmp0.avif'), url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAoUlEQVR4nAGWAGn/ACcYKD0oOVA0R0cvQzwrPjsrQCYfMxYRJQCrd3C7goK+hIe1e4GzeYGgbXeGXGNuS04A/9a2/+jL/+vO/9S1y4GAn3Fz2pyLvolyALuCfbaCgaV3fIpiaT0pPCQZLBMPIQACGABVPEJSO0U+LjwmIC4YFSMHChgCAhQBABIADgkXGhMdJR4lLiQsJyAmGRcdCwsVAAAQuTUv59dzTuoAAAAASUVORK5CYII=&quot;); --background-large: url('/_astro/pexels-fabianwiktor-3470482.375fe532_Z9R8W7.avif'), url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAoUlEQVR4nAGWAGn/ACcYKD0oOVA0R0cvQzwrPjsrQCYfMxYRJQCrd3C7goK+hIe1e4GzeYGgbXeGXGNuS04A/9a2/+jL/+vO/9S1y4GAn3Fz2pyLvolyALuCfbaCgaV3fIpiaT0pPCQZLBMPIQACGABVPEJSO0U+LjwmIC4YFSMHChgCAhQBABIADgkXGhMdJR4lLiQsJyAmGRcdCwsVAAAQuTUv59dzTuoAAAAASUVORK5CYII=&quot;)" data-astro-lqip-bg><section><p>Optimized background</p></section></div>
+<div  style="--background: url('/_astro/pexels-fabianwiktor-3470482.a8413140_1DER1d.avif'), url(&quot;data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAAAwAgCdASoIAAYAAMASJYwCdH8GJ/gefZJMYAD+zgf5X/9nBjf+uwPfTnrRz0O8ZcUQkNs//O49LxWwDPmquIXEoh1UNAmtATpYVjWPgHstfdov/nzQ9DbX+gXAAA==&quot;); --background-small: url('/_astro/pexels-fabianwiktor-3470482.a8413140_Z23TcYN.avif'), url(&quot;data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAAAwAgCdASoIAAYAAMASJYwCdH8GJ/gefZJMYAD+zgf5X/9nBjf+uwPfTnrRz0O8ZcUQkNs//O49LxWwDPmquIXEoh1UNAmtATpYVjWPgHstfdov/nzQ9DbX+gXAAA==&quot;); --background-medium: url('/_astro/pexels-fabianwiktor-3470482.a8413140_RhDyk.avif'), url(&quot;data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAAAwAgCdASoIAAYAAMASJYwCdH8GJ/gefZJMYAD+zgf5X/9nBjf+uwPfTnrRz0O8ZcUQkNs//O49LxWwDPmquIXEoh1UNAmtATpYVjWPgHstfdov/nzQ9DbX+gXAAA==&quot;); --background-large: url('/_astro/pexels-fabianwiktor-3470482.a8413140_1DER1d.avif'), url(&quot;data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAAAwAgCdASoIAAYAAMASJYwCdH8GJ/gefZJMYAD+zgf5X/9nBjf+uwPfTnrRz0O8ZcUQkNs//O49LxWwDPmquIXEoh1UNAmtATpYVjWPgHstfdov/nzQ9DbX+gXAAA==&quot;)" data-astro-lqip-bg><section><p>Optimized background</p></section></div>
 <p>Background component with lqip false</p>
-<div  style="--background: url('/_astro/pexels-fabianwiktor-3470482.375fe532_13mu5H.webp')" data-astro-lqip-bg><section><p>Background without LQIP</p></section></div>
+<div  style="--background: url('/_astro/pexels-fabianwiktor-3470482.a8413140_Z2dhCJT.webp')" data-astro-lqip-bg><section><p>Background without LQIP</p></section></div>
 <p>Image and Picture components ImageMetadata import</p>
 
-      <div  data-astro-lqip style="--lqip-background:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAIAAAA7ljmRAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAMklEQVR4nAEnANj/AJSanvP29uXq7cbFxwBsh5nd7PPz//+ApbgAABkhABkfABAWAAgX7a0Th8qW4uIAAAAASUVORK5CYII=')">
+      <div  data-astro-lqip style="--lqip-background:url('data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAADwAQCdASoEAAMAAMASJQBOl0AAYSDfcAAA/sj//+J4CqfLX/x7zl0QePWFWveLP7uT7FP3ZynQAA==')">
         
 <img src="/_astro/pexels-fabianwiktor-3470872.DAdQtAbe_ZmylEG.webp" alt="A beautiful volcano" onload="parentElement.style.setProperty(&quot;--z-index&quot;, 1);parentElement.style.setProperty(&quot;--opacity&quot;, 0);" loading="lazy" decoding="async" width="450" height="338">
       </div>
     
-<picture data-astro-lqip style="--lqip-background:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAIAAAA7ljmRAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAMklEQVR4nAEnANj/AJSanvP29uXq7cbFxwBsh5nd7PPz//+ApbgAABkhABkfABAWAAgX7a0Th8qW4uIAAAAASUVORK5CYII=')">
+<picture data-astro-lqip style="--lqip-background:url('data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAADwAQCdASoEAAMAAMASJQBOl0AAYSDfcAAA/sj//+J4CqfLX/x7zl0QePWFWveLP7uT7FP3ZynQAA==')">
 	<source srcset="/_astro/pexels-fabianwiktor-3470872.DAdQtAbe_ZmylEG.webp" type="image/webp">
 	
 	<img src="/_astro/pexels-fabianwiktor-3470872.DAdQtAbe_Z1pmRT4.jpg" alt="A beautiful volcano in the sunset" onload="parentElement.style.setProperty(&quot;--z-index&quot;, 1);parentElement.style.setProperty(&quot;--opacity&quot;, 0);" loading="lazy" decoding="async" width="450" height="338">
 </picture>
 <p>Image and Picture components relative path import</p>
 
-      <div  data-astro-lqip style="--lqip-background:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAIAAAA7ljmRAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAMklEQVR4nAEnANj/AJSanvP29uXq7cbFxwBsh5nd7PPz//+ApbgAABkhABkfABAWAAgX7a0Th8qW4uIAAAAASUVORK5CYII=')">
+      <div  data-astro-lqip style="--lqip-background:url('data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAADwAQCdASoEAAMAAMASJQBOl0AAYSDfcAAA/sj//+J4CqfLX/x7zl0QePWFWveLP7uT7FP3ZynQAA==')">
         
-<img src="/_astro/pexels-fabianwiktor-3470872.c58e0ec3_23Sz3T.webp" alt="A beautiful volcano" onload="parentElement.style.setProperty(&quot;--z-index&quot;, 1);parentElement.style.setProperty(&quot;--opacity&quot;, 0);" loading="lazy" decoding="async" width="450" height="338">
+<img src="/_astro/pexels-fabianwiktor-3470872.087a07fc_Z1C9Khv.webp" alt="A beautiful volcano" onload="parentElement.style.setProperty(&quot;--z-index&quot;, 1);parentElement.style.setProperty(&quot;--opacity&quot;, 0);" loading="lazy" decoding="async" width="450" height="338">
       </div>
     
-<picture data-astro-lqip style="--lqip-background:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAIAAAA7ljmRAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAMklEQVR4nAEnANj/AJSanvP29uXq7cbFxwBsh5nd7PPz//+ApbgAABkhABkfABAWAAgX7a0Th8qW4uIAAAAASUVORK5CYII=')">
-	<source srcset="/_astro/pexels-fabianwiktor-3470872.c58e0ec3_23Sz3T.webp" type="image/webp">
+<picture data-astro-lqip style="--lqip-background:url('data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAADwAQCdASoEAAMAAMASJQBOl0AAYSDfcAAA/sj//+J4CqfLX/x7zl0QePWFWveLP7uT7FP3ZynQAA==')">
+	<source srcset="/_astro/pexels-fabianwiktor-3470872.087a07fc_Z1C9Khv.webp" type="image/webp">
 	
-	<img src="/_astro/pexels-fabianwiktor-3470872.c58e0ec3_Z1z1C7G.jpeg" alt="A beautiful volcano in the sunset" onload="parentElement.style.setProperty(&quot;--z-index&quot;, 1);parentElement.style.setProperty(&quot;--opacity&quot;, 0);" loading="lazy" decoding="async" width="450" height="338">
+	<img src="/_astro/pexels-fabianwiktor-3470872.087a07fc_ZaRNEa.jpeg" alt="A beautiful volcano in the sunset" onload="parentElement.style.setProperty(&quot;--z-index&quot;, 1);parentElement.style.setProperty(&quot;--opacity&quot;, 0);" loading="lazy" decoding="async" width="450" height="338">
 </picture>
 <p>Image and Picture components absolute path import</p>
 
-      <div  data-astro-lqip style="--lqip-background:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAIAAAA7ljmRAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAMklEQVR4nAEnANj/AJSanvP29uXq7cbFxwBsh5nd7PPz//+ApbgAABkhABkfABAWAAgX7a0Th8qW4uIAAAAASUVORK5CYII=')">
+      <div  data-astro-lqip style="--lqip-background:url('data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAADwAQCdASoEAAMAAMASJQBOl0AAYSDfcAAA/sj//+J4CqfLX/x7zl0QePWFWveLP7uT7FP3ZynQAA==')">
         
-<img src="/_astro/pexels-fabianwiktor-3470872.c58e0ec3_23Sz3T.webp" alt="A beautiful volcano" onload="parentElement.style.setProperty(&quot;--z-index&quot;, 1);parentElement.style.setProperty(&quot;--opacity&quot;, 0);" loading="lazy" decoding="async" width="450" height="338">
+<img src="/_astro/pexels-fabianwiktor-3470872.087a07fc_Z1C9Khv.webp" alt="A beautiful volcano" onload="parentElement.style.setProperty(&quot;--z-index&quot;, 1);parentElement.style.setProperty(&quot;--opacity&quot;, 0);" loading="lazy" decoding="async" width="450" height="338">
       </div>
     
-<picture data-astro-lqip style="--lqip-background:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAIAAAA7ljmRAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAMklEQVR4nAEnANj/AJSanvP29uXq7cbFxwBsh5nd7PPz//+ApbgAABkhABkfABAWAAgX7a0Th8qW4uIAAAAASUVORK5CYII=')">
-	<source srcset="/_astro/pexels-fabianwiktor-3470872.c58e0ec3_23Sz3T.webp" type="image/webp">
+<picture data-astro-lqip style="--lqip-background:url('data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAADwAQCdASoEAAMAAMASJQBOl0AAYSDfcAAA/sj//+J4CqfLX/x7zl0QePWFWveLP7uT7FP3ZynQAA==')">
+	<source srcset="/_astro/pexels-fabianwiktor-3470872.087a07fc_Z1C9Khv.webp" type="image/webp">
 	
-	<img src="/_astro/pexels-fabianwiktor-3470872.c58e0ec3_Z1z1C7G.jpeg" alt="A beautiful volcano in the sunset" onload="parentElement.style.setProperty(&quot;--z-index&quot;, 1);parentElement.style.setProperty(&quot;--opacity&quot;, 0);" loading="lazy" decoding="async" width="450" height="338">
+	<img src="/_astro/pexels-fabianwiktor-3470872.087a07fc_ZaRNEa.jpeg" alt="A beautiful volcano in the sunset" onload="parentElement.style.setProperty(&quot;--z-index&quot;, 1);parentElement.style.setProperty(&quot;--opacity&quot;, 0);" loading="lazy" decoding="async" width="450" height="338">
 </picture>
 <p>Image and Picture components import with alias</p>
 
-      <div  data-astro-lqip style="--lqip-background:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAIAAAA7ljmRAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAMklEQVR4nAEnANj/AJSanvP29uXq7cbFxwBsh5nd7PPz//+ApbgAABkhABkfABAWAAgX7a0Th8qW4uIAAAAASUVORK5CYII=')">
+      <div  data-astro-lqip style="--lqip-background:url('data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAADwAQCdASoEAAMAAMASJQBOl0AAYSDfcAAA/sj//+J4CqfLX/x7zl0QePWFWveLP7uT7FP3ZynQAA==')">
         
-<img src="/_astro/pexels-fabianwiktor-3470872.c58e0ec3_23Sz3T.webp" alt="A beautiful volcano" onload="parentElement.style.setProperty(&quot;--z-index&quot;, 1);parentElement.style.setProperty(&quot;--opacity&quot;, 0);" loading="lazy" decoding="async" width="450" height="338">
+<img src="/_astro/pexels-fabianwiktor-3470872.087a07fc_Z1C9Khv.webp" alt="A beautiful volcano" onload="parentElement.style.setProperty(&quot;--z-index&quot;, 1);parentElement.style.setProperty(&quot;--opacity&quot;, 0);" loading="lazy" decoding="async" width="450" height="338">
       </div>
     
-<picture data-astro-lqip style="--lqip-background:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAIAAAA7ljmRAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAMklEQVR4nAEnANj/AJSanvP29uXq7cbFxwBsh5nd7PPz//+ApbgAABkhABkfABAWAAgX7a0Th8qW4uIAAAAASUVORK5CYII=')">
-	<source srcset="/_astro/pexels-fabianwiktor-3470872.c58e0ec3_23Sz3T.webp" type="image/webp">
+<picture data-astro-lqip style="--lqip-background:url('data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAADwAQCdASoEAAMAAMASJQBOl0AAYSDfcAAA/sj//+J4CqfLX/x7zl0QePWFWveLP7uT7FP3ZynQAA==')">
+	<source srcset="/_astro/pexels-fabianwiktor-3470872.087a07fc_Z1C9Khv.webp" type="image/webp">
 	
-	<img src="/_astro/pexels-fabianwiktor-3470872.c58e0ec3_Z1z1C7G.jpeg" alt="A beautiful volcano in the sunset" onload="parentElement.style.setProperty(&quot;--z-index&quot;, 1);parentElement.style.setProperty(&quot;--opacity&quot;, 0);" loading="lazy" decoding="async" width="450" height="338">
+	<img src="/_astro/pexels-fabianwiktor-3470872.087a07fc_ZaRNEa.jpeg" alt="A beautiful volcano in the sunset" onload="parentElement.style.setProperty(&quot;--z-index&quot;, 1);parentElement.style.setProperty(&quot;--opacity&quot;, 0);" loading="lazy" decoding="async" width="450" height="338">
 </picture>
 <p>Image and Picture components with remote images</p>
 
-      <div  data-astro-lqip style="--lqip-background:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAIAAAA7ljmRAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAMklEQVR4nAEnANj/AIGTmQycvgBvjWaWqgBRSD77//+92uGqtLQADgAAV0M5jXRoRj44Zt4RFrf4xhcAAAAASUVORK5CYII=')">
+      <div  data-astro-lqip style="--lqip-background:url('data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAABQAgCdASoEAAMAAMASJYwCdH8IwBggAHVoRCAA/sqnLFXvbBbIqMJ3cDyJ+kASrFkKH4OTFH0ng5MVHkShsryFmH8mJY+MC3/Jv81fAAA=')">
         
 <img src="/_astro/pexels-photo-994605_Z2imMAX.webp" alt="A beautiful volcano" onload="parentElement.style.setProperty(&quot;--z-index&quot;, 1);parentElement.style.setProperty(&quot;--opacity&quot;, 0);" loading="lazy" decoding="async" width="450" height="450">
       </div>
     
-<picture data-astro-lqip style="--lqip-background:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAIAAAA7ljmRAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAMklEQVR4nAEnANj/AIGTmQycvgBvjWaWqgBRSD77//+92uGqtLQADgAAV0M5jXRoRj44Zt4RFrf4xhcAAAAASUVORK5CYII=')">
+<picture data-astro-lqip style="--lqip-background:url('data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAABQAgCdASoEAAMAAMASJYwCdH8IwBggAHVoRCAA/sqnLFXvbBbIqMJ3cDyJ+kASrFkKH4OTFH0ng5MVHkShsryFmH8mJY+MC3/Jv81fAAA=')">
 	<source srcset="/_astro/pexels-photo-994605_Z2imMAX.webp" type="image/webp">
 	
 	<img src="/_astro/pexels-photo-994605_2kAbP2.png" alt="A beautiful volcano in the sunset" onload="parentElement.style.setProperty(&quot;--z-index&quot;, 1);parentElement.style.setProperty(&quot;--opacity&quot;, 0);" loading="lazy" decoding="async" width="450" height="450">
 </picture>
 <p>Image and Picture components with lqip false</p>
 
-<style>section{background:var(--background)}.custom-background{background:var(--custom-background)}section,.custom-background{background-position:50%;background-size:cover;block-size:300px;inline-size:100%}
-</style><style>@layer astro-lqip{[data-astro-lqip-bg]{display:contents}[data-astro-lqip]{--opacity:1;--z-index:0;isolation:isolate;block-size:fit-content;inline-size:fit-content;line-height:0;display:inline-block;position:relative;overflow:clip;&:after{z-index:var(--z-index);pointer-events:none;content:"";background:var(--lqip-background);opacity:var(--opacity);background-position:50%;background-size:cover;transition:opacity 1s;position:absolute;inset:0}& img{z-index:1;position:relative}@media (scripting:none){--opacity:0;--z-index:1}}}
-</style><img src="/_astro/pexels-fabianwiktor-3470872.DAdQtAbe_ZJRie8.webp" alt="Volcano no LQIP" loading="lazy" decoding="async" width="450" height="450">
+<img src="/_astro/pexels-fabianwiktor-3470872.DAdQtAbe_ZJRie8.webp" alt="Volcano no LQIP" loading="lazy" decoding="async" width="450" height="450">
 <picture>
 	<source srcset="/_astro/pexels-fabianwiktor-3470872.DAdQtAbe_ZJRie8.webp" type="image/webp">
 	
 	<img src="/_astro/pexels-fabianwiktor-3470872.DAdQtAbe_Z1MFOsv.jpg" alt="Volcano no LQIP in the sunset" loading="lazy" decoding="async" width="450" height="450">
 </picture>
+  </body>
+</html>
