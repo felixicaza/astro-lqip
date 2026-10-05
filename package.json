@@ -16,6 +16,7 @@
     "lint:eslint": "eslint --flag unstable_native_nodejs_ts_config .",
     "lint:fix": "oxlint . --fix --fix-suggestions --fix-dangerously && eslint --flag unstable_native_nodejs_ts_config . --cache --fix",
     "lint:oxlint": "oxlint .",
+    "pre-commit": "pnpm nano-staged && pnpm astro:typecheck && pnpm typecheck",
     "prepare": "simple-git-hooks",
     "prepublishOnly": "pnpm build",
     "preview": "turbo preview",
@@ -24,13 +25,11 @@
     "typecheck:oxlint": "oxlint . --type-aware --type-check"
   },
   "simple-git-hooks": {
-    "pre-commit": "pnpm nano-staged"
+    "pre-commit": "pnpm run pre-commit"
   },
   "nano-staged": {
     "*": [
-      "pnpm lint:fix",
-      "pnpm astro:typecheck",
-      "pnpm typecheck"
+      "pnpm lint:fix"
     ]
   },
   "devDependencies": {
