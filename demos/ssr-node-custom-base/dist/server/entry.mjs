@@ -50,7 +50,7 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 var __toCommonJS = (mod) => __hasOwnProp.call(mod, "module.exports") ? mod["module.exports"] : __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var __require = /* #__PURE__ */ (() => createRequire(import.meta.url))();
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/errors/errors-data.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/errors/errors-data.js
 var ClientAddressNotAvailable = {
 	name: "ClientAddressNotAvailable",
 	title: "`Astro.clientAddress` is not available in current adapter.",
@@ -252,12 +252,12 @@ var CacheNotEnabled = {
 	hint: "Use an adapter that provides a default cache provider, or set one explicitly: `cache: { provider: \"...\" }`. See https://docs.astro.build/en/guides/caching/."
 };
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/errors/utils.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/errors/utils.js
 function normalizeLF(code) {
 	return code.replace(/\r\n|\r(?!\n)|\n/g, "\n");
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/errors/printer.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/errors/printer.js
 function codeFrame(src, loc) {
 	if (!loc || loc.line === void 0 || loc.column === void 0) return "";
 	const lines = normalizeLF(src).split("\n").map((ln) => ln.replace(/\t/g, "  "));
@@ -280,7 +280,7 @@ function codeFrame(src, loc) {
 	return output;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/errors/errors.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/errors/errors.js
 function isAstroError(e) {
 	return e != null && (e instanceof AstroError || AstroError.is(e));
 }
@@ -5343,7 +5343,7 @@ var ZodIssueCode = {
 var ZodFirstPartyTypeKind;
 ZodFirstPartyTypeKind || (ZodFirstPartyTypeKind = {});
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/csp/config.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/csp/config.js
 var ALGORITHMS = {
 	"SHA-256": "sha256-",
 	"SHA-384": "sha384-",
@@ -5429,7 +5429,7 @@ custom((v) => typeof v === "string").superRefine((value, ctx) => {
 	}
 });
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/encryption.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/encryption.js
 var ALGORITHM = "AES-GCM";
 async function decodeKey(encoded) {
 	const bytes = decodeBase64(encoded);
@@ -5466,12 +5466,12 @@ async function generateCspDigest(data, algorithm) {
 	return `${ALGORITHMS[algorithm]}${hash}`;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/middleware/noop-middleware.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/middleware/noop-middleware.js
 var NOOP_MIDDLEWARE_FN = async (_ctx, next) => {
 	return await next();
 };
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/app/manifest.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/app/manifest.js
 function deserializeManifest(serializedManifest, routesList) {
 	const routes = [];
 	if (serializedManifest.routes) for (const serializedRoute of serializedManifest.routes) routes.push({
@@ -5575,7 +5575,7 @@ var renderers = [];
 var pageMap = /* @__PURE__ */ new Map([]);
 //#endregion
 //#region \0virtual:astro:manifest
-var _manifest = deserializeManifest({"rootDir":"file:///home/felixicaza/dev/astro-lqip/demos/ssr-node-custom-base/","cacheDir":"file:///home/felixicaza/dev/astro-lqip/demos/ssr-node-custom-base/node_modules/.astro/","outDir":"file:///home/felixicaza/dev/astro-lqip/demos/ssr-node-custom-base/dist/","srcDir":"file:///home/felixicaza/dev/astro-lqip/demos/ssr-node-custom-base/src/","publicDir":"file:///home/felixicaza/dev/astro-lqip/demos/ssr-node-custom-base/public/","buildClientDir":"file:///home/felixicaza/dev/astro-lqip/demos/ssr-node-custom-base/dist/client/","buildServerDir":"file:///home/felixicaza/dev/astro-lqip/demos/ssr-node-custom-base/dist/server/","adapterName":"@astrojs/node","assetsDir":"_weird-name1","routes":[{"file":"","links":[],"scripts":[],"styles":[],"routeData":{"type":"page","component":"_server-islands.astro","params":["name"],"segments":[[{"content":"_server-islands","dynamic":false,"spread":false}],[{"content":"name","dynamic":true,"spread":false}]],"pattern":"^\\/_server-islands\\/([^/]+?)\\/?$","prerender":false,"isIndex":false,"fallbackRoutes":[],"route":"/_server-islands/[name]","origin":"internal","distURL":[],"_meta":{"trailingSlash":"ignore"}}},{"file":"","links":[],"scripts":[],"styles":[],"routeData":{"route":"/","isIndex":true,"type":"page","pattern":"^\\/$","segments":[],"params":[],"component":"src/pages/index.astro","pathname":"/","prerender":true,"fallbackRoutes":[],"distURL":[],"origin":"project","_meta":{"trailingSlash":"ignore"}}}],"serverLike":true,"middlewareMode":"classic","base":"/new-base","trailingSlash":"ignore","compressHTML":false,"componentMetadata":[["/home/felixicaza/dev/astro-lqip/demos/ssr-node-custom-base/src/pages/index.astro",{"propagation":"none","containsHead":true}]],"renderers":[],"clientDirectives":[["idle","(()=>{var l=(n,t)=>{let i=async()=>{await(await n())()},e=typeof t.value==\"object\"?t.value:void 0,s={timeout:e==null?void 0:e.timeout};\"requestIdleCallback\"in window?window.requestIdleCallback(i,s):setTimeout(i,s.timeout||200)};(self.Astro||(self.Astro={})).idle=l;window.dispatchEvent(new Event(\"astro:idle\"));})();"],["load","(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event(\"astro:load\"));})();"],["media","(()=>{var n=(a,t)=>{let i=async()=>{await(await a())()};if(t.value){let e=matchMedia(t.value);e.matches?i():e.addEventListener(\"change\",i,{once:!0})}};(self.Astro||(self.Astro={})).media=n;window.dispatchEvent(new Event(\"astro:media\"));})();"],["only","(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event(\"astro:only\"));})();"],["visible","(()=>{var a=(s,i,o)=>{let r=async()=>{await(await s())()},t=typeof i.value==\"object\"?i.value:void 0,c={rootMargin:t==null?void 0:t.rootMargin},n=new IntersectionObserver(e=>{for(let l of e)if(l.isIntersecting){n.disconnect(),r();break}},c);for(let e of o.children)n.observe(e)};(self.Astro||(self.Astro={})).visible=a;window.dispatchEvent(new Event(\"astro:visible\"));})();"]],"entryModules":{"\u0000noop-middleware":"virtual_astro_middleware.mjs","\u0000virtual:astro:server-island-manifest":"chunks/_virtual_astro_server-island-manifest_C1Q2srgE.mjs","\u0000virtual:astro:session-driver":"chunks/_virtual_astro_session-driver_BBlqJEPF.mjs","\u0000virtual:astro:actions/noop-entrypoint":"chunks/noop-entrypoint_Z3zFhrGC.mjs","@astrojs/node/server.js":"entry.mjs","virtual:astro:noop":"_weird-name1/_virtual_astro_noop.SBldSjMi.js","astro:scripts/before-hydration.js":""},"inlinedScripts":[],"assets":["/new-base/_weird-name1/pexels-fabianwiktor-3470482.BFMY_gvF.jpg","/new-base/_weird-name1/pexels-fabianwiktor-3470872.DAdQtAbe.jpg","/new-base/index.html"],"buildFormat":"directory","checkOrigin":true,"actionBodySizeLimit":1048576,"serverIslandBodySizeLimit":1048576,"allowedDomains":[],"key":"MGXEyIinNRCy869VSSBxIFNB/WvfVO70UdZnP/gFECY=","sessionConfig":{"driver":"unstorage/drivers/fs-lite","options":{"base":"/home/felixicaza/dev/astro-lqip/demos/ssr-node-custom-base/node_modules/.astro/sessions"}},"image":{},"devToolbar":{"enabled":false,"debugInfoOutput":""},"logLevel":"info","shouldInjectCspMetaTags":false});
+var _manifest = deserializeManifest({"rootDir":"file:///home/felixicaza/dev/astro-lqip/demos/ssr-node-custom-base/","cacheDir":"file:///home/felixicaza/dev/astro-lqip/demos/ssr-node-custom-base/node_modules/.astro/","outDir":"file:///home/felixicaza/dev/astro-lqip/demos/ssr-node-custom-base/dist/","srcDir":"file:///home/felixicaza/dev/astro-lqip/demos/ssr-node-custom-base/src/","publicDir":"file:///home/felixicaza/dev/astro-lqip/demos/ssr-node-custom-base/public/","buildClientDir":"file:///home/felixicaza/dev/astro-lqip/demos/ssr-node-custom-base/dist/client/","buildServerDir":"file:///home/felixicaza/dev/astro-lqip/demos/ssr-node-custom-base/dist/server/","adapterName":"@astrojs/node","assetsDir":"_weird-name1","routes":[{"file":"","links":[],"scripts":[],"styles":[],"routeData":{"type":"page","component":"_server-islands.astro","params":["name"],"segments":[[{"content":"_server-islands","dynamic":false,"spread":false}],[{"content":"name","dynamic":true,"spread":false}]],"pattern":"^\\/_server-islands\\/([^/]+?)\\/?$","prerender":false,"isIndex":false,"fallbackRoutes":[],"route":"/_server-islands/[name]","origin":"internal","distURL":[],"_meta":{"trailingSlash":"ignore"}}},{"file":"","links":[],"scripts":[],"styles":[],"routeData":{"route":"/","isIndex":true,"type":"page","pattern":"^\\/$","segments":[],"params":[],"component":"src/pages/index.astro","pathname":"/","prerender":true,"fallbackRoutes":[],"distURL":[],"origin":"project","_meta":{"trailingSlash":"ignore"}}}],"serverLike":true,"middlewareMode":"classic","base":"/new-base","trailingSlash":"ignore","compressHTML":false,"componentMetadata":[["/home/felixicaza/dev/astro-lqip/demos/ssr-node-custom-base/src/pages/index.astro",{"propagation":"none","containsHead":true}]],"renderers":[],"clientDirectives":[["idle","(()=>{var l=(n,t)=>{let i=async()=>{await(await n())()},e=typeof t.value==\"object\"?t.value:void 0,s={timeout:e==null?void 0:e.timeout};\"requestIdleCallback\"in window?window.requestIdleCallback(i,s):setTimeout(i,s.timeout||200)};(self.Astro||(self.Astro={})).idle=l;window.dispatchEvent(new Event(\"astro:idle\"));})();"],["load","(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event(\"astro:load\"));})();"],["media","(()=>{var n=(a,t)=>{let i=async()=>{await(await a())()};if(t.value){let e=matchMedia(t.value);e.matches?i():e.addEventListener(\"change\",i,{once:!0})}};(self.Astro||(self.Astro={})).media=n;window.dispatchEvent(new Event(\"astro:media\"));})();"],["only","(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event(\"astro:only\"));})();"],["visible","(()=>{var a=(s,i,o)=>{let r=async()=>{await(await s())()},t=typeof i.value==\"object\"?i.value:void 0,c={rootMargin:t==null?void 0:t.rootMargin},n=new IntersectionObserver(e=>{for(let l of e)if(l.isIntersecting){n.disconnect(),r();break}},c);for(let e of o.children)n.observe(e)};(self.Astro||(self.Astro={})).visible=a;window.dispatchEvent(new Event(\"astro:visible\"));})();"]],"entryModules":{"\u0000noop-middleware":"virtual_astro_middleware.mjs","\u0000virtual:astro:server-island-manifest":"chunks/_virtual_astro_server-island-manifest_C1Q2srgE.mjs","\u0000virtual:astro:session-driver":"chunks/_virtual_astro_session-driver_BBlqJEPF.mjs","\u0000virtual:astro:actions/noop-entrypoint":"chunks/noop-entrypoint_Z3zFhrGC.mjs","@astrojs/node/server.js":"entry.mjs","virtual:astro:noop":"_weird-name1/_virtual_astro_noop.SBldSjMi.js","astro:scripts/before-hydration.js":""},"inlinedScripts":[],"assets":["/new-base/_weird-name1/pexels-fabianwiktor-3470482.BFMY_gvF.jpg","/new-base/_weird-name1/pexels-fabianwiktor-3470872.DAdQtAbe.jpg","/new-base/index.html"],"buildFormat":"directory","checkOrigin":true,"actionBodySizeLimit":1048576,"serverIslandBodySizeLimit":1048576,"allowedDomains":[],"key":"eGf7TFf1Wmxi/fkOBYHhoBxDFkW8m8KSfgu3Q+fz6Vw=","sessionConfig":{"driver":"unstorage/drivers/fs-lite","options":{"base":"/home/felixicaza/dev/astro-lqip/demos/ssr-node-custom-base/node_modules/.astro/sessions"}},"image":{},"devToolbar":{"enabled":false,"debugInfoOutput":""},"logLevel":"info","shouldInjectCspMetaTags":false});
 var manifestRoutes = _manifest.routes;
 var manifest = Object.assign(_manifest, {
 	renderers,
@@ -5592,7 +5592,7 @@ function getAmbientManifest() {
 	return manifest$1;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/app/render-options.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/app/render-options.js
 var renderOptionsSymbol = /* @__PURE__ */ Symbol.for("astro.renderOptions");
 function getRenderOptions(request) {
 	return Reflect.get(request, renderOptionsSymbol);
@@ -5601,12 +5601,12 @@ function setRenderOptions(request, options) {
 	Reflect.set(request, renderOptionsSymbol, options);
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/middleware/defineMiddleware.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/middleware/defineMiddleware.js
 function defineMiddleware(fn) {
 	return fn;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/app/origin-check.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/app/origin-check.js
 var FORM_CONTENT_TYPES = [
 	"application/x-www-form-urlencoded",
 	"multipart/form-data",
@@ -5641,7 +5641,7 @@ function hasFormLikeHeader(contentType) {
 	return false;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/fetch/features.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/fetch/features.js
 var FetchFeatures = {
 	redirects: 1,
 	sessions: 2,
@@ -6321,7 +6321,7 @@ function stringify_primitive(thing) {
 	return String(thing);
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/build/util.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/build/util.js
 function shouldAppendForwardSlash(trailingSlash, buildFormat) {
 	switch (trailingSlash) {
 		case "always": return true;
@@ -6492,7 +6492,7 @@ var ACTION_QUERY_PARAMS = {
 	actionPayload: "_astroActionPayload"
 };
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/actions/runtime/client.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/actions/runtime/client.js
 var codeToStatusMap = {
 	BAD_REQUEST: 400,
 	UNAUTHORIZED: 401,
@@ -6639,7 +6639,7 @@ function getActionQueryString(name) {
 	return `?${new URLSearchParams({ [ACTION_QUERY_PARAMS.actionName]: name }).toString()}`;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/actions/utils.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/actions/utils.js
 function hasActionPayload(locals) {
 	return "_actionPayload" in locals;
 }
@@ -6863,7 +6863,7 @@ function defaultEncode(str) {
 	return cookieOctetRegExp.test(str) ? str : encodeURIComponent(str);
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/cookies/cookies.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/cookies/cookies.js
 var DELETED_EXPIRATION = /* @__PURE__ */ new Date(0);
 var DELETED_VALUE = "deleted";
 var responseSentSymbol = /* @__PURE__ */ Symbol.for("astro.responseSent");
@@ -7039,7 +7039,7 @@ var AstroCookies = class {
 	}
 };
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/cookies/response.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/cookies/response.js
 var astroCookiesSymbol = /* @__PURE__ */ Symbol.for("astro.cookies");
 function attachCookiesToResponse(response, cookies) {
 	Reflect.set(response, astroCookiesSymbol, cookies);
@@ -7056,7 +7056,7 @@ function* getSetCookiesFromResponse(response) {
 	return [];
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/i18n/path.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/i18n/path.js
 function pathHasLocale(path, locales) {
 	const segments = path.split("/").map(normalizeThePath);
 	for (const segment of segments) for (const locale of locales) if (typeof locale === "string") {
@@ -7071,7 +7071,7 @@ function normalizeThePath(path) {
 	return path.endsWith(".html") ? path.slice(0, -5) : path;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/i18n/error-routes.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/i18n/error-routes.js
 function isLocalizedErrorRoute(route, status, locales) {
 	if (!locales) return false;
 	const suffix = `/${status}`;
@@ -7092,7 +7092,7 @@ function getErrorRoutePath(pathname, status, routes, locales, appendTrailingSlas
 	return `/${status}${suffix}`;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/internal/route-errors.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/internal/route-errors.js
 var ROUTE404_RE = /^\/404\/?$/;
 var ROUTE500_RE = /^\/500\/?$/;
 function isRoute404(route) {
@@ -7102,7 +7102,7 @@ function isRoute500(route) {
 	return ROUTE500_RE.test(route);
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/helpers.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/helpers.js
 function routeIsRedirect(route) {
 	return route?.type === "redirect";
 }
@@ -7139,7 +7139,7 @@ function routeHasHtmlExtension(route) {
 	return route.segments.some((segment) => segment.some((part) => !part.dynamic && part.content.includes(".html")));
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/redirects/component.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/redirects/component.js
 var RedirectComponentInstance = { default() {
 	return new Response(null, { status: 301 });
 } };
@@ -7148,7 +7148,7 @@ var RedirectSinglePageBuiltModule = {
 	onRequest: (_, next) => next()
 };
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/assets/utils/getAssetsPrefix.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/assets/utils/getAssetsPrefix.js
 function getAssetsPrefix(fileExtension, assetsPrefix) {
 	let prefix = "";
 	if (!assetsPrefix) prefix = "";
@@ -7157,7 +7157,7 @@ function getAssetsPrefix(fileExtension, assetsPrefix) {
 	return prefix;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/render/ssr-element.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/render/ssr-element.js
 var URL_PARSE_BASE = "https://astro.build";
 function splitAssetPath(path) {
 	const parsed = new URL(path, URL_PARSE_BASE);
@@ -7216,7 +7216,7 @@ function createModuleScriptElementWithSrc(src, base, assetsPrefix, queryParams) 
 	};
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/manifest/memo.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/manifest/memo.js
 function createManifestMemo(derive) {
 	const cache = /* @__PURE__ */ new WeakMap();
 	return {
@@ -7257,7 +7257,7 @@ function createAsyncManifestMemo(derive) {
 	};
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/endpoint.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/endpoint.js
 async function renderEndpoint(mod, context, isPrerendered, logger, state) {
 	const { request, url } = context;
 	const method = request.method.toUpperCase();
@@ -7282,7 +7282,7 @@ Found handlers: ${Object.keys(mod).map((exp) => JSON.stringify(exp)).join(", ")}
 	return response;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/util.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/util.js
 function isPromise(value) {
 	return typeof value === "object" && value !== null && typeof value.then === "function";
 }
@@ -7299,7 +7299,7 @@ async function* streamAsyncIterator(stream) {
 	}
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/escape.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/escape.js
 var ESCAPABLE = /[&<>'"]/g;
 function entityFor(code) {
 	switch (code) {
@@ -7376,12 +7376,12 @@ function isVNode(vnode) {
 	return vnode && typeof vnode === "object" && vnode["astro:jsx"];
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/head-propagation/resolver.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/head-propagation/resolver.js
 function isPropagatingHint(hint) {
 	return hint === "self" || hint === "in-tree";
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/astro/factory.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/astro/factory.js
 function isAstroComponentFactory(obj) {
 	return obj == null ? false : obj.isAstroComponentFactory === true;
 }
@@ -7401,7 +7401,7 @@ function clsx() {
 	return n;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/serialize.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/serialize.js
 var PROP_TYPE = {
 	Value: 0,
 	JSON: 1,
@@ -7462,7 +7462,7 @@ function serializeProps(props, metadata) {
 	return JSON.stringify(serializeObject(props, metadata));
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/hydration.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/hydration.js
 var transitionDirectivesToCopyOnIsland = /* @__PURE__ */ new Set([
 	"data-astro-transition-scope",
 	"data-astro-transition-persist",
@@ -7548,7 +7548,7 @@ async function generateHydrateScript(scriptOptions, metadata) {
 	return island;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/shorthash.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/shorthash.js
 /**
 * shortdash - https://github.com/bibig/node-shorthash
 *
@@ -7606,7 +7606,7 @@ function shorthash(text) {
 	return sign + result;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/astro/head-and-content.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/astro/head-and-content.js
 var headAndContentSym = /* @__PURE__ */ Symbol.for("astro.headAndContent");
 function isHeadAndContent(obj) {
 	return typeof obj === "object" && obj !== null && !!obj[headAndContentSym];
@@ -7615,16 +7615,16 @@ function createThinHead() {
 	return { [headAndContentSym]: true };
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/astro-island.prebuilt.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/astro-island.prebuilt.js
 var astro_island_prebuilt_default = `(()=>{var g=Object.defineProperty;var w=(a,s,c)=>s in a?g(a,s,{enumerable:!0,configurable:!0,writable:!0,value:c}):a[s]=c;var l=(a,s,c)=>w(a,typeof s!="symbol"?s+"":s,c);var E=new Set(["__proto__","constructor","prototype"]);{let a={0:t=>y(t),1:t=>c(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(c(t)),5:t=>new Set(c(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>Number.POSITIVE_INFINITY*t},s=t=>{let[p,e]=t;return p in a?a[p](e):void 0},c=t=>t.map(s),y=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([p,e])=>[p,s(e)]));class f extends HTMLElement{constructor(){super(...arguments);l(this,"Component");l(this,"hydrator");l(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let r=this.querySelectorAll("astro-slot"),n={},d=this.querySelectorAll("template[data-astro-template]");for(let o of d){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("data-astro-template")||"default"]=o.innerHTML,o.remove())}for(let o of r){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("name")||"default"]=o.innerHTML)}let u;try{u=this.hasAttribute("props")?y(JSON.parse(this.getAttribute("props"))):{}}catch(o){let i=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(i+=\` (export \${v})\`),console.error(\`[hydrate] Error parsing props for component \${i}\`,this.getAttribute("props"),o),o}let h;await this.hydrator(this)(this.Component,u,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});l(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),r.disconnect(),this.childrenConnectedCallback()},r=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});r.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}getRetryImportUrl(e){let r=new URL(e,document.baseURI);return r.searchParams.set("astro-retry",Date.now().toString()),r.toString()}async importWithRetry(e){try{return await import(e)}catch(r){return await new Promise(n=>setTimeout(n,1e3)),import(this.getRetryImportUrl(e))}}handleHydrationError(e){let r=this.getAttribute("component-url"),n=new CustomEvent("astro:hydration-error",{cancelable:!0,bubbles:!0,composed:!0,detail:{error:e,componentUrl:r}});this.dispatchEvent(n)&&console.error(\`[astro-island] Error hydrating \${r}\`,e)}async start(){let e=JSON.parse(this.getAttribute("opts")),r=this.getAttribute("client");if(Astro[r]===void 0){window.addEventListener(\`astro:\${r}\`,()=>this.start(),{once:!0});return}try{await Astro[r](async()=>{let n=this.getAttribute("renderer-url");try{let[d,{default:u}]=await Promise.all([this.importWithRetry(this.getAttribute("component-url")),n?this.importWithRetry(n):Promise.resolve({default:()=>()=>{}})]),h=this.getAttribute("component-export")||"default";if(h.includes(".")){this.Component=d;for(let m of h.split(".")){if(E.has(m)||!this.Component||typeof this.Component!="object"&&typeof this.Component!="function"||!Object.hasOwn(this.Component,m))throw new Error(\`Invalid component export path: \${h}\`);this.Component=this.Component[m]}}else{if(E.has(h))throw new Error(\`Invalid component export path: \${h}\`);this.Component=d[h]}return this.hydrator=u,this.hydrate}catch(d){return this.handleHydrationError(d),()=>{}}},e,this)}catch(n){this.handleHydrationError(n)}}attributeChangedCallback(){this.hydrate()}}l(f,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",f)}})();`;
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/astro-island.prebuilt-dev.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/astro-island.prebuilt-dev.js
 var astro_island_prebuilt_dev_default = `(()=>{var g=Object.defineProperty;var w=(c,s,d)=>s in c?g(c,s,{enumerable:!0,configurable:!0,writable:!0,value:d}):c[s]=d;var l=(c,s,d)=>w(c,typeof s!="symbol"?s+"":s,d);var E=new Set(["__proto__","constructor","prototype"]);{let c={0:t=>y(t),1:t=>d(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(d(t)),5:t=>new Set(d(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>Number.POSITIVE_INFINITY*t},s=t=>{let[p,e]=t;return p in c?c[p](e):void 0},d=t=>t.map(s),y=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([p,e])=>[p,s(e)]));class f extends HTMLElement{constructor(){super(...arguments);l(this,"Component");l(this,"hydrator");l(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let r=this.querySelectorAll("astro-slot"),n={},h=this.querySelectorAll("template[data-astro-template]");for(let o of h){let a=o.closest(this.tagName);a!=null&&a.isSameNode(this)&&(n[o.getAttribute("data-astro-template")||"default"]=o.innerHTML,o.remove())}for(let o of r){let a=o.closest(this.tagName);a!=null&&a.isSameNode(this)&&(n[o.getAttribute("name")||"default"]=o.innerHTML)}let m;try{m=this.hasAttribute("props")?y(JSON.parse(this.getAttribute("props"))):{}}catch(o){let a=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(a+=\` (export \${v})\`),console.error(\`[hydrate] Error parsing props for component \${a}\`,this.getAttribute("props"),o),o}let i,u=this.hydrator(this);i=performance.now(),await u(this.Component,m,n,{client:this.getAttribute("client")}),i&&this.setAttribute("client-render-time",(performance.now()-i).toString()),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});l(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),r.disconnect(),this.childrenConnectedCallback()},r=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});r.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}getRetryImportUrl(e){let r=new URL(e,document.baseURI);return r.searchParams.set("astro-retry",Date.now().toString()),r.toString()}async importWithRetry(e){try{return await import(e)}catch(r){return await new Promise(n=>setTimeout(n,1e3)),import(this.getRetryImportUrl(e))}}handleHydrationError(e){let r=this.getAttribute("component-url"),n=new CustomEvent("astro:hydration-error",{cancelable:!0,bubbles:!0,composed:!0,detail:{error:e,componentUrl:r}});this.dispatchEvent(n)&&console.error(\`[astro-island] Error hydrating \${r}\`,e)}async start(){let e=JSON.parse(this.getAttribute("opts")),r=this.getAttribute("client");if(Astro[r]===void 0){window.addEventListener(\`astro:\${r}\`,()=>this.start(),{once:!0});return}try{await Astro[r](async()=>{let n=this.getAttribute("renderer-url");try{let[h,{default:m}]=await Promise.all([this.importWithRetry(this.getAttribute("component-url")),n?this.importWithRetry(n):Promise.resolve({default:()=>()=>{}})]),i=this.getAttribute("component-export")||"default";if(i.includes(".")){this.Component=h;for(let u of i.split(".")){if(E.has(u)||!this.Component||typeof this.Component!="object"&&typeof this.Component!="function"||!Object.hasOwn(this.Component,u))throw new Error(\`Invalid component export path: \${i}\`);this.Component=this.Component[u]}}else{if(E.has(i))throw new Error(\`Invalid component export path: \${i}\`);this.Component=h[i]}return this.hydrator=m,this.hydrate}catch(h){return this.handleHydrationError(h),()=>{}}},e,this)}catch(n){this.handleHydrationError(n)}}attributeChangedCallback(){this.hydrate()}}l(f,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",f)}})();`;
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/astro-island-styles.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/astro-island-styles.js
 var ISLAND_STYLES = "astro-island,astro-slot,astro-static-slot{display:contents}";
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/scripts.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/scripts.js
 function determineIfNeedsHydrationScript(result) {
 	if (result._metadata.templateDepth > 0) return !result._metadata.hasHydrationScript;
 	if (result._metadata.hasHydrationScript) return false;
@@ -7648,7 +7648,7 @@ function getPrescripts(result, type, directive) {
 	}
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/head-propagation/buffer.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/head-propagation/buffer.js
 async function collectPropagatedHeadParts(input) {
 	const collectedHeadParts = [];
 	const pendingSlotEvaluations = input.result._metadata?.pendingSlotEvaluations ?? [];
@@ -7667,7 +7667,7 @@ async function collectPropagatedHeadParts(input) {
 	return collectedHeadParts;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/head-propagation/policy.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/head-propagation/policy.js
 function shouldRenderHeadInstruction(state) {
 	return !state.hasRenderedHead && !state.partial;
 }
@@ -7678,7 +7678,7 @@ function shouldRenderInstruction$1(type, state) {
 	return type === "head" ? shouldRenderHeadInstruction(state) : shouldRenderMaybeHeadInstruction(state);
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/head-propagation/runtime.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/head-propagation/runtime.js
 function registerIfPropagating(result, factory, instance) {
 	if (factory.propagation === "self" || factory.propagation === "in-tree") {
 		result._metadata.propagators.add(instance);
@@ -7708,7 +7708,7 @@ function getInstructionRenderState(result) {
 	};
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/csp/runtime.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/csp/runtime.js
 function normalizeCspResourceEntry(entry) {
 	if (typeof entry === "string") return {
 		resource: entry,
@@ -7779,7 +7779,7 @@ function pushDirective(directives, newDirective) {
 	return finalDirectives;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/csp.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/csp.js
 function renderCspContent(result) {
 	const { scriptDirective, styleDirective, directives } = result;
 	const script = partitionByKind(scriptDirective);
@@ -7834,7 +7834,7 @@ function renderSpecificDirective(name, resources, defaultResource, sharedHashes,
 	return `${name} ${[finalResources, ...hashes].filter(Boolean).join(" ")}${suffix};`;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/instruction.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/instruction.js
 var RenderInstructionSymbol = /* @__PURE__ */ Symbol.for("astro:render");
 function createRenderInstruction(instruction) {
 	instruction[RenderInstructionSymbol] = true;
@@ -7847,7 +7847,7 @@ function isScriptInstruction(chunk) {
 	return chunk && typeof chunk === "object" && "type" in chunk && chunk.type === "script";
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/util.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/util.js
 var voidElementNames = /^(area|base|br|col|command|embed|hr|img|input|keygen|link|meta|param|source|track|wbr)$/i;
 var htmlBooleanAttributes = /^(?:allowfullscreen|async|autofocus|autoplay|checked|controls|default|defer|disabled|disablepictureinpicture|disableremoteplayback|formnovalidate|inert|loop|muted|nomodule|novalidate|open|playsinline|readonly|required|reversed|scoped|seamless|selected|itemscope)$/i;
 var AMPERSAND_REGEX = /&/g;
@@ -8015,7 +8015,7 @@ function promiseWithResolvers() {
 	};
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/head.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/head.js
 function stablePropsKey(props) {
 	const keys = Object.keys(props).sort();
 	let result = "{";
@@ -8068,10 +8068,10 @@ function maybeRenderHead() {
 	return MAYBE_HEAD_INSTRUCTION;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/server-islands-shared.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/server-islands-shared.js
 var SERVER_ISLAND_START = "[if astro]>server-island-start<![endif]";
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/astro/render-template.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/astro/render-template.js
 var renderTemplateResultSym = /* @__PURE__ */ Symbol.for("astro.renderTemplateResult");
 var markedHtmlParts = /* @__PURE__ */ new WeakMap();
 function markHtmlParts(htmlParts) {
@@ -8153,7 +8153,7 @@ function renderTemplate(htmlParts, ...expressions) {
 	return new RenderTemplateResult(htmlParts, expressions);
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/slot.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/slot.js
 var slotString = /* @__PURE__ */ Symbol.for("astro:slot-string");
 var SlotString = class extends HTMLString {
 	instructions;
@@ -8253,7 +8253,7 @@ function createSlotValueFromString(content) {
 	};
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/server-islands.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/server-islands.js
 var internalProps = /* @__PURE__ */ new Set([
 	"server:component-path",
 	"server:component-export",
@@ -8390,7 +8390,7 @@ var SERVER_ISLAND_REPLACER = markHTMLString(`async function replaceServerIsland(
 	s.remove();
 }`.split("\n").map((line) => line.trim()).filter((line) => line && !line.startsWith("//")).join(" "));
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/common.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/common.js
 var Fragment = /* @__PURE__ */ Symbol.for("astro:fragment");
 var Renderer = /* @__PURE__ */ Symbol.for("astro:renderer");
 var encoder = new TextEncoder();
@@ -8475,7 +8475,7 @@ function isRenderInstance(obj) {
 	return typeof obj === "object" && obj !== null && typeof obj.render === "function";
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/any.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/any.js
 function renderChild(destination, child) {
 	if (typeof child === "string") {
 		destination.write(markHTMLString(escapeHTML(child)));
@@ -8547,7 +8547,7 @@ async function renderAsyncIterable(destination, children) {
 	for await (const value of children) await renderChild(destination, value);
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/astro/instance.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/astro/instance.js
 var astroComponentInstanceSym = /* @__PURE__ */ Symbol.for("astro.componentInstance");
 var CLIENT_DIRECTIVE_PREFIX = "client:";
 var AstroComponentInstance = class {
@@ -8609,7 +8609,7 @@ function isAstroComponentInstance(obj) {
 	return typeof obj === "object" && obj !== null && !!obj[astroComponentInstanceSym];
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/streaming.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/streaming.js
 var ClientOnlyPlaceholder$1 = "astro-client-only";
 var TemplateFrame = class {
 	/** The RenderTemplateResult this frame walks. */
@@ -8824,7 +8824,7 @@ Did you forget to import the component or is it possible there is a typo?`);
 	}
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/astro/render.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/astro/render.js
 var DOCTYPE_EXP = /<!doctype html/i;
 async function renderStreamToString(result, templateResult, isPage) {
 	let str = "";
@@ -9023,7 +9023,7 @@ function toPromise(fn) {
 	}
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/dom.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/dom.js
 function componentIsHTMLElement(Component) {
 	return typeof HTMLElement !== "undefined" && HTMLElement.isPrototypeOf(Component);
 }
@@ -9042,7 +9042,7 @@ function getHTMLElementName(constructor) {
 	return constructor.name.replace(/^HTML|Element$/g, "").replace(/[A-Z]/g, "-$&").toLowerCase().replace(/^-/, "html-");
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/component.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/component.js
 var needsHeadRenderingSymbol = /* @__PURE__ */ Symbol.for("astro.needsHeadRendering");
 var rendererAliases = /* @__PURE__ */ new Map([["solid", "solid-js"]]);
 var clientOnlyValues = /* @__PURE__ */ new Set([
@@ -9334,7 +9334,7 @@ function nonAstroPageNeedsHeadInjection(pageComponent) {
 	return !!pageComponent?.[needsHeadRenderingSymbol];
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/jsx.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/jsx.js
 var ClientOnlyPlaceholder = "astro-client-only";
 var hasTriedRenderComponentSymbol = /* @__PURE__ */ Symbol("hasTriedRenderComponent");
 async function renderJSX(result, vnode) {
@@ -9429,7 +9429,7 @@ function prerenderElementChildren(tag, children) {
 	return children;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/page.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/render/page.js
 async function renderPage(result, componentFactory, props, children, streaming, route) {
 	if (!isAstroComponentFactory(componentFactory)) {
 		const nonAstroMeta = result.componentMetadata.get(componentFactory.moduleId);
@@ -9492,7 +9492,7 @@ Object.freeze(createRenderInstruction({ type: "template-exit" }));
 "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_".split("").reduce((v, c) => (v[c.charCodeAt(0)] = c, v), []);
 "-0123456789_".split("").reduce((v, c) => (v[c.charCodeAt(0)] = c, v), []);
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/index.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/runtime/server/index.js
 function spreadAttributes(values = {}, _name, { class: scopedClassName } = {}) {
 	let output = "";
 	if (scopedClassName) {
@@ -9504,7 +9504,7 @@ function spreadAttributes(values = {}, _name, { class: scopedClassName } = {}) {
 	return markHTMLString(output);
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/request-body.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/request-body.js
 async function readBodyWithLimit(request, limit) {
 	const contentLengthHeader = request.headers.get("content-length");
 	if (contentLengthHeader) {
@@ -9541,7 +9541,7 @@ var BodySizeLimitError = class extends Error {
 	}
 };
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/pattern.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/pattern.js
 function getPattern(segments, base, addTrailingSlash) {
 	const pathname = segments.map((segment) => {
 		if (segment.length === 1 && segment[0].spread) return "(?:\\/(.*?))?";
@@ -9562,7 +9562,7 @@ function getTrailingSlashPattern(addTrailingSlash) {
 	return "\\/?$";
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/server-islands/endpoint.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/server-islands/endpoint.js
 var SERVER_ISLAND_ROUTE = "/_server-islands/[name]";
 var SERVER_ISLAND_COMPONENT = "_server-islands.astro";
 function badRequest(reason) {
@@ -9704,7 +9704,7 @@ var pe = (m) => esca[m];
 */
 var escape = (es) => replace.call(es, ca, pe);
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/template/4xx.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/template/4xx.js
 function template({ title, pathname, statusCode = 404, tabTitle, body }) {
 	return `<!doctype html>
 <html lang="en">
@@ -9798,7 +9798,7 @@ function template({ title, pathname, statusCode = 404, tabTitle, body }) {
 </html>`;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/internal/astro-designed-error-pages.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/internal/astro-designed-error-pages.js
 var DEFAULT_404_ROUTE = {
 	component: DEFAULT_404_COMPONENT,
 	params: [],
@@ -9831,7 +9831,7 @@ async function default404Page({ pathname }) {
 default404Page.isAstroComponentFactory = true;
 var default404Instance = { default: default404Page };
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/default.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/default.js
 function createDefaultRoutes(manifest) {
 	const root = new URL(manifest.rootDir);
 	return [{
@@ -9851,7 +9851,7 @@ function getDefaultRoutes(manifest) {
 	return defaultRoutesMemo.get(manifest);
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/request.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/request.js
 function createRequest({ url, headers, method = "GET", body = void 0, logger, isPrerendered = false, routePattern, init }) {
 	const headersObj = isPrerendered ? void 0 : headers instanceof Headers ? headers : new Headers(Object.entries(headers).filter(([name]) => !name.startsWith(":")));
 	if (typeof url === "string") url = new URL(url);
@@ -9879,7 +9879,7 @@ function createRequest({ url, headers, method = "GET", body = void 0, logger, is
 	return request;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/util/pathname.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/util/pathname.js
 var MultiLevelEncodingError = class extends Error {
 	constructor() {
 		super("URL encoding depth exceeded the maximum number of decode iterations");
@@ -9908,7 +9908,7 @@ function validateAndDecodePathname(pathname) {
 	return decoded;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/rewrite.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/rewrite.js
 function findRouteToRewrite({ payload, routes, request, trailingSlash, buildFormat, base, outDir }) {
 	let newUrl = void 0;
 	if (payload instanceof URL) newUrl = payload;
@@ -10020,7 +10020,7 @@ function normalizeRewritePathname(urlPathname, base, trailingSlash, buildFormat)
 	};
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/environment/production.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/environment/production.js
 async function getModuleForRoute(manifest, route) {
 	for (const defaultRoute of getDefaultRoutes(manifest)) if (route.component === defaultRoute.component) return { page: () => Promise.resolve(defaultRoute.instance) };
 	let routeToProcess = route;
@@ -10094,13 +10094,13 @@ var productionEnvironment = {
 	logRequest() {}
 };
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/environment/index.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/environment/index.js
 var environments = /* @__PURE__ */ new WeakMap();
 function getEnvironment(manifest) {
 	return environments.get(manifest) ?? productionEnvironment;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/logger/core.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/logger/core.js
 var dateTimeFormat = new Intl.DateTimeFormat([], {
 	hour: "2-digit",
 	minute: "2-digit",
@@ -10245,12 +10245,12 @@ function astroToRuntimeLogger(logger) {
 	};
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/logger/public.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/logger/public.js
 function matchesLevel(messageLevel, configuredLevel) {
 	return levels[messageLevel] >= levels[configuredLevel];
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/logger/impls/console.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/logger/impls/console.js
 function consoleLogDestination(config = {}) {
 	const { level = "info" } = config;
 	return { write(event) {
@@ -10268,7 +10268,7 @@ function createConsoleLogger({ level }) {
 	});
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/logger/manifest-logger.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/logger/manifest-logger.js
 var loggers = /* @__PURE__ */ new WeakMap();
 function getLogger(manifest) {
 	let logger = loggers.get(manifest);
@@ -10292,7 +10292,7 @@ function getResolvedLogger(manifest) {
 	return resolvedLogger.get(manifest);
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/generator.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/generator.js
 function sanitizeParams(params) {
 	return Object.fromEntries(Object.entries(params).map(([key, value]) => {
 		if (typeof value === "string") return [key, value.normalize().replace(/#/g, "%23").replace(/\?/g, "%3F")];
@@ -10320,7 +10320,7 @@ function getRouteGenerator(segments, addTrailingSlash) {
 	};
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/internal/validation.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/internal/validation.js
 var VALID_PARAM_TYPES = ["string", "undefined"];
 function validateGetStaticPathsParameter([key, value], route) {
 	if (!VALID_PARAM_TYPES.includes(typeof value)) throw new AstroError({
@@ -10330,7 +10330,7 @@ function validateGetStaticPathsParameter([key, value], route) {
 	});
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/params.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/params.js
 function stringifyParams(params, route, trailingSlash) {
 	if (route.type === "endpoint" && hasFileExtension(route.route)) trailingSlash = "never";
 	const validatedParams = {};
@@ -10341,7 +10341,7 @@ function stringifyParams(params, route, trailingSlash) {
 	return getRouteGenerator(route.segments, trailingSlash)(validatedParams);
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/validation.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/validation.js
 function validateDynamicRouteModule(mod, { ssr, route }) {
 	if ((!ssr || route.prerender) && route.origin !== "internal" && !mod.getStaticPaths) throw new AstroError({
 		...GetStaticPathsRequired,
@@ -10366,7 +10366,7 @@ function validateGetStaticPathsResult(result, route) {
 	});
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/render/paginate.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/render/paginate.js
 function generatePaginateFunction(routeMatch, base, trailingSlash) {
 	return function paginateUtility(data, args = {}) {
 		const generate = getRouteGenerator(routeMatch.segments, trailingSlash);
@@ -10440,7 +10440,7 @@ function addRouteBase(route, base) {
 	return routeWithBase;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/render/route-cache.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/render/route-cache.js
 async function callGetStaticPaths({ mod, route, routeCache, ssr, base, trailingSlash }) {
 	const cached = routeCache.get(route);
 	if (!mod) throw new Error("This is an error caused by Astro and not your code. Please file an issue.");
@@ -10513,7 +10513,7 @@ function findPathItemByKey(staticPaths, params, route, logger, trailingSlash) {
 	logger.debug("router", `findPathItemByKey() - Unexpected cache miss looking for ${paramsKey}`);
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/render/params-and-props.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/render/params-and-props.js
 async function getProps(opts) {
 	const { logger, mod, routeData: route, routeCache, pathname, serverLike, base, trailingSlash } = opts;
 	if (!route || route.pathname) return {};
@@ -10568,7 +10568,7 @@ function validatePrerenderEndpointCollision(route, mod, params) {
 	}
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/render/slots.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/render/slots.js
 function getFunctionExpression(slot) {
 	if (!slot) return;
 	const expressions = slot?.expressions?.filter((e) => isRenderInstruction(e) === false || isRenderTemplateResult(e));
@@ -10622,7 +10622,7 @@ var Slots = class {
 	}
 };
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/i18n/fallback.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/i18n/fallback.js
 function computeFallbackRoute(options) {
 	const { pathname, responseStatus, fallback, fallbackType, locales, defaultLocale, strategy } = options;
 	if (responseStatus !== 404) return { type: "none" };
@@ -10653,7 +10653,7 @@ function computeFallbackRoute(options) {
 	};
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/i18n/router.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/i18n/router.js
 var I18nRouter = class {
 	#strategy;
 	#defaultLocale;
@@ -10750,7 +10750,7 @@ var I18nRouter = class {
 	}
 };
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/i18n/handler.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/i18n/handler.js
 function compileI18n(i18n, base, trailingSlash, format) {
 	return {
 		config: i18n,
@@ -10848,7 +10848,7 @@ async function finalizeI18n(compiled, state, response) {
 	return response;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/i18n/index.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/i18n/index.js
 function getPathByLocale(locale, locales) {
 	for (const loopLocale of locales) if (typeof loopLocale === "string") {
 		if (loopLocale === locale) return loopLocale;
@@ -10862,7 +10862,7 @@ function getAllCodes(locales) {
 	return result;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/i18n/utils.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/i18n/utils.js
 function parseLocale(header) {
 	if (header === "*") return [{
 		locale: header,
@@ -10962,13 +10962,13 @@ function computeCurrentLocaleFromParams(params, locales) {
 	}
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/app/prepare-response.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/app/prepare-response.js
 function prepareResponse(response, { addCookieHeader }) {
 	if (addCookieHeader) for (const setCookieHeaderValue of getSetCookiesFromResponse(response)) response.headers.append("set-cookie", setCookieHeaderValue);
 	Reflect.set(response, responseSentSymbol$1, true);
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/pages/handler.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/pages/handler.js
 var EMPTY_SLOTS = Object.freeze({});
 async function handlePages(state, ctx) {
 	const { logger, streaming } = state;
@@ -11007,7 +11007,7 @@ async function handlePages(state, ctx) {
 	return response;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/match.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/match.js
 function matchRoute$1(pathname, manifest) {
 	if (isRoute404(pathname)) {
 		const errorRoute = manifest.routes.find((route) => isRoute404(route.route));
@@ -11028,13 +11028,13 @@ function isRouteServerIsland(route) {
 	return route.component === SERVER_ISLAND_COMPONENT;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/astro-designed-error-pages.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/astro-designed-error-pages.js
 function ensure404Route(manifest) {
 	if (!manifest.routes.some((route) => route.route === "/404")) manifest.routes.push(DEFAULT_404_ROUTE);
 	return manifest;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/priority.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/priority.js
 function routeComparator(a, b) {
 	const commonLength = Math.min(a.segments.length, b.segments.length);
 	for (let index = 0; index < commonLength; index++) {
@@ -11068,7 +11068,7 @@ function routeComparator(a, b) {
 	return a.route.localeCompare(b.route);
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/router.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/router.js
 var Router = class {
 	#routes;
 	#base;
@@ -11181,7 +11181,7 @@ function normalizeFileFormatPathname(pathname) {
 	return pathname;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/route-table.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/route-table.js
 function compileRouteTable(manifest, routes) {
 	const routesList = ensure404Route({ routes });
 	const router = new Router(routesList.routes, {
@@ -11210,7 +11210,7 @@ function matchAllRoutes(manifest, pathname) {
 	return getRouteTable(manifest).router.matchAll(pathname, { allowWithoutBase: true });
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/session/driver.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/session/driver.js
 var sessionDriverMemo = createAsyncManifestMemo(async (manifest) => {
 	if (manifest.sessionDriver) return (await manifest.sessionDriver())?.default || null;
 	return null;
@@ -11639,7 +11639,7 @@ async function dispose(driver) {
 	if (typeof driver.dispose === "function") await asyncCall(driver.dispose);
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/session/runtime.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/session/runtime.js
 var PERSIST_SYMBOL = /* @__PURE__ */ Symbol();
 var DEFAULT_COOKIE_NAME = "astro-session";
 var VALID_COOKIE_REGEX = /^[\w-]+$/;
@@ -11943,7 +11943,7 @@ var AstroSession = class AstroSession {
 	}
 };
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/session/handler.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/session/handler.js
 var SESSION_KEY = "session";
 function provideSession(state) {
 	markFeatureUsed(state.manifest, FetchFeatures.sessions);
@@ -12010,7 +12010,7 @@ function matchPathname(url, pathname, allowWildcard = false) {
 	return false;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/app/validate-headers.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/app/validate-headers.js
 function getFirstForwardedValue(multiValueHeader) {
 	return multiValueHeader?.toString().split(",").map((e) => e.trim())[0];
 }
@@ -12071,7 +12071,7 @@ function validateForwardedHeaders(forwardedProtocol, forwardedHost, forwardedPor
 	return result;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/output-filename.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/output-filename.js
 var STATUS_CODE_PAGES = /* @__PURE__ */ new Set(["/404", "/500"]);
 function getOutputFilename(buildFormat, name, routeData) {
 	if (routeData.type === "endpoint") return name;
@@ -12081,7 +12081,7 @@ function getOutputFilename(buildFormat, name, routeData) {
 	return `${removeTrailingForwardSlash(name)}/index.html`;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/errors/default-handler.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/errors/default-handler.js
 async function renderDefaultError(manifest, request, { status, response: originalResponse, skipMiddleware = false, error, pathname, ...resolvedRenderOptions }) {
 	const resolvedPathname = pathname ?? new FetchState(manifest, request).pathname;
 	const routeTable = getRouteTable(manifest);
@@ -12191,7 +12191,7 @@ function mergeResponses(newResponse, originalResponse, override) {
 	return mergedResponse;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/errors/build-handler.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/errors/build-handler.js
 async function renderBuildError(manifest, request, options) {
 	if (options.status === 500) {
 		if (options.response) return options.response;
@@ -12203,7 +12203,7 @@ async function renderBuildError(manifest, request, options) {
 	});
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/errors/dev-handler.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/errors/dev-handler.js
 async function renderDevError(manifest, request, { skipMiddleware = false, error, status, response: _response, pathname, ...resolvedRenderOptions }, { shouldInjectCspMetaTags }) {
 	if (isAstroError(error) && [MiddlewareNoDataOrNextCalled.name, MiddlewareNotAResponse.name].includes(error.name)) throw error;
 	const resolvedPathname = pathname ?? new FetchState(manifest, request).pathname;
@@ -12250,7 +12250,7 @@ async function renderDevError(manifest, request, { skipMiddleware = false, error
 	else return renderRoute(custom500);
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/errors/handler.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/errors/handler.js
 function renderErrorPage(manifest, request, options) {
 	const env = getEnvironment(manifest);
 	switch (env.errorStrategy) {
@@ -12267,7 +12267,7 @@ function rewroteToEmptyErrorResponse(skipMiddleware, errorRouteData, renderedRou
 	return skipMiddleware === false && renderedRouteData !== errorRouteData && response.body === null && REROUTABLE_STATUS_CODES.includes(response.status);
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/middleware/callMiddleware.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/middleware/callMiddleware.js
 async function callMiddleware(onRequest, apiContext, responseFunction) {
 	let nextCalled = false;
 	let responseFunctionPromise = void 0;
@@ -12290,7 +12290,7 @@ async function callMiddleware(onRequest, apiContext, responseFunction) {
 	});
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/middleware/sequence.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/middleware/sequence.js
 function sequence(...handlers) {
 	const filtered = handlers.filter((h) => !!h);
 	const length = filtered.length;
@@ -12335,7 +12335,7 @@ function sequence(...handlers) {
 	});
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/middleware/load.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/middleware/load.js
 var resolvedMiddleware = /* @__PURE__ */ new WeakMap();
 var middlewareMemo = createAsyncManifestMemo(async (manifest) => {
 	let handler;
@@ -12351,7 +12351,7 @@ function getMiddleware(manifest) {
 	return middlewareMemo.get(manifest);
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/cache/runtime/noop.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/cache/runtime/noop.js
 var EMPTY_OPTIONS = Object.freeze({ tags: [] });
 var NoopAstroCache = class {
 	enabled = false;
@@ -12391,7 +12391,7 @@ var DisabledAstroCache = class {
 	}
 };
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/middleware/astro-middleware.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/middleware/astro-middleware.js
 async function handleMiddleware(state, renderRouteCallback) {
 	markFeatureUsed(state.manifest, FetchFeatures.middleware);
 	await state.getProps();
@@ -12416,7 +12416,7 @@ async function handleMiddleware(state, renderRouteCallback) {
 	return response;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/util/normalized-url.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/util/normalized-url.js
 function createNormalizedUrl(requestUrl) {
 	return normalizeUrl(new URL(requestUrl));
 }
@@ -12435,7 +12435,7 @@ function normalizeUrl(url) {
 	return url;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/rewrites/handler.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/rewrites/handler.js
 function applyRewriteToState(state, payload, { routeData, componentInstance, newUrl, pathname }, { mergeCookies = false } = {}) {
 	const oldPathname = state.pathname;
 	const isI18nFallback = routeData.fallbackRoutes && routeData.fallbackRoutes.length > 0;
@@ -12467,7 +12467,7 @@ async function executeRewrite(state, payload) {
 	return handleMiddleware(state, handlePages);
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/i18n/domain.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/i18n/domain.js
 function computePathnameFromDomain(request, url, i18n, base, trailingSlash, allowedDomains, logger, pathnameFromRequest) {
 	let pathname = void 0;
 	if (i18n && (i18n.strategy === "domains-prefix-always" || i18n.strategy === "domains-prefix-other-locales" || i18n.strategy === "domains-prefix-always-no-redirect")) {
@@ -12504,13 +12504,13 @@ function computePathnameFromDomain(request, url, i18n, base, trailingSlash, allo
 	return pathname;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/manifest/derived.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/manifest/derived.js
 var sites = createManifestMemo((manifest) => manifest.site ? new URL(manifest.site) : void 0);
 function getSite(manifest) {
 	return sites.get(manifest);
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/server-islands/mappings.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/server-islands/mappings.js
 async function getServerIslands(manifest) {
 	if (manifest.serverIslandMappings) return manifest.serverIslandMappings();
 	return {
@@ -12519,7 +12519,7 @@ async function getServerIslands(manifest) {
 	};
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/fetch/fetch-state.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/fetch/fetch-state.js
 var slotValuesSymbol = /* @__PURE__ */ Symbol("astro.slotValues");
 function getFetchStateFromAPIContext(context) {
 	const state = context[fetchStateSymbol];
@@ -13319,10 +13319,10 @@ var FORBIDDEN_PATH_KEYS = /* @__PURE__ */ new Set([
 	"prototype"
 ]);
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/actions/noop-actions.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/actions/noop-actions.js
 var NOOP_ACTIONS_MOD = { server: {} };
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/actions/load.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/actions/load.js
 var actionsMemo = createAsyncManifestMemo(async (manifest) => manifest.actions ? await manifest.actions() : NOOP_ACTIONS_MOD);
 function getActions(manifest) {
 	return actionsMemo.get(manifest);
@@ -13350,7 +13350,7 @@ async function getAction(manifest, path) {
 	return server;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/actions/runtime/server.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/actions/runtime/server.js
 function getActionContext(context) {
 	const callerInfo = getCallerInfo(context);
 	const actionResultAlreadySet = Boolean(context.locals._actionPayload);
@@ -13524,7 +13524,7 @@ function toArrayBuffer(buffer) {
 	return copy.buffer;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/actions/handler.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/actions/handler.js
 function handleAction(apiContext, state) {
 	markFeatureUsed(state.manifest, FetchFeatures.actions);
 	if (apiContext.isPrerendered) return;
@@ -13545,7 +13545,7 @@ async function executeAction(action, setActionResult) {
 	setActionResult(action.name, serialized);
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/3xx.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/3xx.js
 function redirectTemplate({ status, absoluteLocation, relativeLocation, from }) {
 	const delay = status === 302 ? 2 : 0;
 	const rel = escape(String(relativeLocation));
@@ -13559,7 +13559,7 @@ function redirectTemplate({ status, absoluteLocation, relativeLocation, from }) 
 </body>`;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/trailing-slash-handler.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/trailing-slash-handler.js
 function handleTrailingSlash(state) {
 	const url = new URL(state.request.url);
 	const redirect = redirectTrailingSlash(state.manifest.trailingSlash, url.pathname);
@@ -13589,7 +13589,7 @@ function redirectTrailingSlash(trailingSlash, pathname) {
 	return pathname;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/cache/provider.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/cache/provider.js
 var cacheProviderMemo = createAsyncManifestMemo(async (manifest) => {
 	if (manifest.cacheProvider) {
 		const factory = (await manifest.cacheProvider())?.default || null;
@@ -13601,7 +13601,7 @@ function getCacheProvider(manifest) {
 	return cacheProviderMemo.get(manifest);
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/cache/runtime/utils.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/cache/runtime/utils.js
 function defaultSetHeaders(options) {
 	const headers = new Headers();
 	const directives = [];
@@ -13617,7 +13617,7 @@ function isLiveDataEntry(value) {
 	return value != null && typeof value === "object" && "id" in value && "data" in value && "cacheHint" in value;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/cache/runtime/cache.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/cache/runtime/cache.js
 var APPLY_HEADERS = /* @__PURE__ */ Symbol.for("astro:cache:apply");
 var IS_ACTIVE = /* @__PURE__ */ Symbol.for("astro:cache:active");
 var AstroCache = class {
@@ -13691,7 +13691,7 @@ function applyCacheHeaders(cache, response, request) {
 	if (APPLY_HEADERS in cache) cache[APPLY_HEADERS](response, request);
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/parts.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/parts.js
 var ROUTE_DYNAMIC_SPLIT = /\[(.+?\(.+?\)|.+?)\]/;
 var ROUTE_SPREAD = /^\.{3}.+$/;
 function getParts(part, file) {
@@ -13710,7 +13710,7 @@ function getParts(part, file) {
 	return result;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/cache/runtime/route-matching.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/cache/runtime/route-matching.js
 function compileCacheRoutes(routes, base, trailingSlash) {
 	const compiled = Object.entries(routes).map(([path, options]) => {
 		const segments = removeLeadingForwardSlash(path).split("/").filter(Boolean).map((s) => getParts(s, path));
@@ -13737,7 +13737,7 @@ function matchCacheRoute(pathname, compiledRoutes) {
 	return null;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/cache/handler.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/cache/handler.js
 var CACHE_KEY = "cache";
 function provideCache(state) {
 	const manifest = state.manifest;
@@ -13801,7 +13801,7 @@ function getCompiledCacheRoutes(manifest) {
 	return compiledCacheRoutesMemo.get(manifest);
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/redirects/render.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/redirects/render.js
 function isExternalURL(url) {
 	return url.startsWith("http://") || url.startsWith("https://") || url.startsWith("//");
 }
@@ -13842,7 +13842,7 @@ async function renderRedirect(state) {
 	});
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/handler.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/handler.js
 function logRequestFromState(state, payload) {
 	if (state.logRequest) state.logRequest(payload);
 	else getEnvironment(state.manifest).logRequest(state.manifest, payload);
@@ -13951,7 +13951,7 @@ async function render(state) {
 	return response;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/fetch/default-handler.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/fetch/default-handler.js
 var DefaultFetchHandler = class {
 	#manifest;
 	/**
@@ -13971,7 +13971,7 @@ var DefaultFetchHandler = class {
 //#region \0virtual:astro:fetchable
 var _virtual_astro_fetchable_default = new DefaultFetchHandler();
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/match-request.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/routing/match-request.js
 function safeDecodePathname(manifest, pathname) {
 	try {
 		return validateAndDecodePathname(pathname);
@@ -14000,7 +14000,7 @@ function matchRequest(manifest, request, allowPrerenderedRoutes = false) {
 	return routeData;
 }
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/app/base.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/app/base.js
 var BaseApp = class BaseApp {
 	manifest;
 	#adapterLogger;
@@ -14296,7 +14296,7 @@ var BaseApp = class BaseApp {
 	}
 };
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/app/app.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/app/app.js
 var App = class extends BaseApp {
 	isDev() {
 		return false;
@@ -14304,14 +14304,14 @@ var App = class extends BaseApp {
 	logRequest(_options) {}
 };
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/app/entrypoints/virtual/prod.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/app/entrypoints/virtual/prod.js
 var createApp$1 = ({ streaming } = {}) => {
 	const app = new App(manifest, streaming);
 	app.setFetchHandler(_virtual_astro_fetchable_default);
 	return app;
 };
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/app/entrypoints/virtual/index.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/app/entrypoints/virtual/index.js
 var createApp = createApp$1;
 //#endregion
 //#region \0virtual:astro-node:config
@@ -14331,7 +14331,7 @@ var server = "file:///home/felixicaza/dev/astro-lqip/demos/ssr-node-custom-base/
 var port = 4321;
 var bodySizeLimit = 1073741824;
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/app/createOutgoingHttpHeaders.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/app/createOutgoingHttpHeaders.js
 var createOutgoingHttpHeaders = (headers) => {
 	if (!headers) return;
 	const nodeHeaders = Object.fromEntries(headers.entries());
@@ -14343,7 +14343,7 @@ var createOutgoingHttpHeaders = (headers) => {
 	return nodeHeaders;
 };
 //#endregion
-//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.3_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/app/node.js
+//#region ../../node_modules/.pnpm/astro@7.3.5_@types+node@26.6.4_jiti@2.7.0_tsx@4.23.15_yaml@2.9.1/node_modules/astro/dist/core/app/node.js
 function createRequestFromNodeRequest(req, { skipBody = false, allowedDomains = [], bodySizeLimit, port: serverPort } = {}) {
 	const controller = new AbortController();
 	const protocol = "encrypted" in req.socket && req.socket.encrypted ? "https" : "http";

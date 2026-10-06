@@ -6,10 +6,6 @@ import Layout from '@layouts/Layout.astro'
 import Navbar from '@components/Navbar.astro'
 import NextButton from '@components/NextButton.astro'
 import Footer from '@components/Footer.astro'
-
-import firstImage from '@images/pexels-fabianwiktor-3470482.jpg'
-import secondImage from '@images/pexels-fabianwiktor-3470872.jpg'
-import thirdImage from '@images/pexels-fabianwiktor-3470478.jpg'
 ---
 
 <Layout title="Demos | Astro LQIP">
@@ -24,7 +20,7 @@ import thirdImage from '@images/pexels-fabianwiktor-3470478.jpg'
         <div>
           <h3>LQIP Base64 (Default)</h3>
           <Picture
-            alt="A beautiful landscape with a lake and mountains 1" fallbackFormat="webp" formats={['avif', 'webp']} height={234} src="../images/pexels-fabianwiktor-3470482.jpg" width={234}
+            alt="A beautiful landscape with a lake and mountains 1" fallbackFormat="webp" formats={['avif', 'webp']} height={234} src="/src/images/pexels-fabianwiktor-3470482.jpg" width={234}
           />
         </div>
         <div>
@@ -35,9 +31,9 @@ import thirdImage from '@images/pexels-fabianwiktor-3470478.jpg'
         </div>
         <div>
           <h3>LQIP CSS</h3>
-          <!-- <Picture
-            alt="A beautiful landscape with a lake and mountains 3" fallbackFormat="webp" formats={['avif', 'webp']} height={234} lqip="css" src="@images/pexels-fabianwiktor-3470478.jpg" width={234}
-          /> -->
+          <Picture
+            alt="A beautiful landscape with a lake and mountains 3" fallbackFormat="webp" formats={['avif', 'webp']} height={234} lqip="css" src="/src/images/pexels-fabianwiktor-3470478.jpg" width={234}
+          />
         </div>
         <div>
           <h3>LQIP SVG</h3>
@@ -50,19 +46,19 @@ import thirdImage from '@images/pexels-fabianwiktor-3470478.jpg'
         <div>
           <h3>LQIP Base64 size 12</h3>
           <Image
-            alt="A beautiful landscape with a lake and mountains 5" height={234} src={firstImage} width={234}
+            alt="A beautiful landscape with a lake and mountains 5" height={234} src="/src/images/pexels-fabianwiktor-3470482.jpg" width={234}
           />
         </div>
         <div>
           <h3>LQIP Color (not size)</h3>
           <Picture
-            alt="A beautiful landscape with a lake and mountains 6" fallbackFormat="webp" formats={['avif', 'webp']} height={234} lqip="color" src={secondImage} width={234}
+            alt="A beautiful landscape with a lake and mountains 6" fallbackFormat="webp" formats={['avif', 'webp']} height={234} lqip="color" src="/src/images/pexels-fabianwiktor-3470872.jpg" width={234}
           />
         </div>
         <div>
           <h3>LQIP CSS size 12</h3>
           <Image
-            alt="A beautiful landscape with a lake and mountains 7" height={234} lqip="css" lqipSize={8} src={thirdImage} width={234}
+            alt="A beautiful landscape with a lake and mountains 7" height={234} lqip="css" lqipSize={8} src="/src/images/pexels-fabianwiktor-3470478.jpg" width={234}
           />
         </div>
         <div>
@@ -98,13 +94,13 @@ import thirdImage from '@images/pexels-fabianwiktor-3470478.jpg'
         </div>
         <div>
           <h3>LQIP Base64 (Default)</h3>
-          <!-- <Background
-            format={['avif', 'webp']} height={234} src="@images/pexels-fabianwiktor-3470478.jpg" width={234}
+          <Background
+            format={['avif', 'webp']} height={234} src="/src/images/pexels-fabianwiktor-3470478.jpg" width={234}
           >
             <section class="background-demo">
               <h3>A beautiful landscape with a lake and mountains 3</h3>
             </section>
-          </Background> -->
+          </Background>
         </div>
         <div>
           <h3>LQIP Color</h3>
