@@ -37,6 +37,7 @@ catalogs:
    build:
       "@tsdown/css": 0.21.10
       lightningcss: 1.33.0
+      rolldown-plugin-dts-minify-lite: 0.5.2
       tsdown: 0.21.10
 
    lib:

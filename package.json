@@ -44,6 +44,7 @@
     "nano-staged": "catalog:precommit",
     "oxlint": "catalog:lint",
     "oxlint-tsgolint": "catalog:lint",
+    "rolldown-plugin-dts-minify-lite": "catalog:build",
     "simple-git-hooks": "catalog:precommit",
     "tsdown": "catalog:build",
     "tsx": "catalog:tooling",
