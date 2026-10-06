@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises'
 
 import type { GetSVGReturn, LqipType } from '../types/index.ts'
 
-import { getPreviewly } from 'previewly'
+import { loadPreviewly } from './loadPreviewly.ts'
 
 import { PREFIX } from '../constants/index.ts'
 
@@ -44,6 +44,7 @@ export async function generateLqip(imagePath: string, lqipType: LqipType, lqipSi
       return undefined
     }
 
+    const { getPreviewly } = await loadPreviewly()
     const previewlyResult = await getPreviewly(buffer, { size: normalizedSize })
     let lqipValue: string | GetSVGReturn | undefined
 

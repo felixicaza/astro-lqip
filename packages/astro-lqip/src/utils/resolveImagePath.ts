@@ -7,7 +7,7 @@ import { access, copyFile, mkdir, readFile, readdir, stat } from 'node:fs/promis
 import { basename, dirname, extname, join, relative, resolve as resolvePath, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { getPreviewly } from 'previewly'
+import { loadPreviewly } from './loadPreviewly.ts'
 
 import { PREFIX } from '../constants/index.ts'
 
@@ -365,6 +365,7 @@ async function ensureBuildAssetPublicPath(sourceFilePath: string) {
 async function createMetadataFromFile(filePath: string) {
   try {
     const buffer = await readFile(filePath)
+    const { getPreviewly } = await loadPreviewly()
     const previewlyResult = await getPreviewly(buffer, { size: 4 })
     const metadata = previewlyResult.metadata
     const width = metadata?.originalWidth ?? 0
