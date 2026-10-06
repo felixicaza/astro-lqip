@@ -1,4 +1,5 @@
 import { defineConfig } from 'tsdown'
+import { rolldownPluginDtsMinifyLite } from 'rolldown-plugin-dts-minify-lite'
 
 export default defineConfig({
   entry: './src/index.ts',
@@ -14,5 +15,10 @@ export default defineConfig({
   },
   checks: {
     pluginTimings: false
-  }
+  },
+  plugins: [
+    rolldownPluginDtsMinifyLite({
+      keepJsDocs: true
+    })
+  ]
 })
