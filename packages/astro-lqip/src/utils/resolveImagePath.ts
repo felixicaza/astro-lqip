@@ -27,6 +27,7 @@ const IS_FILE_REGEX = /^file:\/\//
 const FILENAME_REGEX = /^[A-Za-z]:/
 const BUILD_SOURCE_REGEX = /build\s*:\s*{([\s\S]*?)}/
 const STACK_PATH_REGEX = /(file:\/\/[^\s)]+|\/[^\s)]+|[A-Za-z]:[^\s)]+):\d+:\d+/
+const RESOLVE_ALIAS_REGEX = /^@([^/]+)?\/(.+)$/
 const IGNORED_STACK_SEGMENTS = [
   `${sep}node_modules${sep}`,
   `${sep}dist${sep}`,
@@ -92,8 +93,15 @@ function stripQueryAndHash(path: string) {
 
 function normalizeSpecifier(input: string) {
   const t = stripQueryAndHash(input.trim()).replace(/\\/g, '/')
-  if (t.startsWith('@/')) return `src/${t.slice(2)}`
+
   if (t.startsWith('~@/')) return `src/${t.slice(3)}`
+
+  const aliasMatch = t.match(RESOLVE_ALIAS_REGEX)
+  if (aliasMatch) {
+    const [, alias, path] = aliasMatch
+    return alias ? `src/${alias}/${path}` : `src/${path}`
+  }
+
   return t
 }
 
