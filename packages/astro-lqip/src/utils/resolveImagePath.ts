@@ -238,7 +238,8 @@ function normalizeFormat(format: string | number | symbol | undefined, filePath:
 
 function toDevSrc(filePath: string, width: number, height: number, format: string) {
   const normalized = filePath.replace(/\\/g, '/')
-  return `/@fs${normalized}?origWidth=${String(width)}&origHeight=${String(height)}&origFormat=${format}`
+  const absolutePath = normalized.startsWith('/') ? normalized : `/${normalized}`
+  return `/@fs${absolutePath}?origWidth=${String(width)}&origHeight=${String(height)}&origFormat=${format}`
 }
 
 function normalizeBasePath(input?: string) {
