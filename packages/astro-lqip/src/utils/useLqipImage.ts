@@ -17,17 +17,19 @@ export async function useLqipImage({
 }: ComponentsOptions) {
   // resolve any kind of src (string, alias, import result, dynamic import)
   const resolvedSource = await resolveLqipImageSource(src)
+  const resolvedDimensions = resolvedSource?.kind === 'public' ? { width: resolvedSource.width, height: resolvedSource.height } : undefined
   // resolved may be an object (module-like), { src: '...' } or null
   const resolvedSrc = resolvedSource?.astroSrc ?? null
 
   if (lqip === false) {
-    return { lqipImage: undefined, svgHTML: '', lqipStyle: {}, combinedStyle: { ...styleProps }, resolvedSrc }
+    return { lqipImage: undefined, svgHTML: '', lqipStyle: {}, combinedStyle: { ...styleProps }, resolvedSrc, resolvedDimensions }
   }
 
   let lqipImage: string | GetSVGReturn | undefined
   if (resolvedSource) {
     switch (resolvedSource.kind) {
       case 'remote':
+      case 'public':
       case 'local':
         lqipImage = await getLqip(resolvedSource.lqipInput, lqip, lqipSize, isDevelopment)
         break
@@ -53,5 +55,5 @@ export async function useLqipImage({
     ...lqipStyle
   }
 
-  return { lqipImage, svgHTML, lqipStyle, combinedStyle, resolvedSrc }
+  return { lqipImage, svgHTML, lqipStyle, combinedStyle, resolvedSrc, resolvedDimensions }
 }

@@ -7,7 +7,6 @@ import { createComponent, renderComponent } from 'astro/runtime/server/index.js'
 import { Picture as AstroPicture } from 'astro:assets'
 
 import { useLqipImage } from '../utils/useLqipImage.ts'
-import { resolveImagePath } from '../utils/resolveImagePath.ts'
 
 import '../styles/lqip.css'
 
@@ -20,18 +19,7 @@ export const Picture = createComponent({
   factory: async(result: SSRResult, rawProps: PictureProps) => {
     const { class: className, lqip = 'base64', lqipSize = 4, pictureAttributes = {}, ...props } = rawProps
 
-    if (lqip === false) {
-      const resolvedSrc = await resolveImagePath(props.src)
-
-      return await renderComponent(result, 'Picture', AstroPicture, {
-        ...props,
-        class: className,
-        src: resolvedSrc ?? props.src,
-        pictureAttributes
-      })
-    }
-
-    const { combinedStyle, resolvedSrc } = await useLqipImage({
+    const imageResult = await useLqipImage({
       src: props.src,
       lqip,
       lqipSize,
@@ -40,14 +28,40 @@ export const Picture = createComponent({
       isDevelopment: import.meta.env.MODE === 'development'
     })
 
-    return await renderComponent(result, 'Picture', AstroPicture, {
+    const originalDimensions = imageResult.resolvedDimensions
+    const width = props.width == null ? undefined : Number(props.width)
+    const height = props.height == null ? undefined : Number(props.height)
+
+    const resolvedWidth = width ?? (
+      originalDimensions && height != null
+        ? Math.round(height * originalDimensions.width / originalDimensions.height)
+        : originalDimensions?.width
+    )
+
+    const resolvedHeight = height ?? (
+      originalDimensions && width != null
+        ? Math.round(width * originalDimensions.height / originalDimensions.width)
+        : originalDimensions?.height
+    )
+
+    const pictureProps = {
       ...props,
       class: className,
-      src: resolvedSrc ?? props.src,
+      src: imageResult.resolvedSrc ?? props.src,
+      width: resolvedWidth,
+      height: resolvedHeight
+    }
+
+    if (lqip === false) {
+      return renderComponent(result, 'Picture', AstroPicture, { ...pictureProps, pictureAttributes })
+    }
+
+    return await renderComponent(result, 'Picture', AstroPicture, {
+      ...pictureProps,
       pictureAttributes: {
         'data-astro-lqip': '',
         ...pictureAttributes,
-        style: combinedStyle
+        style: imageResult.combinedStyle
       },
       onload: 'parentElement.style.setProperty("--z-index", 1);parentElement.style.setProperty("--opacity", 0);'
     })

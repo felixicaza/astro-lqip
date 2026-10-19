@@ -42,6 +42,11 @@ interface ResolvedBackgroundSource {
   height?: number
 }
 
+interface BackgroundDimensions {
+  width?: number
+  height?: number
+}
+
 const WIDTH_REGEX = /(?<value>\d+(?:\.\d+)?)(?<unit>[wx])/i
 
 function normalizeCssVariableName(variable: string) {
@@ -99,34 +104,81 @@ function getTargetFormats(format: UseLqipBackgroundOptions['format']) {
   }
 }
 
-async function resolveBackgroundSource(
-  src: UseLqipBackgroundOptions['src'],
-  width?: number,
-  height?: number
-): Promise<ResolvedBackgroundSource> {
+function resolvePublicDimensions(sourceWidth: number, sourceHeight: number, width?: number, height?: number): BackgroundDimensions {
+  const aspectRatio = sourceWidth / sourceHeight
+
+  if (width != null && height == null) {
+    return {
+      width,
+      height: Math.round(width / aspectRatio)
+    }
+  }
+
+  if (height != null && width == null) {
+    return {
+      width: Math.round(height * aspectRatio),
+      height
+    }
+  }
+
+  return {
+    width: width ?? sourceWidth,
+    height: height ?? sourceHeight
+  }
+}
+
+async function resolveRemoteDimensions(remoteUrl: string, width?: number, height?: number): Promise<Required<BackgroundDimensions>> {
+  let normalizedWidth = width
+  let normalizedHeight = height
+
+  try {
+    const inferredSize = await inferRemoteSize(remoteUrl)
+
+    normalizedWidth ??= inferredSize.width
+    normalizedHeight ??= inferredSize.height
+  } catch(error) {
+    console.warn(`${PREFIX} Failed to infer remote background size for "${remoteUrl}".`, error)
+  }
+
+  if (!normalizedWidth || !normalizedHeight) {
+    throw new Error(`${PREFIX} Remote background images require 'width' and 'height'. Provide both props or ensure the URL is reachable in your Astro config 'image.domains'.`)
+  }
+
+  return {
+    width: normalizedWidth,
+    height: normalizedHeight
+  }
+}
+
+async function resolveBackgroundSource(src: UseLqipBackgroundOptions['src'], width?: number, height?: number): Promise<ResolvedBackgroundSource> {
   let normalizedWidth = width
   let normalizedHeight = height
 
   const source = await resolveLqipImageSource(src)
+
   if (!source) throw new Error(`${PREFIX} Could not resolve background image`)
 
   const resolvedSrc = source.astroSrc
+
+  if (source.kind === 'public') {
+    const dimensions = resolvePublicDimensions(
+      source.width,
+      source.height,
+      normalizedWidth,
+      normalizedHeight
+    )
+
+    normalizedWidth = dimensions.width
+    normalizedHeight = dimensions.height
+  }
+
   const remoteBackgroundUrl = source.kind === 'remote' ? source.astroSrc : undefined
 
   if (remoteBackgroundUrl && (!normalizedWidth || !normalizedHeight)) {
-    try {
-      const inferredSize = await inferRemoteSize(remoteBackgroundUrl)
-      normalizedWidth ??= inferredSize.width
-      normalizedHeight ??= inferredSize.height
-    } catch(error) {
-      console.warn(`${PREFIX} Failed to infer remote background size for "${remoteBackgroundUrl}".`, error)
-    }
+    const dimensions = await resolveRemoteDimensions(remoteBackgroundUrl, normalizedWidth, normalizedHeight)
 
-    if (!normalizedWidth || !normalizedHeight) {
-      throw new Error(
-        `${PREFIX} Remote background images require 'width' and 'height'. Provide both props or ensure the URL is reachable in your Astro config 'image.domains'.`
-      )
-    }
+    normalizedWidth = dimensions.width
+    normalizedHeight = dimensions.height
   }
 
   return {

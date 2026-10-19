@@ -4,7 +4,7 @@ import type { ImagePath, ImportModule, ResolvedImage, ResolvedImageSource } from
 import { createHash } from 'node:crypto'
 import { constants } from 'node:fs'
 import { access, copyFile, mkdir, readFile, readdir, stat } from 'node:fs/promises'
-import { basename, dirname, extname, join, relative, resolve as resolvePath, sep } from 'node:path'
+import { basename, dirname, extname, isAbsolute, join, relative, resolve as resolvePath, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { loadPreviewly } from './loadPreviewly.ts'
@@ -56,18 +56,6 @@ const ASTRO_IMAGE_FORMATS = [
 const fileLookupCache = new Map<string, string | null>()
 const stagedAssetCache = new Map<string, string | null>()
 let runtimePathConfigPromise: Promise<RuntimePathConfig> | undefined
-
-function warnFiles(filePath: string | undefined) {
-  if (!filePath) return
-  const lower = filePath.toLowerCase()
-  if (lower.includes('/public/') || filePath.startsWith(PUBLIC_DIR)) {
-    console.warn(`${PREFIX} Warning: image resolved from /public. Images should not be placed in /public - move them to /src so Astro can process them correctly.`)
-  }
-  if (lower.endsWith('.webp') || lower.endsWith('.avif')) {
-    const format = lower.endsWith('.webp') ? 'webp' : 'avif'
-    console.warn(`${PREFIX} Warning: image is in ${format} format. These formats are usually already optimized; using this component to re-process them may degrade quality.`)
-  }
-}
 
 function isRemoteUrl(v: string) {
   return IS_REMOTE_URL_REGEX.test(v)
@@ -305,6 +293,14 @@ function getRuntimePathConfig() {
   return runtimePathConfigPromise
 }
 
+function getPublicUrl(specifier: string) {
+  if (specifier.startsWith('/src/')) return null
+  if (specifier.startsWith('/public/')) return specifier.slice('/public'.length)
+  if (specifier.startsWith('public/')) return `/${specifier.slice('public/'.length)}`
+  if (specifier.startsWith('/')) return specifier
+  return null
+}
+
 function getPublicAssetPrefix(config: RuntimePathConfig) {
   return config.basePath ? `${config.basePath}/${config.assetsDir}` : `/${config.assetsDir}`
 }
@@ -371,7 +367,7 @@ async function ensureBuildAssetPublicPath(sourceFilePath: string) {
   }
 }
 
-async function createMetadataFromFile(filePath: string) {
+async function createMetadataFromFile(filePath: string, publicUrl?: string) {
   try {
     const buffer = await readFile(filePath)
     const { getPreviewly } = await loadPreviewly()
@@ -386,10 +382,11 @@ async function createMetadataFromFile(filePath: string) {
       return null
     }
 
-    const src = IS_DEV ? toDevSrc(filePath, width, height, format) : await ensureBuildAssetPublicPath(filePath)
+    const src = publicUrl ?? (IS_DEV ? toDevSrc(filePath, width, height, format) : await ensureBuildAssetPublicPath(filePath))
+
     if (!src) return null
 
-    const imageMeta: ResolvedImage & { width: number, height: number, format: string } = {
+    const imageMeta: ResolvedImage = {
       src,
       width,
       height,
@@ -420,7 +417,6 @@ async function resolveFromFileSystem(specifier: string, callerDir: string | null
     const metadata = await createMetadataFromFile(candidate)
     if (!metadata) return resolveCandidate(index + 1)
 
-    warnFiles(candidate)
     return metadata
   }
 
@@ -436,18 +432,15 @@ async function resolveFromFileSystem(specifier: string, callerDir: string | null
   const metadata = await createMetadataFromFile(fallback)
   if (!metadata) return null
 
-  warnFiles(fallback)
   return metadata
 }
 
 async function resolvePromiseImagePath(path: Promise<ImportModule>) {
   const { default: resolved } = await path
-  warnFiles(resolved.src)
   return resolved
 }
 
 function resolveObjectImagePath(path: ResolvedImage) {
-  warnFiles(path.src)
   return path
 }
 
@@ -455,10 +448,42 @@ async function resolveStringImagePath(path: string) {
   if (isRemoteUrl(path)) return path
 
   const spec = normalizeSpecifier(path)
-  const callerDir = isRelativeSpecifier(spec) ? getCallerDirectory() : null
+  const publicMatch = await resolvePublicImagePath(spec)
 
+  if (publicMatch !== undefined) return publicMatch
+
+  const callerDir = isRelativeSpecifier(spec) ? getCallerDirectory() : null
   const fsMatch = await resolveFromFileSystem(spec, callerDir)
+
   return fsMatch ?? null
+}
+
+async function resolvePublicImagePath(specifier: string): Promise<ResolvedImage | null | undefined> {
+  const publicUrl = getPublicUrl(specifier)
+  if (!publicUrl) return undefined
+
+  let relativePath: string
+  try {
+    relativePath = decodeURIComponent(publicUrl.slice(1))
+  } catch {
+    return null
+  }
+
+  const filePath = resolvePath(PUBLIC_DIR, relativePath)
+  const pathFromPublic = relative(PUBLIC_DIR, filePath)
+
+  if (
+    !pathFromPublic ||
+    pathFromPublic === '..' ||
+    pathFromPublic.startsWith(`..${sep}`) ||
+    isAbsolute(pathFromPublic)
+  ) {
+    return null
+  }
+
+  if (!await fileExists(filePath)) return null
+
+  return createMetadataFromFile(filePath, publicUrl)
 }
 
 export async function resolveImagePath(path: ImagePath) {
@@ -470,8 +495,32 @@ export async function resolveImagePath(path: ImagePath) {
 }
 
 export async function resolveLqipImageSource(path: ImagePath): Promise<ResolvedImageSource | null> {
-  const resolved = await resolveImagePath(path)
+  if (path == null) return null
 
+  // oxlint-disable-next-line anti-slop/no-runtime-typeof
+  if (typeof path === 'string' && !isRemoteUrl(path)) {
+    const specifier = normalizeSpecifier(path)
+    const publicUrl = getPublicUrl(specifier)
+
+    if (publicUrl) {
+      const publicImage = await resolvePublicImagePath(specifier)
+
+      if (!publicImage?.fsPath) return null
+
+      return {
+        kind: 'public',
+        astroSrc: publicUrl,
+        width: publicImage.width,
+        height: publicImage.height,
+        lqipInput: {
+          src: publicUrl,
+          fsPath: publicImage.fsPath
+        }
+      }
+    }
+  }
+
+  const resolved = await resolveImagePath(path)
   if (!resolved) return null
 
   // oxlint-disable-next-line anti-slop/no-runtime-typeof

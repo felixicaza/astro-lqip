@@ -10,6 +10,10 @@ import { PREFIX } from '../constants/index.ts'
 
 type LqipResult = Awaited<ReturnType<typeof generateLqip>>
 type FileStat = Awaited<ReturnType<typeof stat>>
+interface LqipImagePath {
+  src: string
+  fsPath?: string
+}
 
 const IS_REMOTE_URL_REGEX = /^https?:\/\//
 const DEV_FS_PREFIX_REGEX = /^\/@fs/
@@ -291,7 +295,7 @@ async function generateFromSource(
 }
 
 export async function getLqip(
-  imagePath: { src: string },
+  imagePath: LqipImagePath,
   lqipType: LqipType,
   lqipSize: number,
   isDevelopment: boolean | undefined
@@ -299,14 +303,18 @@ export async function getLqip(
   if (!imagePath?.src) return undefined
   if (lqipType === false) return undefined
 
-  const resolvedFilePath = getResolvedFilePath(imagePath.src, isDevelopment)
+  const sourceFilePath = imagePath.fsPath
+  const resolvedFilePath = sourceFilePath ?? getResolvedFilePath(imagePath.src, isDevelopment)
   const mtimeMs = resolvedFilePath ? await getFileMtime(resolvedFilePath) : undefined
   const cacheKey = computeCacheKey(imagePath.src, lqipType, lqipSize, mtimeMs)
 
   const cached = await readCache(cacheKey)
   if (cached !== undefined) return cached
 
-  const result = await generateFromSource(imagePath.src, lqipType, lqipSize, isDevelopment, cacheKey)
+  const result = sourceFilePath
+    ? await generateLqip(sourceFilePath, lqipType, lqipSize, isDevelopment)
+    : await generateFromSource(imagePath.src, lqipType, lqipSize, isDevelopment, cacheKey)
+
   if (result !== undefined) await writeCache(cacheKey, result)
   return result
 }
