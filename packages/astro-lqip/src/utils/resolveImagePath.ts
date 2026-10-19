@@ -483,7 +483,7 @@ async function resolvePublicImagePath(specifier: string): Promise<ResolvedImage 
 
   if (!await fileExists(filePath)) return null
 
-  return createMetadataFromFile(filePath, publicUrl)
+  return createMetadataFromFile(filePath)
 }
 
 export async function resolveImagePath(path: ImagePath) {
@@ -509,7 +509,7 @@ export async function resolveLqipImageSource(path: ImagePath): Promise<ResolvedI
 
       return {
         kind: 'public',
-        astroSrc: publicUrl,
+        astroSrc: publicImage,
         width: publicImage.width,
         height: publicImage.height,
         lqipInput: {
