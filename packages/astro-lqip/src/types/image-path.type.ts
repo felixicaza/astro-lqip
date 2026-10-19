@@ -7,7 +7,7 @@ export type ResolvedImage = ImageMetadata & {
 export type ResolvedImageSource =
   | { kind: 'remote'; astroSrc: string; lqipInput: { src: string } }
   | { kind: 'local'; astroSrc: ResolvedImage; lqipInput: ResolvedImage }
-  | { kind: 'public'; astroSrc: string; width: number; height: number; lqipInput: { src: string; fsPath: string } }
+  | { kind: 'public'; astroSrc: ResolvedImage; width: number; height: number; lqipInput: { src: string; fsPath: string } }
 
 export interface ImportModule { default: ResolvedImage }
 export type ImagePath = string | ResolvedImage | Promise<ImportModule>
