@@ -6,8 +6,7 @@
 .turbo
 *.log
 *.tgz
-/dist
-/packages/*/dist/
+dist
 cache
 coverage
 lib-cov
