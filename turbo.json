@@ -25,6 +25,10 @@
     "//#lint:oxlint": {},
     "//#lint:eslint": {},
     "preview": {
+      "cache": false,
+      "persistent": true
+    },
+    "//#preview:build": {
       "dependsOn": [
         "astro-lqip-docs#build",
         "astro-lqip-demo-default#build",
@@ -32,9 +36,7 @@
         "astro-lqip-demo-mdx#build",
         "astro-lqip-demo-ssr-node#build",
         "astro-lqip-demo-ssr-node-custom-base#build"
-      ],
-      "cache": false,
-      "persistent": true
+      ]
     },
     "//#typecheck:oxlint": {}
   }
