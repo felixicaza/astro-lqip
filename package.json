@@ -19,13 +19,13 @@
     "pre-commit": "pnpm nano-staged && pnpm astro:typecheck && pnpm typecheck",
     "prepare": "simple-git-hooks",
     "prepublishOnly": "pnpm build",
-    "preview": "turbo preview",
+    "preview": "turbo preview:build --concurrency=2 && turbo preview",
     "release": "bumpp packages/astro-lqip/package.json",
     "typecheck": "turbo typecheck:oxlint",
     "typecheck:oxlint": "oxlint . --type-aware --type-check"
   },
   "simple-git-hooks": {
-    "pre-commit": "pnpm run pre-commit"
+    "pre-commit": "pnpm pre-commit"
   },
   "nano-staged": {
     "*": [
