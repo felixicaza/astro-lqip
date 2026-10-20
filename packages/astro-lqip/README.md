@@ -98,7 +98,7 @@ import backgroundImage from '/src/assets/images/background-image.png';
 ```
 
 > [!TIP]
-> Since version `1.6.0`, you can also put the image path as string directly in the `src` prop. Support absolute paths in `src`, relative paths and alias.
+> You can also put the image path as string directly in the `src` prop. Support absolute paths within `src` folder, relative paths, aliases and images located in the `public` folder.
 >
 >
 > <details>
@@ -168,6 +168,36 @@ import backgroundImage from '/src/assets/images/background-image.png';
 >   <Image src="@/assets/images/image.png" alt="Cover Image" width={220} height={220} />
 >   <Picture src="@/assets/images/other-image.png" alt="Other Image" width={220} height={220} />
 >   <Background src="@/assets/images/background-image.png">
+>     <section>
+>       <p>Optimized background</p>
+>     </section>
+>   </Background>
+>
+>   <style>
+>     section {
+>       background-image: var(--background);
+>       background-size: cover;
+>       background-position: center;
+>     }
+>   </style>
+>   ```
+> </details>
+>
+> <details>
+>   <summary>Example within the `public` folder:</summary>
+>   <br/>
+>
+>   ```astro
+>   ---
+>   import { Image, Picture, Background } from 'astro-lqip/components';
+>   ---
+>
+>   <!-- Or /public/image.png -->
+>   <Image src="/image.png" alt="Cover Image" width={220} height={220} />
+>   <!-- Or /public/images/other-image.png -->
+>   <Picture src="/images/other-image.png" alt="Other Image" width={220} height={220} />
+>   <!-- Or /public/background-image.png -->
+>   <Background src="/background-image.png">
 >     <section>
 >       <p>Optimized background</p>
 >     </section>

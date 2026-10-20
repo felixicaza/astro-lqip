@@ -79,15 +79,15 @@ import backgroundImage from '/src/assets/images/background-image.png';
     <h2>Props</h2>
     <h3>Image and Picture</h3>
     <p>
-      Both
+      Both&nbsp;
       <code>&lt;Image&gt;</code>
-      and
+      &nbsp;and&nbsp;
       <code>&lt;Picture&gt;</code>
-      components support all the props of the
+      &nbsp;components support all the props of the&nbsp;
       <a href="https://docs.astro.build/en/reference/modules/astro-assets/" rel="noopener noreferrer" target="_blank">
         native Astro components
       </a>
-      but adds a couple of props for LQIP management:
+      &nbsp;but adds a couple of props for LQIP management:
     </p>
     <ul>
       <li>
@@ -100,7 +100,7 @@ import backgroundImage from '/src/assets/images/background-image.png';
           </li>
           <li>
             <code>color</code>
-            : Generates a solid color placeholder. Not compatible with
+            : Generates a solid color placeholder. Not compatible with&nbsp;
             <code>lqipSize</code>
             .
           </li>
@@ -116,18 +116,18 @@ import backgroundImage from '/src/assets/images/background-image.png';
       </li>
       <li>
         <code>lqipSize</code>
-        : The size of the LQIP image, which can be any number from
+        : The size of the LQIP image, which can be any number from&nbsp;
         <code>4</code>
-        to
+        &nbsp;to&nbsp;
         <code>64</code>
         . (default is 4)
       </li>
     </ul>
     <AlertBlock label="Warning" type="warning">
       <p>
-        A high value for
+        A high value for&nbsp;
         <code>lqipSize</code>
-        can significantly increase the total size of your website.
+        &nbsp;can significantly increase the total size of your website.
       </p>
     </AlertBlock>
   </section>
@@ -137,33 +137,29 @@ import backgroundImage from '/src/assets/images/background-image.png';
   </section>
   <AlertBlock label="Tip" type="tip">
     <p>
-      For the
+      For the&nbsp;
       <code>&lt;Image&gt;</code>
-      component, a
+      &nbsp;component, a&nbsp;
       <code>parentAttributes</code>
-      prop similar to
+      &nbsp;prop similar to&nbsp;
       <code>pictureAttributes</code>
-      has been added.
+      &nbsp;has been added.
     </p>
   </AlertBlock>
 
   <section>
     <h3>Background</h3>
     <p>
-      The
+      The&nbsp;
       <code>&lt;Background&gt;</code>
-      {' '}
-      component supports the following props:
+      &nbsp;component supports the following props:
     </p>
     <ul>
       <li>
         <code>src</code>
-        {' '}
-        (required): The source of the background image located in
-        {' '}
+        (required): The source of the background image located in&nbsp;
         <code>src</code>
-        {' '}
-        folder. It can be a static import, absolute path, relative path, alias path or remote URL.
+        &nbsp;folder. It can be a static import, absolute path, relative path, alias path or remote URL.
       </li>
       <li>
         <code>lqip</code>
@@ -184,40 +180,33 @@ import backgroundImage from '/src/assets/images/background-image.png';
         : A string that represents the name of the CSS variable to store the background data.
         <ul>
           <li>
-            By default, the background data is stored in a CSS variable named
+            By default, the background data is stored in a CSS variable named&nbsp;
             <code>--background</code>
             .
           </li>
           <li>
-            For responsive backgrounds, the CSS variable names are generated based on the provided widths, following the pattern
+            For responsive backgrounds, the CSS variable names are generated based on the provided widths, following the pattern&nbsp;
             <code>--background-small</code>
-            {' '}
-            (lower than 768px),
+            &nbsp;(lower than 768px),&nbsp;
             <code>--background-medium</code>
-            {' '}
-            (768px to 1199px),
+            &nbsp;(768px to 1199px),&nbsp;
             <code>--background-large</code>
-            {' '}
-            (1200px to 1919px) and
+            &nbsp;(1200px to 1919px) and&nbsp;
             <code>--background-xlarge</code>
-            {' '}
-            (1920px and above).
+            &nbsp;(1920px and above).&nbsp;
             <code>--background</code>
-            {' '}
-            is also generated for the largest image for backward compatibility.
+            &nbsp;is also generated for the largest image for backward compatibility.
           </li>
           <li>
-            If the
+            If the&nbsp;
             <code>cssVariable</code>
-            {' '}
-            prop is provided, the generated CSS variable names will follow the pattern
+            &nbsp;prop is provided, the generated CSS variable names will follow the pattern&nbsp;
             <code>--&lcub;cssVariable&rcub;-small</code>
-            ,
+            ,&nbsp;
             <code>--&lcub;cssVariable&rcub;-medium</code>
-            ,
+            ,&nbsp;
             <code>--&lcub;cssVariable&rcub;-large</code>
-            {' '}
-            and
+            &nbsp;and&nbsp;
             <code>--&lcub;cssVariable&rcub;-xlarge</code>
             .
           </li>
@@ -225,21 +214,18 @@ import backgroundImage from '/src/assets/images/background-image.png';
       </li>
       <li>
         <code>format</code>
-        : The image format to use for the background. It can be one of the following in string or an array of strings. If an array is provided, this generates multiple background images with the native
-        {' '}
+        : The image format to use for the background. It can be one of the following in string or an array of strings. If an array is provided, this generates multiple background images with the native&nbsp;
         <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/image/image-set">
           <code>image-set()</code>
         </a>
-        {' '}
-        CSS function, which allows the browser to choose the best format to use based on its support:
+        &nbsp;CSS function, which allows the browser to choose the best format to use based on its support:
         <ul>
           <li>
             <code>avif</code>
           </li>
           <li>
             <code>webp</code>
-            {' '}
-            (default option)
+            &nbsp;(default option)
           </li>
           <li>
             <code>jpeg</code>
@@ -255,28 +241,21 @@ import backgroundImage from '/src/assets/images/background-image.png';
       </li>
       <li>
         <code>width</code>
-        : The width to use for the background image. This prop is ignored if the
-        {' '}
+        : The width to use for the background image. This prop is ignored if the&nbsp;
         <code>widths</code>
-        {' '}
-        prop is provided.
+        &nbsp;prop is provided.
       </li>
       <li>
         <code>height</code>
-        : The height to use for the background image. This prop is ignored if the
-        {' '}
+        : The height to use for the background image. This prop is ignored if the&nbsp;
         <code>widths</code>
-        {' '}
-        prop is provided.
+        &nbsp;prop is provided.
       </li>
       <li>
         <code>quality</code>
-        : The quality to use for the background image. It can be a number from
-        {' '}
+        : The quality to use for the background image. It can be a number from&nbsp;
         <code>1</code>
-        {' '}
-        to
-        {' '}
+        &nbsp;to&nbsp;
         <code>100</code>
         .
       </li>
@@ -313,11 +292,9 @@ import backgroundImage from '/src/assets/images/background-image.png';
   </section>
   <AlertBlock label="Note" type="note">
     <p>
-      The
-      {' '}
+      The&nbsp;
       <code>lqipSize</code>
-      {' '}
-      prop is not compatible with this component, to avoid large CSS outputs.
+      &nbsp;prop is not compatible with this component, to avoid large CSS outputs.
     </p>
   </AlertBlock>
 </article>
