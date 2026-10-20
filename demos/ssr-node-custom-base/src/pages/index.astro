@@ -13,6 +13,22 @@ import volcanoSunsetImage from '../assets/pexels-fabianwiktor-3470482.jpg'
   </head>
   <body>
     <div>
+      <p>Background component public import</p>
+      <Background src="/pexels-alvisonhunter-13990035.jpg">
+        <section>
+          <p>Optimized background</p>
+        </section>
+      </Background>
+    </div>
+    <div>
+      <p>Background component public import with /public</p>
+      <Background src="/public/pexels-alvisonhunter-13990035.jpg">
+        <section>
+          <p>Optimized background</p>
+        </section>
+      </Background>
+    </div>
+    <div>
       <p>Background component ImageMetadata import</p>
       <Background src={volcanoSunsetImage}>
         <section>
@@ -37,8 +53,16 @@ import volcanoSunsetImage from '../assets/pexels-fabianwiktor-3470482.jpg'
       </Background>
     </div>
     <div>
-      <p>Background component alias path import</p>
+      <p>Background component alias @/ import</p>
       <Background src="@/assets/pexels-fabianwiktor-3470482.jpg">
+        <section>
+          <p>Optimized background</p>
+        </section>
+      </Background>
+    </div>
+    <div>
+      <p>Background component alias @assets import</p>
+      <Background src="@assets/pexels-fabianwiktor-3470482.jpg">
         <section>
           <p>Optimized background</p>
         </section>
@@ -107,6 +131,16 @@ import volcanoSunsetImage from '../assets/pexels-fabianwiktor-3470482.jpg'
           <p>Background without LQIP</p>
         </section>
       </Background>
+    </div>
+    <div>
+      <p>Image and Picture components public import</p>
+      <Image alt="Landscape with a mountain in the background" height={450} src="/pexels-alvisonhunter-13990035.jpg" width={450} />
+      <Picture alt="Landscape with green grass and a mountain in the background" height={450} src="/pexels-alvisonhunter-13990035.jpg" width={450} />
+    </div>
+    <div>
+      <p>Image and Picture components public import with /public</p>
+      <Image alt="Landscape with a mountain in the background" height={450} src="/public/pexels-alvisonhunter-13990035.jpg" width={450} />
+      <Picture alt="Landscape with green grass and a mountain in the background" height={450} src="/public/pexels-alvisonhunter-13990035.jpg" width={450} />
     </div>
     <div>
       <p>Image and Picture components ImageMetadata import</p>

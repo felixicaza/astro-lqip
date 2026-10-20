@@ -11,6 +11,20 @@ import volcanoSunsetImage from '@/assets/pexels-fabianwiktor-3470482.jpg'
 
 This is a test post using Astro and MDX!
 
+Background component public import
+<Background src="/pexels-alvisonhunter-13990035.jpg">
+  <section>
+    <p>Optimized background</p>
+  </section>
+</Background>
+
+Background component public import with /public
+<Background src="/public/pexels-alvisonhunter-13990035.jpg">
+  <section>
+    <p>Optimized background</p>
+  </section>
+</Background>
+
 Background component ImageMetadata import
 <Background src={volcanoSunsetImage}>
   <section>
@@ -32,8 +46,15 @@ Background component absolute path import
   </section>
 </Background>
 
-Background component alias path import
+Background component alias @/ import
 <Background src="@/assets/pexels-fabianwiktor-3470482.jpg">
+  <section>
+    <p>Optimized background</p>
+  </section>
+</Background>
+
+Background component alias @assets import
+<Background src="@assets/pexels-fabianwiktor-3470482.jpg">
   <section>
     <p>Optimized background</p>
   </section>
@@ -94,6 +115,14 @@ Background component with lqip false
     <p>Background without LQIP</p>
   </section>
 </Background>
+
+Image and Picture components public import
+<Image width={450} src="/pexels-alvisonhunter-13990035.jpg" alt="Landscape with a mountain in the background" />
+<Picture width={450} src="/pexels-alvisonhunter-13990035.jpg" alt="Landscape with green grass and a mountain in the background" />
+
+Image and Picture components ImageMetadata import
+<Image width={450} src="/public/pexels-alvisonhunter-13990035.jpg" alt="Landscape with a mountain in the background" />
+<Picture width={450} src="/public/pexels-alvisonhunter-13990035.jpg" alt="Landscape with green grass and a mountain in the background" />
 
 Image and Picture components ImageMetadata import
 <Image width={450} src={volcanoImage} alt="A beautiful volcano" />
